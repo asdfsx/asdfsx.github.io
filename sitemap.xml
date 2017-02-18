@@ -112,7 +112,18 @@
   </url>
   
   <url>
+    <loc>https://asdfsx.github.io/contact/</loc>
+    <lastmod>2016-12-05T14:45:55+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://asdfsx.github.io/about/</loc>
+    <lastmod>2016-12-05T14:45:55+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://asdfsx.github.io/contact/</loc>
     <lastmod>2016-12-05T14:45:55+08:00</lastmod>
     <priority>0</priority>
   </url>
