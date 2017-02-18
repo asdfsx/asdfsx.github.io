@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="odoo中的请求处理">
+  <meta name="generator" content="Hugo 0.19-DEV" />
+
+  <title>odoo中的请求处理 &middot; asdfsx</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://asdfsx.github.io/img/favicon.ico" type="image/x-icon" />
+
+  
+    <link rel="stylesheet" href="https://asdfsx.github.io/css/my.css">
+  
+  
+    <script src="https://asdfsx.github.io/js/my.js"></script>
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://asdfsx.github.io/">asdfsx</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/tags/"><i class='fa fa-list fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://plus.google.com/+asdfsx" target="_blank"><i class="fa fa-google-plus-square fa-fw"></i>Google+</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://weibo.com/*" target="_blank"><i class="fa fa-weibo fa-fw"></i>Weibo</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/asdfsx" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://bitbucket.org/asdfsx" target="_blank"><i class="fa fa-bitbucket-square fa-fw"></i>Bitbucket</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>odoo中的请求处理</h1>
+  <h2>odoo中的请求处理</h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>29 Dec 2016, 15:57</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<h1 id="web请求">Web请求</h1>
+
+<p>web请求的包装是在接收请求时，在<code>odoo.http.Root</code>中处理的。请求主要分为</p>
+
+<ul>
+<li>json请求：主要用来处理json请求、rpc请求。</li>
+<li>http请求：主要用来处理页面访问请求。</li>
+</ul>
+
+<h3 id="请求的基类-odoo-http-webrequest">请求的基类：odoo.http.WebRequest</h3>
+
+<p>所有请求的基类，定义了请求处理过程中都可能会用到的一些属性：如csrf、db、registry、session等等。</p>
+
+<p>同时WebQuest还使用了<code>__enter__</code>、<code>__exit__</code>。这样当使用<code>with request：</code>这样当表达式时，会将当前<code>request</code>放到<code>werkzeug.local.LocalStack</code>中。方便从任何地方使用<code>odoo.http.request</code>获取当前请求。</p>
+
+<p>具体处理请求的<code>endpoint</code>是通过<code>set_handler</code>传入的。<code>_call_function</code>会调用<code>endpoint</code>来获得返回结果。但是调用<code>_call_function</code>的<code>dispath</code>是由子类来实现的，基类中没有。</p>
+
+<pre><code>_request_stack = werkzeug.local.LocalStack()
+
+request = _request_stack()
+
+class WebRequest(object):
+    ...
+    @property
+    def registry(self):
+        return odoo.registry(self.db) if self.db else None
+    
+    @property
+    def db(self):
+        return self.session.db if not self.disable_db else None
+    
+    def csrf_token(self, time_limit=3600):
+        ...
+    
+    ...
+    def _call_function(self, *args, **kwargs):
+        &quot;&quot;&quot; Generates and returns a CSRF token for the current session
+        ...
+        
+    def validate_csrf(self, csrf):
+         ...
+         
+     def __enter__(self):
+        _request_stack.push(self)
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        _request_stack.pop()
+        ...
+    
+    def set_handler(self, endpoint, arguments, auth):
+        # is this needed ?
+        arguments = dict((k, v) for k, v in arguments.iteritems()
+                         if not k.startswith(&quot;_ignored_&quot;))
+        self.endpoint_arguments = arguments
+        self.endpoint = endpoint
+        self.auth_method = auth
+     
+    def _call_function(self, *args, **kwargs):
+        ...
+        return self.endpoint(*args, **kwargs)
+    ...
+</code></pre>
+
+<h3 id="json请求-odoo-http-jsonrequest">Json请求：odoo.http.JsonRequest</h3>
+
+<p>默认接收到的数据是json格式，所以在创建这个对象时，会按照<code>json</code>的格式来读取请求数据</p>
+
+<pre><code>class JsonRequest(WebRequest):
+    def __init__(self, *args):
+        ...
+        self.jsonrequest = json.loads(request)
+        ...
+        self.params = dict(self.jsonrequest.get(&quot;params&quot;, {}))
+        ...
+    ...
+</code></pre>
+
+<h3 id="http请求-odoo-http-httprequest">Http请求：odoo.http.HttpRequest</h3>
+
+<p>在创建http请求时，从<code>url</code>参数中、<code>form</code>中、甚至上传的文件中获取请求信息。然后定义了<code>dispatch</code>函数，这个函数负责创建并返回<code>Response</code>对象。它通过调用基类中的<code>_call_function</code>，调用从路由器得来的controller来获取<code>Response</code>。
+请求处理完成后，还要找到对应的模版，生成显示的页面（也可以根据<code>lazy</code>参数延迟生成页面）。</p>
+
+<pre><code>class HttpRequest(WebRequest):
+    ...
+    def __init__(self, *args):
+        super(HttpRequest, self).__init__(*args)
+        params = collections.OrderedDict(self.httprequest.args)
+        params.update(self.httprequest.form)
+        params.update(self.httprequest.files)
+        params.pop('session_id', None)
+        self.params = params
+
+    ...
+
+    def dispatch(self):
+        ...
+        r = self._call_function(**self.params)
+        if not r:
+            r = Response(status=204)  # no content
+        return r
+    
+    ...
+    
+    def render(self, template, qcontext=None, lazy=True, **kw):
+        response = Response(template=template, qcontext=qcontext, **kw)
+        if not lazy:
+            return response.render()
+        return response
+    ...
+</code></pre>
+
+<h3 id="http响应-odoo-http-response">Http响应：odoo.http.Response</h3>
+
+<p>这个只对应<code>http</code>请求，主要的功能就是页面的创建</p>
+
+<pre><code>class Response(werkzeug.wrappers.Response):
+    ...
+    def render(self):
+        env = request.env(user=self.uid or request.uid or odoo.SUPERUSER_ID)
+        self.qcontext['request'] = request
+        return env[&quot;ir.ui.view&quot;].render_template(self.template, self.qcontext)
+    ...
+    
+    def flatten(self):
+        &quot;&quot;&quot; Forces the rendering of the response's template, sets the result
+        as response body and unsets :attr:`.template`
+        &quot;&quot;&quot;
+        if self.template:
+            self.response.append(self.render())
+            self.template = None
+</code></pre>
+
+<h1 id="控制器">控制器</h1>
+
+<p>对于一个有大量插件的项目来说，大量的路径管理是个麻烦事。不过<code>odoo</code>有自己的解决之道，通过自己定义的一套<code>Controller</code>机制。</p>
+
+<h3 id="controller的元类-odoo-http-controllertype">Controller的元类：odoo.http.ControllerType</h3>
+
+<p><code>Controller</code>的元类。如果一个类使用了这个元类的话，会自动存放到全局字典<code>controllers_per_module</code>中。同时为了兼容老版本，会检查<code>Controller</code>中的函数是否有<code>original_func</code>属性。如果有，会给该函数增加路由属性。</p>
+
+<pre><code>controllers_per_module = collections.defaultdict(list)
+
+class ControllerType(type):
+    def __init__(cls, name, bases, attrs):
+        ...
+        name_class = (&quot;%s.%s&quot; % (cls.__module__, cls.__name__), cls)
+        ...
+        controllers_per_module[module].append(name_class)
+</code></pre>
+
+<h3 id="controller的基类-odoo-http-controller">Controller的基类：odoo.http.Controller</h3>
+
+<p>所有Controller的父类，可以看到使用了上边创建的元类。</p>
+
+<pre><code>class Controller(object):
+    __metaclass__ = ControllerType
+    
+</code></pre>
+
+<h3 id="例子-web-模块的-controller">例子：WEB 模块的 Controller</h3>
+
+<p>我们以<code>server-wide</code>模块<code>web</code>为例子，看看<code>Controller</code>的具体使用。<br />
+当第一次访问<code>odoo</code>时，请求由<code>index</code>函数处理，被重定向到<code>/web</code>。
+当访问<code>/web</code>时，会用<code>web.webclient_bootstrap</code>模版来生成页面。</p>
+
+<pre><code>class Home(http.Controller):
+    @http.route('/', type='http', auth=&quot;none&quot;)
+    def index(self, s_action=None, db=None, **kw):
+        return http.local_redirect('/web', query=request.params, keep_hash=True)
+    
+    @http.route('/web', type='http', auth=&quot;none&quot;)
+    def web_client(self, s_action=None, **kw):
+        ...
+        return request.render('web.webclient_bootstrap', qcontext=context)
+    
+    @http.route('/web/dbredirect', type='http', auth=&quot;none&quot;)
+    def web_db_redirect(self, redirect='/', **kw):
+        ensure_db()
+        return werkzeug.utils.redirect(redirect, 303)
+        
+    @http.route('/web/login', type='http', auth=&quot;none&quot;)
+    def web_login(self, redirect=None, **kw):
+        ...
+        return request.render('web.login', values)
+</code></pre>
+
+<ul>
+<li>首先继承<code>http.Controller</code>，直接注册到<code>controllers_per_module</code>中</li>
+
+<li><p>用来处理请求的都使用装饰器<code>http.route</code>
+包装以后，生成一个新函数<code>response_wrap</code>，包含两个属性：</p>
+
+<ul>
+<li><code>routing</code> 存放路由相关的信息，如：请求类型、路由地址等。<br />
+  之前在<code>http.routing_map</code>函数中，依靠这个rouging获取路由的各个信息</li>
+<li><code>original_func</code> 存放原始的函数。（这个怀疑是为了兼容旧版本）
+<br /></li>
+</ul>
+
+<pre><code>def route(route=None, **kw):
+    ...
+    routing = kw.copy()
+    def decorator(f):
+        ...
+        @functools.wraps(f)
+        def response_wrap(*args, **kw):
+            response = f(*args, **kw)
+            ...
+            return response
+        response_wrap.routing = routing
+        response_wrap.original_func = f
+        return response_wrap
+    return decorator
+</code></pre></li>
+
+<li><p>请求处理完后返回结果，通常是下一个要显示的页面</p>
+
+<ul>
+<li><p><code>http.local_redirect</code>进行重定向<br />
+其实就是对<code>werkzeug.utils.redirect</code>的一个包装</p></li>
+
+<li><p><code>request.render</code>创建<code>response</code>（支持lazy render）<br />
+可以看到如果是<code>lazy</code>的话，只返回<code>Response</code>对象。<br />
+如果不是<code>lazy</code>的话，就直接生成最终的结果。</p>
+
+<pre><code>以HttpRequest为例：
+        
+def render(self, template, qcontext=None, lazy=True, **kw):
+    response = Response(template=template, qcontext=qcontext, **kw)
+    if not lazy:
+        return response.render()
+    return response
+        
+class Response(werkzeug.wrappers.Response):
+    ...
+    def render(self):
+        &quot;&quot;&quot; Renders the Response's template, returns the result
+        &quot;&quot;&quot;
+        env = request.env(user=self.uid or request.uid or odoo.SUPERUSER_ID)
+        self.qcontext['request'] = request
+        return env[&quot;ir.ui.view&quot;].render_template(self.template, self.qcontext)
+    ...
+</code></pre></li>
+
+<li><p><code>Response</code>会根据提供的模版渲染出最终的页面<br />
+查找名为<code>ir.ui.view</code>的模型<code>odoo.addons.base.ir.ir_ui_view.View</code>，然后调用里面的<code>render_template</code>、<code>render</code>生成最终的页面</p></li>
+</ul></li>
+</ul>
+
+<h1 id="路由器">路由器</h1>
+
+<p>当定义了大量的<code>controller</code>后，如何将请求分发到这些<code>controller</code>上就要靠路由器了。
+在<code>odoo</code>中，路由的功能由<code>IrHttp</code>实现。</p>
+
+<h3 id="odoo-addons-base-ir-ir-http-irhttp"><code>odoo.addons.base.ir.ir_http.IrHttp</code></h3>
+
+<p><code>IrHttp</code>也被定义为一个模型，不过它的基类是<code>AbstractModel</code>。也就是说，这个模型不会在数据库中建表，只是一个纯粹提供功能的模型。主要功能：</p>
+
+<ul>
+<li><p><code>_dispatch</code>请求转发</p>
+
+<p><code>_dispatch</code>算是入口函数。它接收根据请求路径从<code>routing_map</code>中查找<code>handler</code>。然后进行用户校验。最后将<code>routing_map</code>中查找到的<code>handler</code>放入请求对象中。最后请求在<code>dispatch</code>的时候处理请求。</p></li>
+
+<li><p><code>routing_map</code>路由表的初始化<br />
+当类中没有<code>_routing_map</code>属性时，使用<code>odoo.http.routing_map</code>创建这个属性。<code>odoo.http.routing_map</code>会遍历之前说过的<code>controllers_per_module</code>，将所有的<code>controller</code>、路径信息保存到<code>werkzeug.routing.Map</code>中。最后的返回值就是这个<code>Map</code>。</p></li>
+
+<li><p><code>_find_handler</code>查找<code>controller</code>
+从routing_map中获取初期请求的<code>controller</code>。获取到<code>routing_map</code>后，用标准的<code>werkzeug</code>获取陆游的方法匹配路由表，即：</p>
+
+<pre><code>urls = url_map.bind_to_environ(environ)
+endpoint, args = urls.match()
+</code></pre></li>
+
+<li><p><code>_authenticate</code>请求的安全验证</p></li>
+</ul>
+
+<p>总之在<code>IrHttp</code>中，它根据需要创建<code>routing_map</code>，从<code>routing_map</code>中获取<code>controller</code>，然后将<code>controller</code>放入请求对象中，然后调用下<code>request.dispatch</code>
+并将结果返回。</p>
+
+<pre><code>class IrHttp(models.AbstractModel):
+
+    ...
+    
+    @classmethod
+    def routing_map(cls):
+        if not hasattr(cls, '_routing_map'):
+            ...
+            cls._routing_map = http.routing_map(mods, False, converters=cls._get_converters())
+        return cls._routing_map
+        
+    ...
+    
+    @classmethod
+    def _find_handler(cls, return_rule=False):
+        return cls.routing_map().bind_to_environ(request.httprequest.environ).match(return_rule=return_rule)
+        
+    ...
+    
+    @classmethod
+    def _authenticate(cls, auth_method='user'):
+        ...
+        if request.session.uid:
+            request.session.check_security()
+        ...
+        
+    ...
+    
+    @classmethod
+    def _dispatch(cls):
+        # locate the controller method
+        try:
+            rule, arguments = cls._find_handler(return_rule=True)
+            func = rule.endpoint
+        except werkzeug.exceptions.NotFound, e:
+            return cls._handle_exception(e)
+
+        # check authentication level
+        try:
+            auth_method = cls._authenticate(func.routing[&quot;auth&quot;])
+        except Exception as e:
+            return cls._handle_exception(e)
+
+        processing = cls._postprocess_args(arguments, rule)
+        if processing:
+            return processing
+
+        # set and execute handler
+        try:
+            request.set_handler(func, arguments, auth_method)
+            result = request.dispatch()
+            if isinstance(result, Exception):
+                raise result
+        except Exception, e:
+            return cls._handle_exception(e)
+
+        return result
+    ...
+</code></pre>
+
+<h1 id="请求处理器">请求处理器</h1>
+
+<h3 id="odoo-http-root"><code>odoo.http.Root</code></h3>
+
+<p>所有种类的<code>server</code>都使用<code>odoo.service.wsgi_server.application</code>处理请求。而在其中，最重要的一个请求处理器是：<code>odoo.http.root</code>，它主要负责页面请求的处理；另外一个<code>wsgi_xmlrpc</code>，主要负责处理<code>xmlrpc</code>一类的数据接口请求。</p>
+
+<p>对于<code>xmlrpc</code>请求来说，处理起来相对容易：根据路径、参数，获取对应的函数；执行函数后将返回的结果转化成<code>json</code>返回就可以了。</p>
+
+<p>对于另外一类来说就复杂很多：要将请求包装成<code>JsonRequest</code>或者<code>HttpRequest</code>；要根据路径找到对应的<code>controller</code>；根据需要查找模版生成页面&hellip;&hellip;</p>
+
+<pre><code>def wsgi_xmlrpc(environ, start_response):
+    ...
+    if environ['REQUEST_METHOD'] == 'POST' and environ['PATH_INFO'].startswith('/xmlrpc/'):
+    ...
+    
+    
+def application_unproxied(environ, start_response):
+    ...
+    with odoo.api.Environment.manage():
+        # Try all handlers until one returns some result (i.e. not None).
+        for handler in [wsgi_xmlrpc, odoo.http.root]:
+            result = handler(environ, start_response)
+            if result is None:
+                continue
+            return result
+    ...
+</code></pre>
+
+<p>从上边的代码请求被<code>wsgi_xmlrpc，odoo.http.root</code>两个函数处理。<code>odoo.http.root</code>可以被当作函数使用，全都因为其中的<code>__call__</code>函数。从下边代码中可以看到当<code>__call__</code>首次运行时：首先加载模块；然后后<code>root</code>会在<code>dispatch</code>函数中判断请求类型生成<code>JsonRequest</code>或<code>HttpRequest</code>；从<code>request</code>中查找<code>ir.http</code>模型（其实就是从全局的<code>registry</code>中）；通过<code>ir.http</code>模型的<code>_dispatch</code>来获得返回的结果；最后将结果生成最终的<code>Response</code>。</p>
+
+<p>注意：之前在<code>HttpRequest</code>类的<code>render</code>函数中，可以设置请求的惰性处理（或者叫延迟处理）。在<code>dispatch</code>函数的最后，在<code>get_response</code>函数中，可以看到它调用了一个<code>result.flatten</code>函数。这个函数定义在<code>Response</code>对象中，它的作用是强制<code>render</code>。
+也就是说，如果设置了<code>HttpRequest</code>延迟处理，那么直到dispatch进行完才会创建出页面，在此之前<code>response</code>只是一个对象。</p>
+
+<pre><code>class Root(object):
+    def __init__(self):
+        self._loaded = False
+        
+    def __call__(self, environ, start_response):
+        &quot;&quot;&quot; Handle a WSGI request
+        &quot;&quot;&quot;
+        if not self._loaded:
+            self._loaded = True
+            self.load_addons()
+        return self.dispatch(environ, start_response)
+    
+    def dispatch(self, environ, start_response):
+        ...
+        request = self.get_request(httprequest)
+        ...
+        with request:
+            ...
+            ir_http = request.registry['ir.http']
+            ...
+            result = ir_http._dispatch()
+            ...
+        ...
+            response = self.get_response(httprequest, result, explicit_session)
+        return response(environ, start_response)
+        
+    def get_request(self, httprequest):
+        # deduce type of request
+        if httprequest.args.get('jsonp'):
+            return JsonRequest(httprequest)
+        if httprequest.mimetype in (&quot;application/json&quot;, &quot;application/json-rpc&quot;):
+            return JsonRequest(httprequest)
+        else:
+            return HttpRequest(httprequest)
+        
+    def get_response(self, httprequest, result, explicit_session):
+        if isinstance(result, Response) and result.is_qweb:
+            ...
+            result.flatten()
+            ...
+        ...
+</code></pre>
+
+<h3 id="不算总结的总结">不算总结的总结</h3>
+
+<p>经过若干次的补充，请求的处理貌似完成了。<br />
+终于搞清了<code>Request</code>是如何一步步变成最终的<code>Resopnse</code>。但是页面是如何生成的，依然是个问题。<code>odoo</code>中使用了一套自己的模版体系来定义页面。通过<code>ir.ui.view</code>这个模型将<code>Response</code>变成最终的页面。<br />
+之后，就来研究一下<code>View</code>。</p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E6%A8%A1%E5%9D%97/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E6%A8%A1%E5%9D%97/">odoo的模块</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84model/">odoo的模型 Model</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84model/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'Your Disqus shortname';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="https://asdfsx.github.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'Your Google Analytics tracking ID', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

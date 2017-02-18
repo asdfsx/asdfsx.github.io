@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.19-DEV" />
+
+  <title>Python &middot; asdfsx</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="asdfsx" href="https://asdfsx.github.io/tags/python/index.xml" />
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://asdfsx.github.io/img/favicon.ico" type="image/x-icon" />
+
+  
+    <link rel="stylesheet" href="https://asdfsx.github.io/css/my.css">
+  
+  
+    <script src="https://asdfsx.github.io/js/my.js"></script>
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://asdfsx.github.io/">asdfsx</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/tags/"><i class='fa fa-list fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://asdfsx.github.io/tags/python/index.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://plus.google.com/+asdfsx" target="_blank"><i class="fa fa-google-plus-square fa-fw"></i>Google+</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://weibo.com/*" target="_blank"><i class="fa fa-weibo fa-fw"></i>Weibo</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/asdfsx" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://bitbucket.org/asdfsx" target="_blank"><i class="fa fa-bitbucket-square fa-fw"></i>Bitbucket</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Python</h1>
+</div>
+
+<div class="content">
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E7%AE%80%E5%8C%96%E7%89%88refrence/">odoo简化版refrence</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>05 Feb 2017, 12:17</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  原文地址：https://www.odoo.com/documentation/10.0/index.html
+整理一下，捡重点的来弄。
+ Odoo Guidelines  模块结构  目录结构 命名规则  XML files Python  Idiomatics Python Programming Programming in Odoo   Module Web Controllers ORM API  Recordsets Environment Common ORM methods Creating Models Compatibility between new API and old API Model Reference Method decorators Fields  Data Files QWeb Views  Odoo Guidelines 模块结构 目录结构 主要目录： * data/ : demo and data xml * models/ : models definition * controllers/ : contains controllers (HTTP routes).
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%AE%80%E5%8C%96%E7%89%88refrence/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9D%97/">odoo自定义模块</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>13 Jan 2017, 11:46</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  复制 http://blog.sunansheng.com/python/odoo/odoo.html 中的请假单例子，创建一个带工作流的例子，工作环境是odoo 10.0。
+PS：在这个版本中官方自带的请假模块删掉了工作流～～何等的卧槽！
+创建模块模版： python odoo/odoo-bin scaffold qingjia odoo_dev/  在odoo_dev目录中可以找到新创建的模块，进入目录以后可以看到如下的目录结构
+controllers demo __init__.py __manifest__.py models security views  __init__.py不需要修改
+__manifest__.py需要增加一点东西
+&quot;application&quot;: True,  创建模型 修改models/model.py文件。添加新的模型
+# -*- coding: utf-8 -*- from odoo import models, fields, api class Qingjd(models.Model): _name = 'qingjia.qingjd' name = fields.Many2one('res.users', string=&quot;申请人&quot;, required=True) days = fields.Float(string=&quot;天数&quot;, required=True) startdate = fields.Date(string=&quot;开始日期&quot;, required=True) reason = fields.Text(string=&quot;请假事由&quot;) def send_qingjd(self): self.sended = True return self.sended def confirm_qingjd(self): self.
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9D%97/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/python/python%E7%9A%84%E5%AF%BC%E5%85%A5%E7%B3%BB%E7%BB%9F/">python的导入系统</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>11 Jan 2017, 12:01</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/import">import</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  一个模块中的Python代码通过导入的过程获得对另一个模块中的代码的访问。import语句是调用导入机制的最常用方法，但它不是唯一的方法。诸如importlib.import_module()和内置__import__()之类的函数也可以用于调用导入机制。
+import语句组合两个操作；它搜索指定的模块，然后将该搜索的结果绑定到本地作用域中的名称。import语句的搜索操作被定义为使用适当的参数调用__import__()函数。__import__()的返回值用于执行import语句的名称绑定操作。有关该名称绑定操作的确切详细信息，请参见import语句。
+直接调用__import__()只执行模块搜索，如果找到，则执行模块创建操作。虽然可能会发生某些副作用，例如导入父包以及更新各种缓存（包括sys.modules），但只有import语句会执行名称绑定操作。
+当调用__import__()作为import语句的一部分时，将调用标准的内置__import__()。用于调用导入系统的其他机制（例如importlib.import_module()）可以选择颠覆__import__()并使用其自己的解决方案来实现导入语义。
+首次导入模块时，Python会搜索模块，如果找到，它会创建一个模块对象[1]，并初始化它。如果找不到指定的模块，则会引发ImportError。当执行导入机制时，Python实现各种策略来搜索命名的模块。这些策略可以通过使用下面部分中描述的各种钩子来修改和扩展。
+在版本3.3中更改：导入系统更新成完全实现 PEP 302的第二阶段。不再有任何隐式导入机制 - 完整导入系统通过sys.meta_path暴露。此外，已实现原生命名空间包支持（参见 PEP 420）。
+1. importlib importlib模块提供了一个丰富的API，用于与导入系统进行交互。例如importlib.import_module()提供了一个比内置的__import__()更简单的API来调用导入机制。有关其他详细信息，请参阅importlib库文档。
+2. 包Packages Python只有一种模块对象，所有的模块都是这种类型，不管这个模块是否是用Python，C，或者其他语言实现。为了帮助组织模块并提供命名层次结构，Python有一个概念：包。
+你可以认为包是文件系统中的一个目录并且模块作为文件存放于目录中，但是不要做这种太字面化的类比因为包和模块不需要源于文件系统。从这篇文档的目的是我们用目录和文件这个方便的类比来解释包和模块。和文件系统一样，包有有层次的组织着，并且包本身也会包含子包，规则的模块也一样。
+重要的是请注意所有的包都是模块，但不是所有的模块都是包。换句话说，包只是一种特殊形式的模块。具体来说，包含__path__属性的任何模块都被视为包。
+所有的模块都有名字。子模块的名字是通过点号从父模块中分离出来的，和Python标准的属性访问语法相似。因此，您可能有一个名为sys的模块和一个名为email的软件包，其中包含一个名为email.mime的子包，名为email.mime.text的子包。
+2.1 普通包 Python defines two types of packages, regular packages and namespace packages. Regular packages are traditional packages as they existed in Python 3.2 and earlier. A regular package is typically implemented as a directory containing an init.py file. When a regular package is imported, this init.py file is executed, and the objects it defines are bound to names in the package’s namespace.
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/python/python%E7%9A%84%E5%AF%BC%E5%85%A5%E7%B3%BB%E7%BB%9F/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E4%B8%AD%E9%A1%B5%E9%9D%A2%E7%9A%84%E7%94%9F%E6%88%90/">odoo中页面的生成</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>09 Jan 2017, 17:40</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  在请求的处理中，已经知道在请求处理的最后，会调用Response的render来生成页面。这里来研究下页面是如何形成的。
+以入口地址的处理为例：
+ 处理/请求的controller为addon.web.controllers.main.Home，定义在web模块中，处理方式是直接跳转到/web。
+ 处理/web请求的controller同上，使用web.webclient_bootstrap这个模版来生成页面。
+class Home(http.Controller): @http.route('/', type='http', auth=&quot;none&quot;) def index(self, s_action=None, db=None, **kw): return http.local_redirect('/web', query=request.params, keep_hash=True) @http.route('/web', type='http', auth=&quot;none&quot;) def web_client(self, s_action=None, **kw): ensure_db() if not request.session.uid: return werkzeug.utils.redirect('/web/login', 303) if kw.get('redirect'): return werkzeug.utils.redirect(kw.get('redirect'), 303) request.uid = request.session.uid context = request.env['ir.http'].webclient_rendering_context() return request.render('web.webclient_bootstrap', qcontext=context)   在介绍页面生成之前，先熟悉下可能会用到的模型
+模型 odoo.addons.base.ir.ir_ui_view.View 在response.render函数中，需要用到ir.ui.view模型来生成页面。下边就是这个模型的定义。从中我们可以知道在数据库中一定会有一张表ir_ui_view，同时这个模型会在ir_model注册，模型的字段会在ir_model_fields中记录。其中一个特殊的字段是type，从定义猜测View的种类就是列表中的那几种。
+View模型还提供了如下功能：
+ 根据模版生成页面 render_template（仅仅算是入口函数） 查询模版ID get_view_id
+select ir_model_data.id from ir_model_data where module='web' and name='webclient_bootstrap'  模版读取 read_template、read_template、read_combined
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E4%B8%AD%E9%A1%B5%E9%9D%A2%E7%9A%84%E7%94%9F%E6%88%90/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/">odoo的阶段性总结：服务器的启动、模块的加载、请求处理、页面生成</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>05 Jan 2017, 15:32</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  经过漫长的阅读代码，搞清了启动的过程。先简单做个总结。如有遗漏之后再做补充。
+系统的启动，模块的加载 结合之前研究过的registry，系统启动时会发生如下动作：
+ 首先加载全局模块web，web_kanban。（在没有确定数据库地址之前，只能显示数据库选择页面。所以这个时候只需要这两个模块就可以了）  在import controller时，由于元类的作用，controller类会自动加载到解释器中  根据配置创建web服务器（线程的、进程的），所有的服务器都使用odoo.service.wsgi_server.application来处理请求。  具体处理请求的是odoo.http.Root  根据需要看要不要再次加载插件 只有当首次接收请求的时候，才会执行加载插件   启动服务器  在启动web服务器之前，首先创建registry。（在进程的实现中，registry会在进程fork之前创建，fork之后registry会被拷贝到各个进程的内存空间中） 当数据库选定之后，registry会根据配置去加载模块  先加载base模块  先创建base模块的依赖关系图graph 使用graph加载base  获取模块中的所有模型 组装配置模型类  根据模型的属性，创建新的模型类，并将模型类注册到registry中 根据模型的属性，为新的模型类添加字段，关联关系等  初始化模型  根据模型类，创建模型类对应的表  装载定义在__manifast__.py中的模块的数据  获取文件列表 调用odoo.tools.convert.convert_file装载文件。  判断文件类型，根据文件类型使用不同的方法解析 根据情况将数据写入ir.model.data 根据情况将数据写入模型自己的数据表中     根据配置标注其它需要加载的模块 根据标注加载模块  使用graph进行模块的记载（下边以web模块为例，看一下模块数据的加载）  获取数据文件：views/webclient_templates.xml 调用odoo.tools.convert.convert_file装载文件  创建xml专用的解析器对象xml_import 解析xml文件  遍历整个xml文档树，根据节点的类型调用不同的函数来进行处理。具体到views/webclient_templates.xml，这个文件由template组成，对应的函数是_tag_template。这个函数在结尾调用_tag_record，这个函数会将数据文件里的内容写入ir_model_data表中。      模块加载完毕后，服务器开始运行。等待处理请求。   请求处理  首次接受到请求  odoo.
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84Field/">odoo模型中的Field</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>05 Jan 2017, 12:39</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Odoo的定义了自己的一套ORM系统。其中的一个重要组成部分就是字段的处理。这部分的内容都在odoo.field中。和其他模块一样，也大量使用了python的特殊语法，如：元类、__slots__、特殊函数，等。
+元类：odoo.fields.MetaField 所有的字段类型的元类。如果一个字段类型使用了这个类，那么在创建这个类型时元类会扫描类中是否有_slots属性。如果有的话，会将_slots中的东西放到__slots__中。然后在初始化这个类型的时候，会把这个新创建的类型放在MetaField的by_type字典中。
+注：__slots__的作用是用来存放类实例中的属性。默认，python中的实例是存放在__dict__中的；如果声明了__slots__就不会创建__dict__；__slots__应该比 __dict__节省空间。
+class MetaField(type): &quot;&quot;&quot; Metaclass for field classes. &quot;&quot;&quot; by_type = {} def __new__(meta, name, bases, attrs): &quot;&quot;&quot; Combine the ``_slots`` dict from parent classes, and determine ``__slots__`` for them on the new class. &quot;&quot;&quot; base_slots = {} for base in reversed(bases): base_slots.update(getattr(base, '_slots', ())) slots = dict(base_slots) slots.update(attrs.get('_slots', ())) attrs['__slots__'] = set(slots) - set(base_slots) attrs['_slots'] = slots return type.__new__(meta, name, bases, attrs) def __init__(cls, name, bases, attrs): super(MetaField, cls).
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84Field/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84model/">odoo的模型 Model</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>30 Dec 2016, 14:31</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  model是odoo中最重要的部分之一。主要负责各种功能的实现，crm之类的业务模块中的功能姑且不论，页面渲染、工作流引擎、定时任务等核心的功能，也都是基于模型来实现。
+元类的基础：odoo.api.Meta 检查要创建的类中的所有函数，然后根据各函数_api属性进行特殊处理。处理完成后再创建该类型。
+class Meta(type): &quot;&quot;&quot; Metaclass that automatically decorates traditional-style methods by guessing their API. It also implements the inheritance of the :func:`returns` decorators. &quot;&quot;&quot; def __new__(meta, name, bases, attrs): # dummy parent class to catch overridden methods decorated with 'returns' parent = type.__new__(meta, name, bases, {}) for key, value in attrs.items(): if not key.startswith('__') and callable(value): # make the method inherit from decorators value = propagate(getattr(parent, key, None), value) # guess calling convention if none is given if not hasattr(value, '_api'): try: value = guess(value) except TypeError: pass if (getattr(value, '_api', None) or '').
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84model/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E4%B8%AD%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86/">odoo中的请求处理</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>29 Dec 2016, 15:57</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Web请求 web请求的包装是在接收请求时，在odoo.http.Root中处理的。请求主要分为
+ json请求：主要用来处理json请求、rpc请求。 http请求：主要用来处理页面访问请求。  请求的基类：odoo.http.WebRequest 所有请求的基类，定义了请求处理过程中都可能会用到的一些属性：如csrf、db、registry、session等等。
+同时WebQuest还使用了__enter__、__exit__。这样当使用with request：这样当表达式时，会将当前request放到werkzeug.local.LocalStack中。方便从任何地方使用odoo.http.request获取当前请求。
+具体处理请求的endpoint是通过set_handler传入的。_call_function会调用endpoint来获得返回结果。但是调用_call_function的dispath是由子类来实现的，基类中没有。
+_request_stack = werkzeug.local.LocalStack() request = _request_stack() class WebRequest(object): ... @property def registry(self): return odoo.registry(self.db) if self.db else None @property def db(self): return self.session.db if not self.disable_db else None def csrf_token(self, time_limit=3600): ... ... def _call_function(self, *args, **kwargs): &quot;&quot;&quot; Generates and returns a CSRF token for the current session ... def validate_csrf(self, csrf): ... def __enter__(self): _request_stack.push(self) return self def __exit__(self, exc_type, exc_value, traceback): _request_stack.
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E4%B8%AD%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E6%A8%A1%E5%9D%97/">odoo的模块</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>28 Dec 2016, 16:49</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  上一篇odoo的模块管理，主要是odoo的模块加载。这一篇来看看模块到底是什么。
+抄袭官网文档：
+Both server and client extensions are packaged as modules which are optionally loaded in a database. Odoo modules can either add brand new business logic to an Odoo system, or alter and extend existing business logic: a module can be created to add your country's accounting rules to Odoo's generic accounting support, while the next module adds support for real-time visualisation of a bus fleet. Everything in Odoo thus starts and ends with modules.
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E6%A8%A1%E5%9D%97/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E6%A8%A1%E5%9D%97%E7%AE%A1%E7%90%86/">odoo的模块管理</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>27 Dec 2016, 18:05</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  之前一篇记录了odoo web server的大概情况，以及简单的启动流程、模块加载的情况。深入研究会发现odoo的所有功能都是基于模块制作的，所以本篇开始研究odoo的模块。首先研究下模块是如何进行管理的。负责管理模块的代码主要存放在odoo.modules包里。
+模型的注册机 odoo.modules.registry.Registry Registry的用途是存放模型名、模型类对应关系。是一个深度定制化的类。注意，model、module的区别。
+ 此类继承了collections.Mapping，因此它的对像可以按照字典方式来使用 这个类也是一个自产自销的类：创建自己的实例，然后将实例放到自己的类属性中。 类函数／属性registries用来存放已创建的Registry。 装饰器lazy_classproperty是一个神器的东西，它把一个函数变成了一个属性：当函数第一次执行时，获得函数的返回值，然后将返回值设置为类中的一个属性（注意那个setattr函数）。__get__方法会在Registry.registry的时候执行。
+class lazy_property(object): def __init__(self, fget): self.fget = fget class lazy_classproperty(lazy_property): def __get__(self, obj, cls): val = self.fget(cls) setattr(cls, self.fget.__name__, val) return val  使用__new__而不是__init__来创建对象：首先尝试从registries中获取已经生成的对象，失败后创建新对象。之前的python的数据结构中曾经探讨过__init__和__new__的区别。
+ Registry对象在new()里生成：手动生成、手动初始化、存放到registries中、加载所有的模块到self.models字典中（odoo.modules.load_modules函数）。在加载模块的过程中，还需要模块中导出模型（load函数）、完善模型（setup_models），根据模型建表、建约束（init_models）。
+ 注意LRU是Least Recently Used 近期最少使用算法。这里是一个python实现的功能模块。内部是一个字典。
+class Registry(Mapping): @lazy_classproperty def registries(cls): &quot;&quot;&quot; A mapping from database names to registries. &quot;&quot;&quot; size = config.get('registry_lru_size', None) ... return LRU(size) def __new__(cls, db_name): &quot;&quot;&quot; Return the registry for the given database name.
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E6%A8%A1%E5%9D%97%E7%AE%A1%E7%90%86/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84web%20server/">odoo的web server</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>24 Dec 2016, 20:47</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  odoo的web服务器实现都在一个包里odoo.service.server。为了提升服务器的性能，提供了3种不同的web服务器，分别使用了thread、gevent、process。而在web服务器里，odoo使用werkzeug这套wsgi库，实现端口监听、请求处理等。
+服务器的启动 在odoo.service.server包中，入口函数是位于文件末尾的start函数，它的行为如下：
+ 定义全局变量server 加载所谓的server wide module（默认的全局模块只有web，web_kanban） 根据配置创建不同的server 创建文件监视（为了实现模块的动态加载） 启动server  从中可以看到具体处理请求的程序是odoo.service.wsgi_server.application，而默认的server是基于线程的。
+def start(preload=None, stop=False): &quot;&quot;&quot; Start the odoo http server and cron processor. &quot;&quot;&quot; global server load_server_wide_modules() if odoo.evented: server = GeventServer(odoo.service.wsgi_server.application) elif config['workers']: server = PreforkServer(odoo.service.wsgi_server.application) else: server = ThreadedServer(odoo.service.wsgi_server.application) watcher = None if 'reload' in config['dev_mode']: if watchdog: watcher = FSWatcher() watcher.start() else: _logger.warning(&quot;'watchdog' module not installed. Code autoreload feature is disabled&quot;) if 'werkzeug' in config['dev_mode']: server.
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84web%20server/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E5%91%BD%E4%BB%A4/">odoo的命令</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>24 Dec 2016, 20:37</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Odoo命令都在odoo.cli包中
+元类：CommandType commands = {} class CommandType(type): def __init__(cls, name, bases, attrs): super(CommandType, cls).__init__(name, bases, attrs) name = getattr(cls, name, cls.__name__.lower()) cls.name = name if name != 'command': commands[name] = cls  所有使用了这个元类的类，都会注册到包内的全局字典commands中：类名为key，类为value
+所有命令的基类：Command class Command(object): &quot;&quot;&quot;Subclass this class to define new odoo subcommands &quot;&quot;&quot; __metaclass__ = CommandType def run(self, args): pass  可以看到基类使用CommandType作为元类。这意味着所有的子类都会注册到全局字典中。
+同时还定义了个函数run。这算是预定义了要实现功能的函数。
+命令的实现 以下命令全部都是Command的子类，所以都使用了原类CommandType，并实现了父类的run函数。
+odoo.cli.command.Help 根据其它命令中的内容，生成帮助信息，并输出。
+odoo.cli.deploy.Deploy 将本地的一个模块部署到指定的服务器上 需要给定本地模块的地址，和远程服务器地址 会将本地模块压缩成zip，然后通过http登录服务器并上传
+odoo.cli.scaffold.Scaffold 用来生成一个模块的骨架。主要为了方便做二次开发。
+默认使用的模版文件就在odoo.cli包内的template目录里
+odoo.cli.shell.Shell 启动odoo，然后使用ipython、ptpython、bpython等创建一个交互环境。可以查询运行中的odoo的一些信息。
+个人认为，这个也是方便开发调试的一个工具
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E5%91%BD%E4%BB%A4/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/odoo/%E5%85%A5%E6%96%B0%E5%9D%91--%E5%BC%80%E6%BA%90python%20ERP%20odoo/">入新坑  开源python ERP odoo</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>22 Dec 2016, 19:37</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/erp">ERP</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  这篇纯粹吹水
+odoo是一套开源的，由python实现的ERP系统。说是系统，更像是一个平台，甚至可以说是生态系统（就像 appstore）。
+首先，它的功能是通过自由组合的各种插件来实现的。其自带的插件就由已经实现了以下功能：客户管理、财务管理、进销存管理、员工管理、审批流程定制，等等。基本上已经覆盖了大部分的企业需求（可能不一定符合特定用户的特定需求，但是它有）。
+其次，它为开源社区提供了插件交易的一个市场。各种收费的免费的插件通过这个市场共享。大幅度的扩展了它的应用范围。受益于此，获得了大量的插件：有免费的、方便汇率更新的小型功能插件，也有收费的提供酒店管理的定制化插件。
+最后，它还不定时的组织线上线下的活动，来进行进行客户培训、产品推广、技术交流（虽然都在国外）。
+最后的最后，完全开源，方便定制化。
+总之，个人感觉它可以算是中小企业的福音了。
+然后最近准备开始深入研究下这个系统，就像之前研究openstack一样，从源码开始，这个总不会比openstack还复杂吧！！！
+以下就直接抄它官网的文字介绍了。
+我们认为商业软件应以简单的结构解决复杂的需求。我们的任务是提供直观、功能全面、紧密集成、升级无忧、面向每种业务、每一用户均可平稳运行的软件。 我们的目标是提供一系列易用业务应用程序，形成完整的一套工具，以满足任何业务需求。我们让数百万公司可轻松访问其运营和括大业务所需的软件。 在 Odoo，我们已开发了 30 种主要应用，均会定期更新。此外，我们的社区包括 1,500 多名活跃成员，已另外贡献了 4,500 多款应用，可涵盖大量业务需求。 Odoo 具有“预置型”产品，是全球安装最多的商业软件。从初创公司（1 名用户）到大型企业（300,000 多位用户），全球有 2,000,000 多名用户在使用这款软件。 Odoo 的开源模式让我们可利用无数开发人员和业务专家，在短短数年内，打造数百款应用。 具有强大的技术基础，Odoo 的结构非常独特。其具有 一流的可用性，堪比所有 app。 Odoo 所做的可用性改善会自动应用于我们充分集成的所有应用上。 采用这种方式，Odoo 比其他解决方案发展更快。  
+  </p>
+
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/python/Python%E7%9A%84%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/">Python的数据模型</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>13 Dec 2016, 15:12</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/data-model">data model</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  本文基于Python 3.5.2官方文档中数据模型部分完成
+1.对象，值 和 类型 Python把数据抽象为Objects。Python程序中所有的数据都体现为对象，或者对象之间的关系。(从某种程度上讲，为了与冯.诺伊曼的存储程序型计算机模型相一致，代码同样也体现为对象。)
+每个对象都有一个标识，一个类型和一个值。对象一旦创建，它的标识就不会变更；你可以理解为它就像对象在内存中的地址。is操作用来比较两个对象的标识；id()函数返回一个整数来表示它的标识。
+CPython实现细节：id(x)返回x在内存的存放地址。
+对象的类型决定了对象支持哪些操作（比如，这个对象有长度吗？），同时也定义了对象中可能存在哪些值。type()函数返回一个对象的类型（类型也是一个对象）。就像它的标识，一个对象的类型也是不可变的。
+一些对象的值是可修改的。可以修改的的对象被称为可变的to be mutable；创建后不能修改的对象被称为不可变的immutable。（不可变容器对象的值如果是一个可变对象的引用，那么当后者的值发生改变的时候，前者的值也会改变；但是这个容器仍然被认为是不可变的，因为容器内部包含的对象都没有发生变化。所以，不可变性immutability并不意味着拥有一个不可修改的值unchangeable，这很微妙）。一个对象是否可变取决于它的类型；比如：数字、字符串、元组是不可变的，字典和数组是可变的。
+对象不会明确的被销毁；只有当它们不可达的时候，它们才有可能被垃圾回收。只要可达的对象不要被回收掉，如何实现延迟垃圾回收，并统一释放他们，这就是垃圾回收的实现质量问题了。
+CPython实现细节：CPython现在使用引用计数机制和（可选的）循环垃圾延迟检测机制，对象一旦不可达就尽量收集，但是无法保证能回收循环引用的垃圾。查看gc模块的文档，来了解更多关于如何回收循环引用垃圾的信息。其他的实现可能不一样，而且CPtyhon也可能会改变策略。不要指望对象不可达以后，就会马上会被回收掉（所以你总是应该明确的关闭文件）。
+注意跟踪调试工具会让一些本该回收掉的对象始终可达。同时使用try...except处理异常也会使对象始终可达。
+一些对象包含对&rdquo;外部&rdquo;资源的引用。我们知道当这些对象被垃圾回收后这些资源也会被释放，但是因为垃圾回收不能保证这些对像会被回收，所以这些对象会提供一个明确方式来释放资源，通常是close()函数。强烈建议在程序中明确的关闭这样的对象。可以用try...finally语句和with语句来方便的执行它。
+一些对象包含对其他对象的应用；这些对象叫做容器containers。这样的例子有元组、数组和字段。应用是容器的值的一部分。大部分的情况下，当我们说起容器中的值，指的是值，而不是容器内对象的标识；而当我们说容器的可变性，指的是容器中当前对象的标识。所以，一个不可变容器（比如元组）包含一个可变对象的引用，它的值是可变的，当那个可变对象发生变更的时候。
+类型几乎影响了对象的所有行为。在一些场景下甚至影响对象标识的重要性：对于不可变类型，计算新值的操作可能实际返回的是一个已存在的，拥有相同类型和值的对象的引用；而对于可变对象这是不允许的。比如，执行a=1; b=1，a 和 b 可能（也可能不是）指向同一个包含1的对象，取决于具体实现; 但是执行c=[];d[]，c 和 d 保证指向两个完全不同的，独立的，新创建的空数组。（注意，c = d = [] 将同一个对象分配给了c 和 d 。）
+2.标准类型层级 下边是Python中内建类型列表。扩展模块（由C，Java，或其他语言实现的）会定义附加的类型。未来版本的 Python 可能会在此类型层次中增加新的类型 (例如：有理数，高效存储的整数数组等)，不过这些类型通常是在标准库中定义的。
+以下个别类型描述中可能有介绍特殊属性的段落，它们是供实现访问的，不作为一般用途。这些定义在未来有可能发生改变：
+ None
+这个类型只具有一个值，并且这种类型也只有一个对象，这个对象可以通过内建名字None访问，在许多场合里它表示无值，例如，没有显式返回值的函数会返回None。这个对象的真值为假。
+ NotImplemented
+这个类型只具有一个值，并且这种类型也只有一个对象。这个对象可以通过内建名字NotImplemented访问。如果操作数没有对应实现，数值方法和复杂比较方法rich comparison method应该返回这个值 (解释器会尝试反射操作，或者其它操作，根据具体的操作)。它的真值为真。
+ Ellipsis
+这个类型只具有一个值，并且这种类型也只有一个对象。这个对象可以通过字面值 &hellip; 或者内建名字 Ellipsis 访问。它的真值为真。
+ numbers.Number
+它们由数值型字面值产生，或者是算术运算符和内建数学函数的返回值。数值型对象是不可变 的，即一旦创建，其值就不可改变。Python 数值型和数学上的数字关系当然是非常密切的，但也受到计算机数值表达能力的限制。
+Python 区分整数，浮点数和复数:
+ numbers.Integral
+描述了数学上的整数集 (正负数).
+有两类整数:
+ Integers (int)
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/python/Python%E7%9A%84%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+</div>
+
+</div>
+</div>
+<script src="https://asdfsx.github.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'Your Google Analytics tracking ID', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>

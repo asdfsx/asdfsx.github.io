@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="odoo中页面的生成">
+  <meta name="generator" content="Hugo 0.19-DEV" />
+
+  <title>odoo中页面的生成 &middot; asdfsx</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://asdfsx.github.io/img/favicon.ico" type="image/x-icon" />
+
+  
+    <link rel="stylesheet" href="https://asdfsx.github.io/css/my.css">
+  
+  
+    <script src="https://asdfsx.github.io/js/my.js"></script>
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://asdfsx.github.io/">asdfsx</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/tags/"><i class='fa fa-list fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://plus.google.com/+asdfsx" target="_blank"><i class="fa fa-google-plus-square fa-fw"></i>Google+</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://weibo.com/*" target="_blank"><i class="fa fa-weibo fa-fw"></i>Weibo</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/asdfsx" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://bitbucket.org/asdfsx" target="_blank"><i class="fa fa-bitbucket-square fa-fw"></i>Bitbucket</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>odoo中页面的生成</h1>
+  <h2>odoo中页面的生成</h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>09 Jan 2017, 17:40</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>在请求的处理中，已经知道在请求处理的最后，会调用<code>Response</code>的<code>render</code>来生成页面。这里来研究下页面是如何形成的。</p>
+
+<p>以入口地址的处理为例：</p>
+
+<ul>
+<li>处理<code>/</code>请求的<code>controller</code>为<code>addon.web.controllers.main.Home</code>，定义在<code>web</code>模块中，处理方式是直接跳转到<code>/web</code>。<br /></li>
+
+<li><p>处理<code>/web</code>请求的<code>controller</code>同上，使用<code>web.webclient_bootstrap</code>这个模版来生成页面。</p>
+
+<pre><code>class Home(http.Controller):
+    @http.route('/', type='http', auth=&quot;none&quot;)
+    def index(self, s_action=None, db=None, **kw):
+        return http.local_redirect('/web', query=request.params, keep_hash=True)
+        
+    @http.route('/web', type='http', auth=&quot;none&quot;)
+    def web_client(self, s_action=None, **kw):
+        ensure_db()
+        if not request.session.uid:
+            return werkzeug.utils.redirect('/web/login', 303)
+        if kw.get('redirect'):
+            return werkzeug.utils.redirect(kw.get('redirect'), 303)
+
+        request.uid = request.session.uid
+        context = request.env['ir.http'].webclient_rendering_context()
+
+        return request.render('web.webclient_bootstrap', qcontext=context)
+</code></pre></li>
+</ul>
+
+<p>在介绍页面生成之前，先熟悉下可能会用到的模型</p>
+
+<h3 id="模型-odoo-addons-base-ir-ir-ui-view-view">模型 <code>odoo.addons.base.ir.ir_ui_view.View</code></h3>
+
+<p>在<code>response.render</code>函数中，需要用到<code>ir.ui.view</code>模型来生成页面。下边就是这个模型的定义。从中我们可以知道在数据库中一定会有一张表<code>ir_ui_view</code>，同时这个模型会在<code>ir_model</code>注册，模型的字段会在<code>ir_model_fields</code>中记录。其中一个特殊的字段是<code>type</code>，从定义猜测<code>View</code>的种类就是列表中的那几种。</p>
+
+<p><code>View</code>模型还提供了如下功能：</p>
+
+<ul>
+<li>根据模版生成页面 <code>render_template</code>（仅仅算是入口函数）</li>
+
+<li><p>查询模版ID <code>get_view_id</code></p>
+
+<pre><code>select ir_model_data.id from ir_model_data where module='web' and name='webclient_bootstrap'
+</code></pre></li>
+
+<li><p>模版读取 <code>read_template</code>、<code>read_template</code>、<code>read_combined</code></p></li>
+
+<li><p>使用模版引擎<code>render</code>生成页面，<code>render</code>。默认使用<code>ir_qweb</code>。参数中的<code>self.id</code>，通过之前对模型的研究，它就是刚才的<code>res_id</code>。</p></li>
+</ul>
+
+<pre><code>class View(models.Model):
+    _name = 'ir.ui.view'
+    _order = &quot;priority,name,id&quot;
+    ...
+    type = fields.Selection([('tree', 'Tree'),
+                             ('form', 'Form'),
+                             ('graph', 'Graph'),
+                             ('pivot', 'Pivot'),
+                             ('calendar', 'Calendar'),
+                             ('diagram', 'Diagram'),
+                             ('gantt', 'Gantt'),
+                             ('kanban', 'Kanban'),
+                             ('search', 'Search'),
+                             ('qweb', 'QWeb')], string='View Type')
+    arch = fields.Text(compute='_compute_arch', inverse='_inverse_arch', string='View Architecture', nodrop=True)
+    ...
+    
+    @api.model
+    def get_view_id(self, template):
+        ...
+        return self.env['ir.model.data'].xmlid_to_res_id(template, raise_if_not_found=True)
+    
+    @api.model
+    def render_template(self, template, values=None, engine='ir.qweb'):
+        return self.browse(self.get_view_id(template)).render(values, engine)
+        
+   def _read_template(self, view_id):
+        arch = self.browse(view_id).read_combined(['arch'])['arch']
+        arch_tree = etree.fromstring(arch)
+        self.distribute_branding(arch_tree)
+        root = E.templates(arch_tree)
+        arch = etree.tostring(root, encoding='utf-8', xml_declaration=True)
+        return arch
+
+    @api.model
+    def read_template(self, xml_id):
+        return self._read_template(self.get_view_id(xml_id))
+        
+    @api.multi
+    def read_combined(self, fields=None):
+         &quot;&quot;&quot;
+        Utility function to get a view combined with its inherited views.
+        * Gets the top of the view tree if a sub-view is requested
+        * Applies all inherited archs on the root view
+        * Returns the view with all requested fields
+          .. note:: ``arch`` is always added to the fields list even if not
+                    requested (similar to ``id``)
+        &quot;&quot;&quot;
+        ...
+    ...
+    @api.multi
+    def render(self, values=None, engine='ir.qweb'):
+        assert isinstance(self.id, (int, long))
+
+        qcontext = dict(
+            env=self.env,
+            keep_query=keep_query,
+            request=request, # might be unbound if we're not in an httprequest context
+            debug=request.debug if request else False,
+            json=json,
+            quote_plus=werkzeug.url_quote_plus,
+            time=time,
+            datetime=datetime,
+            relativedelta=relativedelta,
+            xmlid=self.key,
+        )
+        qcontext.update(values or {})
+
+        return self.env[engine].render(self.id, qcontext)
+    ...
+</code></pre>
+
+<p>当模型表创建好后，就需要往里添加数据。之前研究<code>Registry</code>的时候，已经知道在加载模块的时候，模型的数据文件会写入到自己的数据表，以及<code>ir_model_data</code>表。以<code>web</code>模块来说，它的数据文件<code>webclient_templates.xml</code>中有很多模版，都会保存到数据库中。</p>
+
+<h3 id="模型-odoo-addons-base-ir-ir-qweb-ir-qweb-irqweb">模型 <code>odoo.addons.base.ir.ir_qweb.ir_qweb.IrQWeb</code></h3>
+
+<p>这也是一个只提供功能而不提供数据存储的模型，主要负责模版的读取、页面的生成。它的父类<code>QWeb</code>提供了绝大部分的模版处理函数，在子类中只需要根据需要覆盖个别函数就可以了。感觉子类存在更重要的意义在于将模版引擎也当作模型加载到<code>registry</code>中。</p>
+
+<pre><code>
+class IrQWeb(models.AbstractModel, QWeb):
+    _name = 'ir.qweb'
+
+    @api.model
+    def render(self, id_or_xml_id, values=None, **options):
+        ...
+        return super(IrQWeb, self).render(id_or_xml_id, values=values, **context)
+    ...    
+    
+    def compile(self, id_or_xml_id, options):
+        return super(IrQWeb, self).compile(id_or_xml_id, options=options)
+
+    def load(self, name, options):
+        ...   
+        template = env['ir.ui.view'].read_template(name)
+        ... 
+    
+</code></pre>
+
+<h3 id="模版引擎-qweb">模版引擎 <code>QWeb</code></h3>
+
+<p>模型<code>ir.qweb</code>的父类，定义了模版处理的大部分行为。</p>
+
+<pre><code>class QWeb(object):
+    def render(self, template, values=None, **options):
+        body = []
+        self.compile(template, options)(self, body.append, values or {})
+        return u''.join(body).encode('utf8')
+    
+    def compile(self, template, options):
+        ...
+        element, document = self.get_template(template, options)
+        ...
+        def _compiled_fn(self, append, values):
+            log = {'last_path_node': None}
+            values = dict(self.default_values(), **values)
+            try:
+                return compiled(self, append, values, options, log)
+            except QWebException, e:
+                raise e
+            except Exception, e:
+                path = log['last_path_node']
+                element, document = self.get_template(template, options)
+                node = element.getroottree().xpath(path)
+                raise QWebException(&quot;Error to render compiling AST&quot;, e, path, node and etree.tostring(node[0]), name)
+
+        return _compiled_fn
+        
+    ...
+    
+    def get_template(self, template, options):
+        ...
+        document = options.get('load', self.load)(template, options)
+        ...
+        if document is not None:
+            if isinstance(document, etree._Element):
+                element = document
+                document = etree.tostring(document)
+            elif document.startswith(&quot;&lt;?xml&quot;):
+                element = etree.fromstring(document)
+            else:
+                element = etree.parse(document).getroot()
+            for node in element:
+                if node.get('t-name') == str(template):
+                    return (node, document)
+
+        raise QWebException(&quot;Template not found&quot;, name=template)
+</code></pre>
+
+<h3 id="模版的获取">模版的获取</h3>
+
+<ul>
+<li><p><code>response.render</code>会用<code>ir.ui.view</code>模型来根据模版来创建页面。具体到<code>/web</code>请求的处理，就是使用<code>ir.ui.view</code>模型的<code>render_template</code>函数，利用<code>web.webclient_bootstrap</code>模版来创建页面。</p>
+
+<pre><code>class Response(werkzeug.wrappers.Response):
+
+    ...
+
+    def render(self):
+        ...
+        return env[&quot;ir.ui.view&quot;].render_template(self.template, self.qcontext)
+    
+</code></pre></li>
+
+<li><p>回到模型<code>ir.ui.view</code>，<code>render_template</code>函数首先使用模型的名字获得模版在<code>ir.model.data</code>中保存的<code>res_id</code>，也就是模版在<code>ir_ui_view</code>中的主键。对应的sql：</p>
+
+<pre><code>select ir_model_data.id from ir_model_data 
+where ir_model_data.module='web' and 
+      ir_model_data.name='webclient_bootstrap' 
+order by ir_model_data.module, ir_model_data.name
+</code></pre>
+
+<p>然后用<code>browse</code>创建一个<code>ir_ui_view</code>对象。然后调用<code>ir.ui.view</code>模型的<code>render</code>函数生成页面。这个函数默认使用<code>ir.qweb</code>引擎的<code>render</code>函数来生成页面。</p>
+
+<pre><code>@api.multi
+def render(self, values=None, engine='ir.qweb'):
+    ...
+    return self.env[engine].render(self.id, qcontext)
+</code></pre></li>
+</ul>
+
+<h3 id="模版编译">模版编译</h3>
+
+<ul>
+<li><p>模版引擎<code>ir.qweb</code><br />
+当<code>ir.ui.view</code>中获得模版id以后，使用父类<code>qweb.render</code>生成页面。</p>
+
+<ul>
+<li><p>首先编译模版</p>
+
+<ul>
+<li><p>读取模版 <code>get_template</code></p>
+
+<ul>
+<li>从<code>options</code>中检查是否有<code>load</code>函数，如果没有用自己的<code>load</code>函数。注意：因为真正在使用的其实是<code>ir.qweb</code>模型，所以这里的<code>load</code>函数，其实是被子类<code>ir.qweb</code>覆盖过的<code>load</code>函数。<br /></li>
+<li>在子类<code>ir.qweb</code>中，<code>load</code>函数会调用<code>ir.ui.view</code>模型的<code>_read_template</code>来获取模版。先根据<code>view_id</code>获取当前<code>view</code>的对象，然后调用<code>read_combined</code>读取该对象的<code>arch</code>字段。</li>
+
+<li><p>在<code>read_combined</code>中，有一句<code>arch = self.browse(view_id).read_combined(['arch'])['arch']</code>，它调用<code>read_combined</code>来读取模型的<code>arch</code>字段。<br />
+<code>arch</code>是个很神奇的字段。它的定义是<code>arch = fields.Text(compute='_compute_arch', inverse='_inverse_arch', string='View Architecture', nodrop=True)</code>，其中<code>compute</code>说明这个字段是经过计算才能获得值，而这个<code>compute</code>的值就是用来计算的函数&ndash;从文件中读取内容，然后放入<code>arch</code>中。</p>
+
+<pre><code>@api.depends('arch_db', 'arch_fs')
+def _compute_arch(self):
+    ...
+    for view in self:
+        arch_fs = None
+        if 'xml' in config['dev_mode'] and view.arch_fs and view.xml_id:
+            fullpath = get_resource_path(*view.arch_fs.split('/'))
+            arch_fs = get_view_arch_from_file(fullpath, view.xml_id)
+            arch_fs = arch_fs and resolve_external_ids(arch_fs, view.xml_id)
+        view.arch = arch_fs or view.arch_db
+</code></pre></li>
+</ul></li>
+
+<li><p>模版读到以后，使用<code>ast</code>生成一个<code>python</code>的语法树，将模版等信息加入其中，最终生成一个<code>python</code>函数</p>
+
+<pre><code> element, document = self.get_template(template, options)
+             
+ ...
+             
+ astmod = self._base_module()
+             
+ ...
+             
+ body = self._compile_node(element, _options)
+ ast_calls = _options['ast_calls']
+ _options['ast_calls'] = []
+ def_name = self._create_def(_options, body, prefix='template_%s' % name.replace('.', '_'))
+ _options['ast_calls'] += ast_calls
+             
+ ...
+             
+ astmod.body.extend(_options['ast_calls'])
+             
+ ...
+             
+ ns = {}
+ unsafe_eval(compile(astmod, '&lt;template&gt;', 'exec'), ns)
+ compiled = ns[def_name]           
+</code></pre></li>
+</ul></li>
+
+<li><p>返回一个函数<code>_compiled_fn</code>，这个函数使用了之前<code>ast</code>创建的函数</p>
+
+<pre><code>def _compiled_fn(self, append, values):
+   ...
+   return compiled(self, append, values, options, log)
+   ...
+           
+return _compiled_fn
+</code></pre></li>
+</ul></li>
+</ul>
+
+<p>这个基于<code>ast</code>的模版引擎，个人感觉最大的好处就是，可以将系统中注册的各种资源自由的组合到一起。</p>
+
+<p>最终<code>/web</code>获得了由<code>web.webclient_bootstrap</code>生成的页面。但是通过对模版以及页面的分析发现，这时浏览器只获得了页面的框架、css、js。而模块中定义的视图则是由<code>odoo</code>自己定义的一套javascript引擎，从服务器获取后绘制到页面上的。</p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/">odoo的阶段性总结：服务器的启动、模块的加载、请求处理、页面生成</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://asdfsx.github.io/post/python/python%E7%9A%84%E5%AF%BC%E5%85%A5%E7%B3%BB%E7%BB%9F/">python的导入系统</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://asdfsx.github.io/post/python/python%E7%9A%84%E5%AF%BC%E5%85%A5%E7%B3%BB%E7%BB%9F/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'Your Disqus shortname';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="https://asdfsx.github.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'Your Google Analytics tracking ID', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

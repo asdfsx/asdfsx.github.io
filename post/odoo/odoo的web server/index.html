@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="odoo的web server">
+  <meta name="generator" content="Hugo 0.19-DEV" />
+
+  <title>odoo的web server &middot; asdfsx</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://asdfsx.github.io/img/favicon.ico" type="image/x-icon" />
+
+  
+    <link rel="stylesheet" href="https://asdfsx.github.io/css/my.css">
+  
+  
+    <script src="https://asdfsx.github.io/js/my.js"></script>
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://asdfsx.github.io/">asdfsx</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/tags/"><i class='fa fa-list fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://plus.google.com/+asdfsx" target="_blank"><i class="fa fa-google-plus-square fa-fw"></i>Google+</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://weibo.com/*" target="_blank"><i class="fa fa-weibo fa-fw"></i>Weibo</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/asdfsx" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://bitbucket.org/asdfsx" target="_blank"><i class="fa fa-bitbucket-square fa-fw"></i>Bitbucket</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>odoo的web server</h1>
+  <h2>odoo的web server</h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>24 Dec 2016, 20:47</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>odoo的web服务器实现都在一个包里odoo.service.server。为了提升服务器的性能，提供了3种不同的web服务器，分别使用了thread、gevent、process。而在web服务器里，odoo使用werkzeug这套wsgi库，实现端口监听、请求处理等。</p>
+
+<h3 id="服务器的启动">服务器的启动</h3>
+
+<p>在<code>odoo.service.server</code>包中，入口函数是位于文件末尾的<code>start</code>函数，它的行为如下：</p>
+
+<ul>
+<li>定义全局变量server</li>
+<li>加载所谓的<code>server wide module</code>（默认的全局模块只有<code>web</code>，<code>web_kanban</code>）</li>
+<li>根据配置创建不同的server</li>
+<li>创建文件监视（为了实现模块的动态加载）</li>
+<li>启动server</li>
+</ul>
+
+<p>从中可以看到具体处理请求的程序是<code>odoo.service.wsgi_server.application</code>，而默认的<code>server</code>是基于线程的。</p>
+
+<pre><code>def start(preload=None, stop=False):
+    &quot;&quot;&quot; Start the odoo http server and cron processor.
+    &quot;&quot;&quot;
+    global server
+    load_server_wide_modules()
+    if odoo.evented:
+        server = GeventServer(odoo.service.wsgi_server.application)
+    elif config['workers']:
+        server = PreforkServer(odoo.service.wsgi_server.application)
+    else:
+        server = ThreadedServer(odoo.service.wsgi_server.application)
+
+    watcher = None
+    if 'reload' in config['dev_mode']:
+        if watchdog:
+            watcher = FSWatcher()
+            watcher.start()
+        else:
+            _logger.warning(&quot;'watchdog' module not installed. Code autoreload feature is disabled&quot;)
+    if 'werkzeug' in config['dev_mode']:
+        server.app = DebuggedApplication(server.app, evalex=True)
+
+    rc = server.run(preload, stop)
+
+    # like the legend of the phoenix, all ends with beginnings
+    if getattr(odoo, 'phoenix', False):
+        if watcher:
+            watcher.stop()
+        _reexec()
+
+    return rc if rc else 0
+</code></pre>
+
+<h3 id="基类-odoo-service-server-commonserver">基类 odoo.service.server.CommonServer</h3>
+
+<p>作为鸡肋，啥也没有，只有一个关闭socket的函数</p>
+
+<h3 id="基于线程的实现-odoo-service-server-threadedserver">基于线程的实现 odoo.service.server.ThreadedServer</h3>
+
+<p>实现了父类的<code>run</code>函数，作为程序的入口吧。</p>
+
+<p>启动过程中会创建两种线程</p>
+
+<ul>
+<li><p>处理http请求的线程<br />
+用<code>odoo.service.server.ThreadedWSGIServerReloadable</code>来实现线程。这个类继承了<code>werkzeug.serving.ThreadedWSGIServer</code>，所以具体如何使用线程来完成请求的处理，都被隐藏在<code>werkzeug</code>中了。</p></li>
+
+<li><p>处理定时任务的线程<br />
+在<code>cron_spawn</code>函数中创建的，按照配置中的<code>max_cron_threads</code>来创建<code>daemon</code>线程。线程中通过遍历<code>odoo.modules.registry.Registry.registries</code>来获得数据库信息，然后通过<code>odoo.addons.base.ir.ir_cron.ir_cron._acquire_job</code>来获取定时任务。</p></li>
+</ul>
+
+<h3 id="基于gevent的实现-odoo-service-server-geventserver">基于gevent的实现 odoo.service.server.GeventServer</h3>
+
+<p>gevent是一个基于协程的网络库。底层使用greenlet作为轻量级的异步并法方式，使用libev实现基于事件循环的网络请求处理。</p>
+
+<p>GeventServer实现非常简单，感觉和Thread、Process的方案比，感觉缺了些东西。（比如进程、线程版里都会有cron_xxx，目测应该是执行定时任务的程序。）</p>
+
+<h3 id="基于进程的实现-odoo-service-server-preforkserver">基于进程的实现 odoo.service.server.PreforkServer</h3>
+
+<p>让人又爱又恨的进程。与上边的两个实现相比，进程要靠自己一点点实现</p>
+
+<ul>
+<li><p>PreforkServer<br />
+启动函数为<code>run</code>，这个函数中也定义了主进程的行为：</p>
+
+<ul>
+<li>建立管道、处理信号；建立socket</li>
+<li>处理信号</li>
+<li>处理僵尸进程</li>
+<li>处理超时连接</li>
+<li>创建子进程<br /></li>
+</ul>
+
+<p>其余的函数都是为了上述功能</p></li>
+
+<li><p>Worker<br />
+子进程的父类，定义了子进程的大部分行为。包括信号的处理、进程状态的处理。具体的业务放在<code>process_work</code>函数中，当然父类不需要实现这个函数，具体业务逻辑放在子类中实现。</p></li>
+
+<li><p>WorkerHTTP<br />
+处理http请求的子进程。启动子进程的时候，会定义一个处理http请求的<code>self.server</code>，类型是<code>BaseWSGIServerNoBind</code>。从类的定义上可以看出来它继承了<code>werkzeug.serving.BaseWSGIServer</code>。</p></li>
+
+<li><p>WorkerCron<br />
+处理定时任务的子进程。执行完任务后退出。（这里和线程的实现不一样。线程里是死循环；进程则是执行完就退出，然后由主进程再次拉起？？？待确认啊～～）</p></li>
+</ul>
+
+<h3 id="预加载模型-preload-registries">预加载模型 preload_registries</h3>
+
+<p>在之后的文章中，我们可以看到<code>registry</code>的重要性。在这里我们只需要明确，不管是进程、还是线程的实现，都会在启动服务器时调用这个函数创建<code>registry</code>。</p>
+
+<pre><code>def preload_registries(dbnames):
+    &quot;&quot;&quot; Preload a registries, possibly run a test file.&quot;&quot;&quot;
+    # TODO: move all config checks to args dont check tools.config here
+    config = odoo.tools.config
+    test_file = config['test_file']
+    dbnames = dbnames or []
+    rc = 0
+    for dbname in dbnames:
+        try:
+            update_module = config['init'] or config['update']
+            registry = Registry.new(dbname, update_module=update_module)
+            # run test_file if provided
+            if test_file:
+                _logger.info('loading test file %s', test_file)
+                with odoo.api.Environment.manage():
+                    if test_file.endswith('yml'):
+                        load_test_file_yml(registry, test_file)
+                    elif test_file.endswith('py'):
+                        load_test_file_py(registry, test_file)
+
+            if registry._assertion_report.failures:
+                rc += 1
+        except Exception:
+            _logger.critical('Failed to initialize database `%s`.', dbname, exc_info=True)
+            return -1
+    return rc
+</code></pre>
+
+<h3 id="文件系统监视器-fswatcher">文件系统监视器 FSWatcher</h3>
+
+<p>使用<code>watchdog</code>监视指定目录中发生的文件创建、删除、修改事件。主要是为了模块的动态更新。</p>
+
+<h3 id="处理请求的-wsgi-server">处理请求的 wsgi_server</h3>
+
+<p>之前说的3种server，都使用了<code>odoo.service.wsgi_server.application</code>来处理请求。</p>
+
+<pre><code>def wsgi_xmlrpc(environ, start_response):
+    ...
+    if environ['REQUEST_METHOD'] == 'POST' and environ['PATH_INFO'].startswith('/xmlrpc/'):
+    ...
+    
+    
+def application_unproxied(environ, start_response):
+    ...
+    with odoo.api.Environment.manage():
+        # Try all handlers until one returns some result (i.e. not None).
+        for handler in [wsgi_xmlrpc, odoo.http.root]:
+            result = handler(environ, start_response)
+            if result is None:
+                continue
+            return result
+    ...
+</code></pre>
+
+<p>所有的请求都会尝试用2个handler来处理一下。<code>wsgi_xmlrpc</code>用来处理xmlrpc，只有<code>POST</code>类型的、url以<code>/xmlrpc/</code>开头的会被这个handler处理。其余的都由<code>odoo.http.root</code>来处理。看来<code>odoo.http.root</code>应该超级复杂。</p>
+
+<h3 id="超级长的-odoo-http">超级长的 odoo.http</h3>
+
+<p>这是一个1651行的，历史悠久的python文件。第一行<code># -*- coding: utf-8 -*-</code>是2013年2月1日写下的。里边集中了请求的封装、模块加载、session管理等东西。这里我们重点先看<code>root</code>。</p>
+
+<p>首先，在文件的末尾找到<code>root = Root()</code>。<code>root</code>是一个<code>Root</code>的对象。哪一个对象怎么作为<code>handler</code>作为函数调用的呢？</p>
+
+<pre><code>class Root(object):
+    ...
+    def __call__(self, environ, start_response):
+        if not self._loaded:
+            self._loaded = True
+            self.load_addons()
+        return self.dispatch(environ, start_response)
+    ...
+</code></pre>
+
+<p>原来是特殊的的<code>__call__</code>函数。而且可以看到模块是延迟加载的：只有在第一次被调用的时候才会<code>load_addons</code>。然后才会调用<code>dispatch</code>去处理请求。</p>
+
+<h5 id="加载模块-load-addons">加载模块 load_addons</h5>
+
+<p>加载模块的步骤</p>
+
+<ul>
+<li>从<code>odoo.modules.module.ad_paths</code>下的所有目录里，获取所有的模块目录。</li>
+<li>从各个目录里，查找模块的<code>__manifest__.py</code>文件（模块的描述文件）。</li>
+<li>读取模块信息，然后<code>__import__</code>模块。</li>
+<li>将模块、模块信息存到全局变量<code>addons_module, addons_manifest</code>中，同时将模块的静态文件地址也保存起来。</li>
+<li>创建用来处理请求的dispatch</li>
+</ul>
+
+<p>特别注意在最后，<code>dispatch</code>函数被特殊处理了一下</p>
+
+<pre><code>app = werkzeug.wsgi.SharedDataMiddleware(self.dispatch, statics, cache_timeout=STATIC_CACHE)
+        self.dispatch = DisableCacheMiddleware(app)
+</code></pre>
+
+<p>这里先用类中的<code>dispatch</code>函数，生成<code>werkzeug.wsgi.SharedDataMiddleware</code>的对象<code>app</code>；然后再用<code>app</code>生成一个<code>DisableCacheMiddleware</code>对象，替换掉原来的<code>dispatch</code>&hellip;&hellip;</p>
+
+<h5 id="抽丝剥茧-dispatch">抽丝剥茧 dispatch</h5>
+
+<p>在<code>load_addons</code>的最后，原先的<code>dispatch</code>函数被层层包裹（真的是两层）。
+最外边一层是<code>DisableCacheMiddleware</code>：</p>
+
+<pre><code>class DisableCacheMiddleware(object):
+    def __init__(self, app):
+        self.app = app
+    def __call__(self, environ, start_response):
+        def start_wrapped(status, headers):
+            referer = environ.get('HTTP_REFERER', '')
+            parsed = urlparse.urlparse(referer)
+            debug = parsed.query.count('debug') &gt;= 1
+
+            new_headers = []
+            unwanted_keys = ['Last-Modified']
+            if debug:
+                new_headers = [('Cache-Control', 'no-cache')]
+                unwanted_keys += ['Expires', 'Etag', 'Cache-Control']
+
+            for k, v in headers:
+                if k not in unwanted_keys:
+                    new_headers.append((k, v))
+
+            start_response(status, new_headers)
+        return self.app(environ, start_wrapped)
+</code></pre>
+
+<p>代码不多直接贴。不出意外的使用了<code>__call__</code>，然后可以看到它主要是对返回的<code>http头</code>做了特殊的处理。</p>
+
+<p>接下来是一层<code>werkzeug.wsgi.SharedDataMiddleware</code>，借用官方文档：</p>
+
+<pre><code>A WSGI middleware that provides static content for development environments or simple server setups.
+</code></pre>
+
+<p>它是用来安装模块对应的静态文件。</p>
+
+<p>最后就是<code>dispatch</code>函数了。先对请求进行处理：设置session、设置数据库、设置语言；然后交给<code>ir_http._dispatch</code>来处理请求；<code>get_response</code>将前一步的结果进行处理，生成最终返回的<code>response</code>。</p>
+
+<pre><code>def dispatch(self, environ, start_response):
+    ...
+    httprequest = werkzeug.wrappers.Request(environ)
+    ...
+    explicit_session = self.setup_session(httprequest)
+    self.setup_db(httprequest)
+    self.setup_lang(httprequest)
+    request = self.get_request(httprequest)
+    ...
+    with request:
+        ...
+        with odoo.tools.mute_logger('odoo.sql_db'):
+            ir_http = request.registry['ir.http']
+        ...
+        result = ir_http._dispatch()
+        ...
+        response = self.get_response(httprequest, result, explicit_session)
+    return repsonse
+    ...
+</code></pre>
+
+<p>但是<code>registry</code>从何而来，<code>ir_http</code>又是什么。继续探索下去吧。</p>
+
+<h5 id="请求的包装">请求的包装</h5>
+
+<p>最初的请求时由<code>werkzeug.wrappers.Request</code>生成的。然后经过一步步的设置，将它的session信息、可能访问的数据库连接、使用的语言，都配置存放到请求对象中。然后根据请求的类型，生成<code>JsonRequest</code>或者<code>HttpRequest</code>。这两个类分别对应<code>Json</code>请求和一般的<code>Http</code>请求，他们的父类都是<code>WebRequest</code>。在他们的父类中，我们看到了神秘的<code>registry</code>。</p>
+
+<pre><code>@property
+def registry(self):
+    &quot;&quot;&quot;
+    The registry to the database linked to this request. Can be ``None``
+    if the current request uses the ``none`` authentication.
+    .. deprecated:: 8.0
+        use :attr:`.env`
+    &quot;&quot;&quot;
+    return odoo.registry(self.db) if self.db else None
+</code></pre>
+
+<p>使用了<code>@property</code>使这个函数可以当作类的属性访问。<code>odoo.registry</code>这个函数可以在<code>odoo/__init__.py</code>中找到，返回一个Registry对象。初步判断这里时做了一个初始化工作：创建Registry对象，成功的话返回数据库名称，失败返回None。</p>
+
+<pre><code>def registry(database_name=None):
+    &quot;&quot;&quot;
+    Return the model registry for the given database, or the database mentioned
+    on the current thread. If the registry does not exist yet, it is created on
+    the fly.
+    &quot;&quot;&quot;
+    if database_name is None:
+        import threading
+        database_name = threading.currentThread().dbname
+    return modules.registry.Registry(database_name)
+</code></pre>
+
+<h5 id="模型的注册表-registry">模型的注册表 Registry</h5>
+
+<pre><code>The registry is essentially a mapping between model names and model classes.
+There is one registry instance per database.
+</code></pre>
+
+<p>官方文档对<code>Registry</code>的说明。</p>
+
+<p>在请求处理的过程中，如果<code>modules.registry.Registry</code>还没有实例，那么就创建一个。这个是一个继承了<code>collections.Mapping</code>，高度定制化的类。在这个类中，创建了一个类的属性<code>registries</code>作为缓存来存放之后生成的<code>registry</code>。每次想获取<code>registry</code>对象的时候，都是先查询这个缓存。如果缓存中有现成的对象，直接返回，否则生成新的对象。</p>
+
+<p>在创建registry的同时，还进行了模块的实例化：从模块中抽取模型、把模型保存到数据库、将模型的实例存到registry中。</p>
+
+<h5 id="请求的重定向">请求的重定向</h5>
+
+<p>通过对模块、以及<code>registry</code>的了解，我们可以继续探究之前的<code>ir_http</code>。</p>
+
+<pre><code>ir_http = request.registry['ir.http']
+result = ir_http._dispatch()
+</code></pre>
+
+<p>从<code>registrty</code>中查找名字为<code>ir.http</code>的模型的对象。通过搜索我们找到这个名字对应的类是：<code>odoo.addons.base.ir.ir_http.IrHttp</code>，在这个类中，我们找到了这个<code>_dispatch</code>方法。可以看到它在初次执行时会将安装好的模块都加载到<code>odoo.http.routing_map</code>中。之后当请求到达的时候，从<code>routing_map</code>中获得<code>controller</code>，然后由controller来处理请求。</p>
+
+<pre><code>    @classmethod
+    def routing_map(cls):
+        if not hasattr(cls, '_routing_map'):
+            installed = request.registry._init_modules - {'web'}
+            mods = [''] + odoo.conf.server_wide_modules + sorted(installed)
+            cls._routing_map = http.routing_map(mods, False, converters=cls._get_converters())
+        return cls._routing_map
+        
+    @classmethod
+    def _find_handler(cls, return_rule=False):
+        return cls.routing_map().bind_to_environ(request.httprequest.environ).match(return_rule=return_rule)
+
+    @classmethod
+    def _dispatch(cls):
+        # locate the controller method
+        try:
+            rule, arguments = cls._find_handler(return_rule=True)
+            func = rule.endpoint
+        except werkzeug.exceptions.NotFound, e:
+            return cls._handle_exception(e)
+            
+        ......
+        
+        try:
+            request.set_handler(func, arguments, auth_method)
+            result = request.dispatch()
+        except Exception, e:
+            return cls._handle_exception(e)
+        return result
+</code></pre>
+
+<h5 id="创建请求的路由器-odoo-http-routing-map">创建请求的路由器 odoo.http.routing_map</h5>
+
+<p>请求的路由信息是保存在<code>werkzeug.routing.Map</code>中的。而<code>routing_map</code>函数负责创建这个对象，然后通过遍历所有已安装的模块中的<code>controller</code>，将所有的路径信息都存放到这个对象中去。</p>
+
+<pre><code>def routing_map(modules, nodb_only, converters=None):
+    routing_map = werkzeug.routing.Map(strict_slashes=False, converters=converters)
+    ......
+    for module in modules:
+        for _, cls in controllers_per_module[module]:
+            o = cls()
+            members = inspect.getmembers(o, inspect.ismethod)
+            for _, mv in members:
+                ...
+                endpoint = EndPoint(mv, routing)
+                ...
+                routing_map.add(werkzeug.routing.Rule(url, endpoint=endpoint, methods=routing['methods'], **kw))
+    return routing_map
+</code></pre>
+
+<p>附一个<code>werkzeug.routing.Map</code>的例子：</p>
+
+<pre><code>from werkzeug.routing import Map, Rule, NotFound, RequestRedirect
+
+url_map = Map([
+    Rule('/', endpoint='blog/index'),
+    Rule('/&lt;int:year&gt;/', endpoint='blog/archive'),
+    Rule('/&lt;int:year&gt;/&lt;int:month&gt;/', endpoint='blog/archive'),
+    Rule('/&lt;int:year&gt;/&lt;int:month&gt;/&lt;int:day&gt;/', endpoint='blog/archive'),
+    Rule('/&lt;int:year&gt;/&lt;int:month&gt;/&lt;int:day&gt;/&lt;slug&gt;',
+         endpoint='blog/show_post'),
+    Rule('/about', endpoint='blog/about_me'),
+    Rule('/feeds/', endpoint='blog/feeds'),
+    Rule('/feeds/&lt;feed_name&gt;.rss', endpoint='blog/show_feed')
+])
+
+def application(environ, start_response):
+    urls = url_map.bind_to_environ(environ)
+    try:
+        endpoint, args = urls.match()
+    except HTTPException, e:
+        return e(environ, start_response)
+    start_response('200 OK', [('Content-Type', 'text/plain')])
+    return ['Rule points to %r with arguments %r' % (endpoint, args)]
+</code></pre>
+
+<p>至此我们终于可以将收到的请求，转发到对应的<code>controller</code>中了。</p>
+
+<h5 id="session-管理">Session 管理</h5>
+
+<p>在http访问的过程中，session的管理是很重要的。目前在<code>odoo</code>中，使用了基于<code>werkzeug</code>的session实现。其中<code>session</code>的存储使用的是文件存储。不得不说这个对<code>odoo</code>的高可用是一个小小的障碍。不过现在已经有现成的模块可以将这个基于文件的<code>sessionstore</code>替换成<code>redisstore</code>。基本思路就是继承<code>odoo.http.Root</code>，用一个支持<code>redis</code>的<code>session_store</code>函数将原有的函数覆盖掉。</p>
+
+<p>项目地址：<a href="https://github.com/keerati/odoo-redis">https://github.com/keerati/odoo-redis</a></p>
+
+<pre><code>class OpenERPSession(werkzeug.contrib.sessions.Session):
+    def __init__(self, *args, **kwargs):
+    ......
+    
+class Root(object):
+    ......
+    @lazy_property
+    def session_store(self):
+        # Setup http sessions
+        path = odoo.tools.config.session_dir
+        _logger.debug('HTTP sessions stored in: %s', path)
+        return werkzeug.contrib.sessions.FilesystemSessionStore(path, session_class=OpenERPSession)
+        
+</code></pre>
+
+<h3 id="不算总结的总结">不算总结的总结</h3>
+
+<p>经过不断的补充，终于将web server弄完了。现在算是基本弄清了<code>odoo</code>的启动流程，模块是如何加载安装的，请求是如何被处理的。关于<code>registry</code>、<code>module</code>、<code>model</code>、<code>controller</code>等会单独开篇去详细研究。</p>
+
+<p>注意：<br />
+文中大部分的<code>模块加载</code>仅指<code>import</code>。<br />
+真正将其实例化，或者说从模块类 -&gt; 模型／模块类实例，是在<code>registry</code>中创建的。</p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E5%91%BD%E4%BB%A4/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E5%91%BD%E4%BB%A4/">odoo的命令</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E6%A8%A1%E5%9D%97%E7%AE%A1%E7%90%86/">odoo的模块管理</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E6%A8%A1%E5%9D%97%E7%AE%A1%E7%90%86/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'Your Disqus shortname';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="https://asdfsx.github.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'Your Google Analytics tracking ID', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

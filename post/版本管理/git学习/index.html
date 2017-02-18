@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="git">
+  <meta name="generator" content="Hugo 0.19-DEV" />
+
+  <title>git学习 &middot; asdfsx</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://asdfsx.github.io/img/favicon.ico" type="image/x-icon" />
+
+  
+    <link rel="stylesheet" href="https://asdfsx.github.io/css/my.css">
+  
+  
+    <script src="https://asdfsx.github.io/js/my.js"></script>
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://asdfsx.github.io/">asdfsx</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/tags/"><i class='fa fa-list fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://plus.google.com/+asdfsx" target="_blank"><i class="fa fa-google-plus-square fa-fw"></i>Google+</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://weibo.com/*" target="_blank"><i class="fa fa-weibo fa-fw"></i>Weibo</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/asdfsx" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://bitbucket.org/asdfsx" target="_blank"><i class="fa fa-bitbucket-square fa-fw"></i>Bitbucket</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>git学习</h1>
+  <h2>git</h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>08 Dec 2016, 17:05</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/git">git</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>参考资料：<br />
+<a href="https://git-scm.com/book/zh/v2">https://git-scm.com/book/zh/v2</a><br />
+<a href="http://igit.linuxtoy.org/contents.html">http://igit.linuxtoy.org/contents.html</a></p>
+
+<h2 id="git最基础操作">git最基础操作</h2>
+
+<p>配置用户</p>
+
+<pre><code>git config --global user.email &quot;user@gmail.com&quot;
+git config --global user.name &quot;user&quot;
+</code></pre>
+
+<p>本地创建git管理的项目</p>
+
+<pre><code>mkdir git_study
+git init
+git status
+git log
+</code></pre>
+
+<p>创建文件并提交</p>
+
+<pre><code>echo &quot;hello Git&quot; &gt; readme.txt
+git add readme.txt
+git status
+git commit -m &quot;project init&quot;
+git log
+</code></pre>
+
+<p>更改文件并提交</p>
+
+<pre><code>echo &quot;Git is Cool&quot; &gt;&gt; readme.txt
+git status
+git diff
+git add readme.txt
+git status
+git commit -m &quot;Git is Cool&quot;
+</code></pre>
+
+<p>在上边的操作我们可以发现，在一个Git项目中文件的状态大概分成下面的两大类，而第二大类又分为三小类：</p>
+
+<ol>
+<li>未被跟踪的文件（untracked file）</li>
+<li>已被跟踪的文件（tracked file）
+
+<ol>
+<li>被修改但未被暂存的文件（changed but not updated或modified）</li>
+<li>已暂存可以被提交的文件（changes to be committed 或staged）</li>
+<li>自上次提交以来，未修改的文件(clean 或 unmodified)</li>
+</ol></li>
+</ol>
+
+<h2 id="git是如何使用sha来管理内容">git是如何使用sha来管理内容</h2>
+
+<p>首先git的所有数据都保存在<code>.git</code>目录下
+在这个目录下</p>
+
+<pre><code>find .git/objects
+
+......
+.git/objects/e9/13915d3d5bd4830fdd7a13d73a896a09bd3478
+.git/objects/ee
+.git/objects/ee/4e9782bf8b320c60a8d5d7aa070d47d752dba1
+.git/objects/ee/e94f02c4c32247c7aa5b87829f37693be90be4
+.git/objects/ef
+......
+</code></pre>
+
+<p>没有看到任何一个文件叫做readme.txt，那么文件存在哪里了呢？</p>
+
+<p>执行<code>git log</code>查看git历史</p>
+
+<pre><code>git log
+  
+=============================================  
+commit e581b637ae12cc7c9975af04dc2bcc58a93b1274
+Author: user &lt;user@gmail.com&gt;
+Date:   Thu Jan 24 15:46:53 2013 +0800
+
+    Git is Cool
+=============================================
+</code></pre>
+
+<p>可以看到commit上有一串编号，这个就是这次提交的sha编号<br />
+我们可以用<code>git cat-file</code>看看这个编号对应的内容</p>
+
+<pre><code>git cat-file -p e581b637ae12cc7c9975af04dc2bcc58a93b1274  
+
+=============================================
+tree f07fcbff9c87b1a3c3d4393184e2011744c7966e
+parent 1e7bd8de9ca7a624364a986243c9d26b4efe5ffa
+author user &lt;user@gmail.com&gt; 1359013613 +0800
+committer user &lt;user@gmail.com&gt; 1359013613 +0800
+
+Git is Cool
+=============================================
+</code></pre>
+
+<p>可以看到tree、parent有与之前类似的编码<br />
+我们继续用<code>git cat-file</code>看看它们的内容</p>
+
+<pre><code>git cat-file -p f07fcbff9c87b1a3c3d4393184e2011744c7966e  
+
+=============================================
+100644 blob 49ec0d692868a0d17f3e663314e7601a55ae766a    readme.txt
+=============================================
+</code></pre>
+
+<p>从这个结果里我们又看到一个sha码</p>
+
+<pre><code>git cat-file -p 49ec0d692868a0d17f3e663314e7601a55ae766a
+
+=============================================
+hello Git
+Git is Cool
+=============================================
+</code></pre>
+
+<p>其实就是readme.txt的内容
+所以之前一个命令的结果，就可以解释为blob类型的数据，数据对应一个sha码，数据的文件名是readme.txt</p>
+
+<pre><code>git cat-file -p 1e7bd8de9ca7a624364a986243c9d26b4efe5ffa  
+
+=============================================
+tree be2e44a49d0da5a3e1913b91d234eea7b0b610fe
+author user &lt;user@gmail.com&gt; 1359013080 +0800
+committer user &lt;user@gmail.com&gt; 1359013080 +0800
+
+project init
+=============================================
+</code></pre>
+
+<p>然后我们就找到了项目初建的地方</p>
+
+<h2 id="分支的简单实用">分支的简单实用</h2>
+
+<p>创建分支</p>
+
+<pre><code>git branch develop
+</code></pre>
+
+<p>查看所有分支</p>
+
+<pre><code>git branch
+</code></pre>
+
+<p>切换分支</p>
+
+<pre><code>git checkout develop
+</code></pre>
+
+<p>合并分支develop到master</p>
+
+<pre><code>git checkout master
+git merge develop
+</code></pre>
+
+<p>保留合并之前的分支信息</p>
+
+<pre><code>git merge develop --no-ff
+</code></pre>
+
+<p>删除已合并的分支</p>
+
+<pre><code>git branch －d develop
+</code></pre>
+
+<p>强制删除分支</p>
+
+<pre><code>git branch －D develop
+</code></pre>
+
+<h2 id="查看历史">查看历史</h2>
+
+<p><code>git log</code>命令可以用来查看历史，配合参数可以看到不同的内容</p>
+
+<pre><code>git log --oneline --graph --decorate  
+git log --pretty=format:'%h : %s' --topo-order --graph  
+git log --pretty='%h : %s' --topo-order --graph  
+git log --graph  
+git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit
+</code></pre>
+
+<p>为了方便使用，我们可以创建alias, 编辑<code>.git/config</code>，并添加下边的内容</p>
+
+<pre><code>[alias]
+     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit
+</code></pre>
+
+<p>或者执行命令</p>
+
+<pre><code>git config --global alias.lg &quot;log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit&quot;
+</code></pre>
+
+<p>然后查看日志</p>
+
+<pre><code>git lg  
+git lg -p  
+git lg --all
+</code></pre>
+
+<h2 id="标签的使用">标签的使用</h2>
+
+<p>列出标签</p>
+
+<pre><code>git tag -l
+</code></pre>
+
+<p>创建标签</p>
+
+<pre><code>
+</code></pre>
+
+<p>删除标签</p>
+
+<pre><code></code></pre>
+
+<h2 id="远程服务器的管理">远程服务器的管理</h2>
+
+<p>显示当前项目有几个远程库</p>
+
+<pre><code>git remote -v
+</code></pre>
+
+<p>增加新的远程库</p>
+
+<pre><code>git remote add gitcafe 'git@gitcafe.com:user/project.git'
+git push -u gitcafe master
+
+git remote add gitshell 'git@gitshell.com:user/project.git'
+git push -u gitshell master
+</code></pre>
+
+<p>远程库改名</p>
+
+<pre><code>git remote rename gitcafe gitcafe1
+git remote rename gitshell gitshell1
+</code></pre>
+
+<p>删除远程库</p>
+
+<pre><code>git remote rm gitcafe
+git remote rm gitshell
+</code></pre>
+
+<h2 id="一些所谓的奇技淫巧">一些所谓的奇技淫巧</h2>
+
+<p>修改git传输字节限制</p>
+
+<pre><code>git config http.postBuffer  524288000
+</code></pre>
+
+<p>找回reset后丢失某些节点</p>
+
+<pre><code>$ git reflog
+b5ee6a7 HEAD@{0}: reset: moving to b5ee6a76f40e3dc4170b544ecf4b895b54e01863
+390744b HEAD@{1}: commit (amend): need ref host instead of a utm param list
+3da3e39 HEAD@{2}: checkout: moving from newfeature2 to newfeature2
+3da3e39 HEAD@{3}: checkout: moving from ptmind_etl_japan_250million to newfeature2
+1861139 HEAD@{4}: checkout: moving from ptmind_etl_china_test to ptmind_etl_japan_250million
+$ git cherry-pick 390744b
+</code></pre>
+
+<p>git https使用用户名密码</p>
+
+<pre><code>git clone https://username:passowrd@gitshell.com/user/project.git
+</code></pre>
+
+<h2 id="最后的最后">最后的最后</h2>
+
+<p>使用git，一定要常看它的版本树，了解项目的更新合并情况。<br />
+为此选择一款好的gui客户端是很有必要的。</p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://asdfsx.github.io/post/hugo/%E4%BD%BF%E7%94%A8hugo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BAblog/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://asdfsx.github.io/post/hugo/%E4%BD%BF%E7%94%A8hugo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BAblog/">使用hugo在github上搭建blog</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://asdfsx.github.io/post/golang/Golang%E9%87%8D%E6%96%B0%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E4%B9%8B%E6%97%85/">Golang重新从零开始之旅</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://asdfsx.github.io/post/golang/Golang%E9%87%8D%E6%96%B0%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E4%B9%8B%E6%97%85/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'Your Disqus shortname';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="https://asdfsx.github.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'Your Google Analytics tracking ID', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

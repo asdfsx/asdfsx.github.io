@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="odoo的模块管理">
+  <meta name="generator" content="Hugo 0.19-DEV" />
+
+  <title>odoo的模块管理 &middot; asdfsx</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://asdfsx.github.io/img/favicon.ico" type="image/x-icon" />
+
+  
+    <link rel="stylesheet" href="https://asdfsx.github.io/css/my.css">
+  
+  
+    <script src="https://asdfsx.github.io/js/my.js"></script>
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://asdfsx.github.io/">asdfsx</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/tags/"><i class='fa fa-list fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://plus.google.com/+asdfsx" target="_blank"><i class="fa fa-google-plus-square fa-fw"></i>Google+</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://weibo.com/*" target="_blank"><i class="fa fa-weibo fa-fw"></i>Weibo</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/asdfsx" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://bitbucket.org/asdfsx" target="_blank"><i class="fa fa-bitbucket-square fa-fw"></i>Bitbucket</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>odoo的模块管理</h1>
+  <h2>odoo的模块管理</h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>27 Dec 2016, 18:05</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>之前一篇记录了odoo web server的大概情况，以及简单的启动流程、模块加载的情况。深入研究会发现odoo的所有功能都是基于模块制作的，所以本篇开始研究odoo的模块。首先研究下模块是如何进行管理的。负责管理模块的代码主要存放在<code>odoo.modules</code>包里。</p>
+
+<h3 id="模型的注册机-odoo-modules-registry-registry">模型的注册机 odoo.modules.registry.Registry</h3>
+
+<p><code>Registry</code>的用途是存放模型名、模型类对应关系。是一个深度定制化的类。注意，<code>model</code>、<code>module</code>的区别。</p>
+
+<ul>
+<li>此类继承了<code>collections.Mapping</code>，因此它的对像可以按照字典方式来使用</li>
+<li>这个类也是一个自产自销的类：创建自己的实例，然后将实例放到自己的类属性中。</li>
+
+<li><p>类函数／属性<code>registries</code>用来存放已创建的<code>Registry</code>。
+装饰器<code>lazy_classproperty</code>是一个神器的东西，它把一个函数变成了一个属性：当函数第一次执行时，获得函数的返回值，然后将返回值设置为类中的一个属性（注意那个<code>setattr</code>函数）。<code>__get__</code>方法会在Registry.registry的时候执行。</p>
+
+<pre><code>class lazy_property(object):
+    def __init__(self, fget):
+        self.fget = fget
+            
+class lazy_classproperty(lazy_property):
+    def __get__(self, obj, cls):
+        val = self.fget(cls)
+        setattr(cls, self.fget.__name__, val)
+        return val
+</code></pre></li>
+
+<li><p>使用<code>__new__</code>而不是<code>__init__</code>来创建对象：首先尝试从<code>registries</code>中获取已经生成的对象，失败后创建新对象。之前的python的数据结构中曾经探讨过<code>__init__</code>和<code>__new__</code>的区别。</p></li>
+
+<li><p><code>Registry</code>对象在<code>new()</code>里生成：手动生成、手动初始化、存放到<code>registries</code>中、加载所有的模块到<code>self.models</code>字典中（<code>odoo.modules.load_modules</code>函数）。在加载模块的过程中，还需要模块中导出模型（load函数）、完善模型（setup_models），根据模型建表、建约束（init_models）。</p></li>
+
+<li><p>注意LRU是Least Recently Used 近期最少使用算法。这里是一个python实现的功能模块。内部是一个字典。</p>
+
+<pre><code>class Registry(Mapping):
+    @lazy_classproperty
+    def registries(cls):
+        &quot;&quot;&quot; A mapping from database names to registries. &quot;&quot;&quot;
+        size = config.get('registry_lru_size', None)
+        ...
+    return LRU(size)
+        
+    def __new__(cls, db_name):
+        &quot;&quot;&quot; Return the registry for the given database name.&quot;&quot;&quot;
+        with cls._lock:
+            try:
+                return cls.registries[db_name]
+            except KeyError:
+                return cls.new(db_name)
+            finally:
+                # set db tracker - cleaned up at the WSGI dispatching phase in
+                # odoo.service.wsgi_server.application
+                threading.current_thread().dbname = db_name
+                
+    ......
+    
+    @classmethod
+    def new(cls, db_name, force_demo=False, status=None, update_module=False):
+        ...
+        registry = object.__new__(cls)
+        registry.init(db_name)
+        cls.delete(db_name)
+        cls.registries[db_name] = registry
+        ...
+        odoo.modules.load_modules(registry._db, force_demo, status, update_module)
+        ...
+</code></pre></li>
+
+<li><p>从模块中获取模型<code>load</code><br />
+从模块中，获取所有的模型类，然后调用<code>_build_model</code>来完善这个类，完善后的模型类也保存到了模型类的基类中，又一次完成了自产自销。然后返回模块中所有的模型名字。模型的名字就是模型类中的<code>_name</code>属性。</p>
+
+<pre><code>def load(self, cr, module):
+    model_names = []
+    for cls in models.MetaModel.module_to_models.get(module.name, []):
+        # models register themselves in self.models
+        model = cls._build_model(self, cr)
+        model_names.append(model._name)
+
+    return self.descendants(model_names, '_inherit')
+</code></pre>
+
+<p>注意<code>_build_model</code>函数，它是所有模型的基类<code>odoo.models.BaseModel</code>中的函数。其中<code>self</code>参数对应下边的<code>pool</code>参数。所以<code>model</code>会在<code>_build_model</code>的时候保存到<code>registry</code>中。</p>
+
+<pre><code>@classmethod
+def _build_model(cls, pool, cr):
+    ...
+    ModelClass.pool = pool
+    pool[name] = ModelClass
+    ...
+</code></pre></li>
+
+<li><p>模型安装<code>setup_models</code><br />
+根据配置信息、继承信息等从基类中创建新的模型类。通过对<code>model</code>的学习下边几个<code>model</code>的函数的功能是：</p>
+
+<ul>
+<li><code>_build_model</code> 根据模型的信息，创建新的模型类，新的模型类会放在<code>registry</code>中</li>
+<li><code>_prepare_setup</code></li>
+<li><code>_setup_base</code> 安装基础属性，如主键</li>
+<li><code>_setup_fields</code> 安装各个字段</li>
+<li><code>_setup_complete</code> 安装<code>trigger</code>之类的东西，完成安装
+<br /></li>
+</ul>
+
+<pre><code>cr.execute('SELECT * FROM ir_model WHERE state=%s', ('manual',))
+for model_data in cr.dictfetchall():
+    model_class = ir_model._instanciate(model_data)
+    model_class._build_model(self, cr)
+    
+models = env.values()
+for model in models:
+    model._prepare_setup()
+        
+for model in models:
+    model._setup_base(partial)
+        
+for model in models:
+    model._setup_fields(partial)
+        
+for model in models:
+    model._setup_complete()
+</code></pre></li>
+
+<li><p>模型初始化<code>init_models</code><br />
+将完善后的模型信息，保存到数据库<code>ir_model</code>、<code>ir_model_data</code>、<code>ir_model_field</code>等字段里。并根据模型建表、建索引、建关联约束。</p>
+
+<pre><code>model._auto_init()  // 基类中已实现，用来保存信息、建表的。
+model.init()        // 子类中实现，用来建新表，或者修改表
+model._auto_end()   // _auto_init 执行完后，建立表间的外键约束。
+</code></pre></li>
+</ul>
+
+<h3 id="模块的依赖关系-odoo-modules-graph-graph">模块的依赖关系 odoo.modules.graph.Graph</h3>
+
+<p><code>odoo</code>的模块之间可以互相调用，那么就存在一定的依赖关系。这些依赖关系都保存在<code>__manifest__.py</code>中。这个模块就是通过数据库、<code>__manifest__.py</code>文件，将模块之间的依赖关系转化为一颗树状图来存储（希望这样表述没有错）。</p>
+
+<ul>
+<li>每个模块都是一个节点</li>
+<li>依赖模块是当前节点的子节点</li>
+</ul>
+
+<p>以下是加载过程中生成的一部分树结构</p>
+
+<pre><code>base
+`-&gt; auth_crypt
+`-&gt; web
+   `-&gt; web_calendar
+   `-&gt; web_diagram
+   `-&gt; web_editor
+   `-&gt; web_kanban
+      `-&gt; base_import
+      `-&gt; wb_kanban_gauge
+   `-&gt; web_planner
+      `-&gt; web_settings_dashboard
+   `-&gt; web_tour
+</code></pre>
+
+<h3 id="模块的加载-odoo-modules-loading-load-modules">模块的加载 odoo.modules.loading.load_modules</h3>
+
+<p>定义了如何导入模块</p>
+
+<ul>
+<li><p>处理模块的查找路径<br />
+调用<code>odoo.modules.module.initialize_sys_path</code>函数：</p>
+
+<ul>
+<li>根据配置、系统安装路径等获取所有的插件安装路径</li>
+<li>调用<code>sys.meta_path.append</code>定制插件导入方式（主要目的是让odoo和openerp的插件能互相支持）</li>
+</ul></li>
+
+<li><p>检查数据库是否创建<br />
+调用<code>odoo.modules.db</code>下的函数，检查初始化数据库。</p>
+
+<ul>
+<li>使用建库脚本<code>odoo/addons/base/base.sql</code>创建表</li>
+<li>将模块信息写入表<code>ir_module_module</code>、<code>ir_model_data</code>、<code>ir_module_category</code>等表。
+<br /></li>
+</ul></li>
+
+<li><p>创建一个<code>registry</code>对象
+由于<code>registry</code>自产自销的特点，所以并不是一定要将<code>registry</code>对象返回。之后会使用这个<code>registry</code>对象进行模块的安装操作。</p></li>
+
+<li><p>获取运行环境<br />
+<code>env = api.Environment(cr, SUPERUSER_ID, {})</code></p>
+
+<p><code>Enviroment</code>模拟了一个字典。和Registry类似，也是一个自产自销的类。第一次创建好对象后，会放在类的属性中。</p>
+
+<pre><code>class Environment(Mapping):
+    _local = Local()
+
+    @classproperty
+    def envs(cls):
+        return cls._local.environments
+    
+    ...
+        
+    def __new__(cls, cr, uid, context):
+        ...
+        envs.add(self)
+...
+</code></pre></li>
+
+<li><p>导入base模块<br />
+<code>base</code>模块提供了odoo的最基础功能。在该模块的<code>__manifest__.py</code>中对自己的描述是<code>The kernel of Odoo, needed for all installation.</code>，可见它的重要性。</p>
+
+<ul>
+<li><p>创建依赖管理器<code>odoo.modules.graph.Graph</code>，并将<code>base</code>加入其它</p>
+
+<pre><code>  graph = odoo.modules.graph.Graph()
+  graph.add_module(cr, 'base', force)
+</code></pre></li>
+
+<li><p>加载<code>base</code>模块。注意这里是通过<code>graph</code>进行的加载。</p>
+
+<pre><code>  loaded_modules, processed_modules = load_module_graph(cr, graph, status, perform_checks=update_module, report=report)
+</code></pre>
+
+<p>在<code>load_module_graph</code>函数中进行如下操作：</p>
+
+<ul>
+<li><p>遍历graph中所有的模块，抽取模块中的模型，从模型的基类中，创建新的模型类。</p>
+
+<pre><code>  model_names = registry.load(cr, package)
+  registry.setup_models(cr, partial=True)
+  registry.init_models(cr, model_names, {'module': package.name})
+</code></pre></li>
+
+<li><p>根据需要安装视图、demo等</p>
+
+<pre><code>  if hasattr(package, 'init') or hasattr(package, 'update') or package.state in ('to install', 'to upgrade'):
+  ...
+      _load_data(cr, module_name, idref, mode, kind='data')
+      ...
+      env['ir.ui.view']._validate_module_views(module_name)
+      ...
+  ...
+</code></pre></li>
+</ul></li>
+
+<li><p>然后在<code>registry</code>中安装<code>base</code>里的模型。</p>
+
+<pre><code>  registry.setup_models(cr, partial=True)
+</code></pre></li>
+</ul></li>
+
+<li><p>标记其它需要加载或更新的模块<br />
+如果有需要更新的模块，进行标注。这里的标注貌似只是在模块的按钮上显示安装、更新按钮。</p></li>
+
+<li><p>导入标记过的模块<br />
+安装除base以外的模块。</p>
+
+<ul>
+<li>从数据库中查询特定状态的模块，例如：<code>installed</code>。</li>
+<li>将它们放入graph中，通过graph导入
+<br /></li>
+</ul></li>
+
+<li><p>结束安装并进行清理<br />
+从数据库查询所有应该导入的模块，检查它们的状态，执行相应的清理。因为有些模块在安装过程中，可能会导入一些测试数据进行单元测试，安装完成以后这些东西应该被清理。</p></li>
+
+<li><p>卸载标记删除的模块
+从数据库中查询所有标记为要删除的模块。从graph中获取所有的依赖，然后从中查找<code>uninstall_hook</code>函数，利用<code>getattr</code>来调用这些函数</p>
+
+<pre><code>pkgs = reversed([p for p in graph if p.name in modules_to_remove])
+for pkg in pkgs:
+    uninstall_hook = pkg.info.get('uninstall_hook')
+    if uninstall_hook:
+        py_module = sys.modules['odoo.addons.%s' % (pkg.name,)]
+        getattr(py_module, uninstall_hook)(cr, registry)
+</code></pre></li>
+
+<li><p>检查所有模型的视图</p>
+
+<pre><code>View._validate_custom_views(model)
+</code></pre>
+
+<p>研究视图的时候再研究这个函数</p></li>
+
+<li><p>调用每个模块的<code>_register_hook</code></p>
+
+<pre><code>for model in env.values():
+    model._register_hook()
+</code></pre>
+
+<p>研究模块、模型的时候再详细研究这个<code>hook</code></p></li>
+
+<li><p>执行<code>post-install</code>
+从数据库中查询所有的模块，然后逐个进行单元测试</p></li>
+</ul>
+
+<h3 id="模块的加载-odoo-modules-loading-load-module-graph">模块的加载 odoo.modules.loading.load_module_graph</h3>
+
+<p>按照模块之间的依赖关系导入模块。这个是最终将模块、模型、模型数据导入到registry中的函数。其中内部定义的函数<code>_load_data</code>，负责将<code>__manifest__.py</code>中的数据文件保存到数据库中。具体负责读取不同格式的数据文件的函数是<code>odoo.tools.convert.convert_file</code>。
+它会根据不同类型的文件类型使用不同的方法解析数据文件，并将数据保存到自己的模型表中，然后保存到<code>ir_model_data</code>中。</p>
+
+<pre><code>def load_module_graph(cr, graph, status=None, perform_checks=True, skip_modules=None, report=None):
+    ...
+    def _load_data(cr, module_name, idref, mode, kind):
+        ...
+        for filename in _get_files_of_kind(kind):
+            ...
+            tools.convert_file(cr, module_name, filename, idref, mode, noupdate, kind, report)
+            ...
+    ...
+    processed_modules = []
+    loaded_modules = []
+    registry = odoo.registry(cr.dbname)
+    ...
+    for index, package in enumerate(graph, 1):
+        load_openerp_module(package.name)
+        ...
+        model_names = registry.load(cr, package)
+        ...
+        if hasattr(package, 'init') or hasattr(package, 'update') or package.state in ('to install', 'to upgrade'):
+            registry.setup_models(cr, partial=True)
+            registry.init_models(cr, model_names, {'module': package.name})
+            ...
+            _load_data(cr, module_name, idref, mode, kind='data')
+            ...
+            registry._init_modules.add(package.name)
+        ...
+    ...
+
+</code></pre>
+
+<p><code>tools.convert_file</code>中以及<code>ir.model</code>中的代码片段</p>
+
+<pre><code>class xml_import(object):
+    ...
+    def _tag_template(self, el, data_node=None, mode=None):
+        ...
+        record_attrs = {
+            'id': tpl_id,
+            'model': 'ir.ui.view',
+        }
+        ...
+        record = etree.Element('record', attrib=record_attrs)
+        ...
+        return self._tag_record(record, data_node)
+    
+    def _tag_record(self, rec, data_node=None, mode=None):
+        ...
+        id = self.env(context=rec_context)['ir.model.data']._update(rec_model, self.module, res, rec_id or False, not self.isnoupdate(data_node), noupdate=self.isnoupdate(data_node), mode=self.mode)
+        ...
+        return rec_model, id
+        
+...
+
+class IrModelData(models.Model):
+    ...
+    @api.model
+    def _update(self, model, module, values, xml_id=False, store=True, noupdate=False, mode='init', res_id=False):
+        record = self.env[model].browse(res_id)
+        ...
+        record = record.create(values)
+        ...
+        self.sudo().create(...)
+        ...
+</code></pre>
+
+<p><code>record.create</code>将数据写入模型自己的表中，<code>sudo().create</code>将数据写入<code>ir.model.data</code>中。</p>
+
+<h3 id="不算总结的总结">不算总结的总结</h3>
+
+<p>通过学习这部分的代码，可以发现模块的加载、更新、删除等操作，都有数据库的深度参与。模块的物理信息会存放在<code>ir_module_module</code>等表中。从模块中抽取出来的逻辑信息则会存放在<code>ir_model</code>等表中。对模块的操作需要反复的遍历、修改这些表。<strong>所以在使用过程中，数据库的安全、稳定是头等大事</strong>。</p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84web%20server/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84web%20server/">odoo的web server</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E6%A8%A1%E5%9D%97/">odoo的模块</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E6%A8%A1%E5%9D%97/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'Your Disqus shortname';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="https://asdfsx.github.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'Your Google Analytics tracking ID', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

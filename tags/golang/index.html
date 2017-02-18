@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.19-DEV" />
+
+  <title>Golang &middot; asdfsx</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="asdfsx" href="https://asdfsx.github.io/tags/golang/index.xml" />
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://asdfsx.github.io/img/favicon.ico" type="image/x-icon" />
+
+  
+    <link rel="stylesheet" href="https://asdfsx.github.io/css/my.css">
+  
+  
+    <script src="https://asdfsx.github.io/js/my.js"></script>
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://asdfsx.github.io/">asdfsx</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/tags/"><i class='fa fa-list fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://asdfsx.github.io/tags/golang/index.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://plus.google.com/+asdfsx" target="_blank"><i class="fa fa-google-plus-square fa-fw"></i>Google+</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://weibo.com/*" target="_blank"><i class="fa fa-weibo fa-fw"></i>Weibo</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/asdfsx" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://bitbucket.org/asdfsx" target="_blank"><i class="fa fa-bitbucket-square fa-fw"></i>Bitbucket</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Golang</h1>
+</div>
+
+<div class="content">
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/docker/%E4%BD%BF%E7%94%A8swarm%E5%9C%A8mac%E4%B8%8A%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">使用swarm在mac上搭建开发环境</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>18 Feb 2017, 10:12</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/docker">docker</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/swarm">swarm</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/golang">golang</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/kafka">kafka</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  源起 docker并不是新技术。作为 golang 社区内的旗舰级的项目，从诞生之初就吸引了很多人的瞩目，甚至可以说是获得了所有 golang 社区的人多瞩目吧。同时对推广 golang 也起了很大的作用。作为从一直关注着 golang 的人，大概2年前就开始尝试使用它了。不过由于其依赖 linux 的多项特性，导致在 mac 上使用必须要借助虚拟机，体验总是要差一点。最近经人提醒发现新的 docker for mac 可以不借助虚拟机就可以在 mac 上提供与 linux 上同样的体验，大喜！遂卸载虚拟机，打算用新软件搭个测试环境玩耍一下。
+安装 超级简单，照着说明来就好。顺便装上了 kitematic。这个确实也非常好用。
+目标 将一套以前用 python 实现的 kafka producer程序，移植到 golang 上。测试新程序的异常情况处理（特指连接失败的处理）。 然后就被坑掉了。
+坑1 网络的问题 最初只是想通过 docker 启动一个单点的 kafka，程序通过本地网络直接访问就可以了。通过之前安装的 kitematic 从 hub.docker.com 上下载了 spotify/kafka 镜像，并直接启动容器。通过kitematic连接到容器内，各项命令执行正常。但是执行程序的时候却发现，总是第一次连接成功后，后边的所有连接都是失败的。通过日志发现程序在第一次成功连接 kafka 之后，连接地址发生了变更，变成了容器内部的地址（直观的现象就是，端口从 kitematic 随机生成的 12345 变成了 9092）。然后又尝试了手动用 &ndash;net=host 方式启动，结果彻底连不上了。
+在对 github.com/shopify/sarama 简单的分析以后，发现它的连接过程是这样的：
+ 首次连接，根据配置信息连接服务器
+ 连接成功后，从服务器获取broker信息 根据获得到的broker信息，连接其余的broker  问题就出现在最后一步上，服务器返回的broker信息中，网络地址都是容器内部的网络，没有办法从容器网络外部直接连接的。
+通过在github上查 issue， google 上查资料，有了以下不负责任的猜想：
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/docker/%E4%BD%BF%E7%94%A8swarm%E5%9C%A8mac%E4%B8%8A%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/golang/Golang%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84/">Golang代码组织结构</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>11 Dec 2016, 00:03</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/golang">golang</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  结合官方的文档，还有《The way to go》先来熟悉一下golang的代码结构。以下来自官方文档
+Go programs are constructed by linking together packages. A package in turn is constructed from one or more source files that together declare constants, types, variables and functions belonging to the package and which are accessible in all files of the same package. Those elements may be exported and used in another package. Each source file consists of a package clause defining the package to which it belongs, followed by a possibly empty set of import declarations that declare packages whose contents it wishes to use, followed by a possibly empty set of declarations of functions, types, variables, and constants.
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/golang/Golang%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/golang/Golang%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE/">Golang开发环境设置</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>10 Dec 2016, 16:45</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/golang">golang</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  开发环境的设置 老调重提，先搞定使用环境再说怎么用
+关于安装，下载最新版的golang安装包，安装就好。这里重点说说环境变量的配置，摘抄一段《The way to go》里的一段
+$GOROOT 表示 Go 在你的电脑上的安装位置，它的值一般都是 $HOME/go ， 当然，你也可以安装在别的地方。 $GOARCH 表示目标机器的处理器架构，它的值可以是 386、amd64 或 arm。 $GOOS 表示目标机器的操作系统，它的值可以是 darwin、freebsd、linux 或 windows。 $GOBIN 表示编译器和链接器的安装位置，默认是 $GOROOT/bin ，如果你使用的是 Go 1.0.3 及以后的版本，一般情况下你可以将它的值设置为空，Go 将会使用前面提到的默 认值。 目标机器是指你打算运行你的 Go 应用程序的机器。 Go 编译器支持交叉编译，也就是说你可以在一台机器上构建运行在具有不同操作系统和处理 器架构上运行的应用程序，也就是说编写源代码的机器可以和目标机器有完全不同的特性 (操作系统与处理器架构)。 为了区分本地机器和目标机器，你可以使用 $GOHOSTOS 和 $GOHOSTARCH 设置目标机器的参 数，这两个变量只有在进行交叉编译的时候才会用到，如果你不进行显示设置，他们的值会 和本地机器( $GOOS 和 $GOARCH )一样。 $GOPATH 默认采用和 $GOROOT 一样的值，但从 Go 1.1 版本开始，你必须修改为其它 路径。它可以包含多个包含 Go 语言源码文件、包文件和可执行文件的路径，而这些路径 下又必须分别包含三个规定的目录: src 、 pkg 和 bin ，这三个目录分别用于存放源 码文件、包文件和可执行文件。 $GOARM 专门针对基于 arm 架构的处理器，它的值可以是 5 或 6，默认为 6。 $GOMAXPROCS 用于设置应用程序可使用的处理器个数与核数  其中最常用的就是GOPATH。你可以只设置一个GOPATH，然后把所有的项目都放在这个目录下。
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/golang/Golang%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/golang/Golang%E9%87%8D%E6%96%B0%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E4%B9%8B%E6%97%85/">Golang重新从零开始之旅</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>09 Dec 2016, 19:20</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/golang">golang</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  第一次接触golang还是在4年前？当时的版本大概是0.9？
+当时刚用python完成了一个ETL的项目。为了压榨机器的性能，python多进程是必不可少的。于是再一次被多进程搞得痛不欲生，内存的浪费（每个进程都要加载相同的数据），多进程之间的协同（硬是塞了多个队列到各个进程里），还有时不时出现的僵尸进程。虽然我仍然十分喜欢python，但是这些始终解决不了的问题，让我生出了寻找一个替代品的想法。
+最初是打算使用erlang的。其实当时接触erlang有一阵子了，对于erlang的语法什么的也算比较熟。但是最后还是放弃了，原因就是对于语言的偏好吧：对于一个习惯了python中简单方便的使用list、map进行各种组合的人来说，erlang的数据结构用起来太麻烦了；另外就是感觉erlang的社区有一种很封闭的感觉？提到erlang，多说一句，这确实是个很好的语言，有很多非常好的特性，但是始终非常小众，原因我不认为是什么函数式语法的问题，更多的问题我觉得是社区吧。
+在使用erlang重新实现了一部分python的功能模块之后，我终于放弃了蛋疼的一个个把python的map改成erlang的proplists，放弃了一个个把python中的for循环改成erlang中的尾递归。这个时候我遇到了golang。
+最初如何发现golang的已经记不清了。随着了解的加深，对这门语法简单、性能不错，并发容易实现的语言，产生了很强的好感。随着golang社区的重磅项目陆续诞生，甚至认为可以在分布式计算领域诞生一个可以替代hadoop的项目。不过目前来看社区的主要发展方向好像还是基础设施的建设上，重磅的项目还是主要集中在容器、集群管理、监控这个方向。虽然对这个语言很有好感，但是可惜的是还是没有用起来。只是还持续的关注着golang和golang的社区。
+最近开始看rust，想着把golang也重新拿来把玩一番，于是有了这堆牢骚。多余的不说，只是希望能把golang重新熟悉一下。顺便熟悉熟悉用hugo搭blog，熟悉熟悉markdown，熟悉熟悉whatever。
+  </p>
+
+  
+</article>
+
+  
+</div>
+
+</div>
+</div>
+<script src="https://asdfsx.github.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'Your Google Analytics tracking ID', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>

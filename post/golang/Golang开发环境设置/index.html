@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Golang开发环境设置">
+  <meta name="generator" content="Hugo 0.19-DEV" />
+
+  <title>Golang开发环境设置 &middot; asdfsx</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://asdfsx.github.io/img/favicon.ico" type="image/x-icon" />
+
+  
+    <link rel="stylesheet" href="https://asdfsx.github.io/css/my.css">
+  
+  
+    <script src="https://asdfsx.github.io/js/my.js"></script>
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://asdfsx.github.io/">asdfsx</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/tags/"><i class='fa fa-list fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://plus.google.com/+asdfsx" target="_blank"><i class="fa fa-google-plus-square fa-fw"></i>Google+</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://weibo.com/*" target="_blank"><i class="fa fa-weibo fa-fw"></i>Weibo</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/asdfsx" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://bitbucket.org/asdfsx" target="_blank"><i class="fa fa-bitbucket-square fa-fw"></i>Bitbucket</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Golang开发环境设置</h1>
+  <h2>Golang开发环境设置</h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>10 Dec 2016, 16:45</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/golang">golang</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<h2 id="开发环境的设置">开发环境的设置</h2>
+
+<p>老调重提，先搞定使用环境再说怎么用<br />
+关于安装，下载最新版的golang安装包，安装就好。这里重点说说环境变量的配置，摘抄一段《The way to go》里的一段</p>
+
+<pre><code>$GOROOT 
+表示 Go 在你的电脑上的安装位置，它的值一般都是 $HOME/go ，
+当然，你也可以安装在别的地方。  
+
+$GOARCH 
+表示目标机器的处理器架构，它的值可以是 386、amd64 或 arm。
+
+$GOOS 
+表示目标机器的操作系统，它的值可以是 darwin、freebsd、linux 或 windows。 
+
+$GOBIN 
+表示编译器和链接器的安装位置，默认是 $GOROOT/bin ，如果你使用的是 Go 1.0.3 及以后的版本，一般情况下你可以将它的值设置为空，Go 将会使用前面提到的默 认值。  
+
+目标机器是指你打算运行你的 Go 应用程序的机器。  
+
+Go 编译器支持交叉编译，也就是说你可以在一台机器上构建运行在具有不同操作系统和处理 器架构上运行的应用程序，也就是说编写源代码的机器可以和目标机器有完全不同的特性 (操作系统与处理器架构)。
+为了区分本地机器和目标机器，你可以使用 $GOHOSTOS 和 $GOHOSTARCH 设置目标机器的参 数，这两个变量只有在进行交叉编译的时候才会用到，如果你不进行显示设置，他们的值会 和本地机器( $GOOS 和 $GOARCH )一样。
+
+$GOPATH 
+默认采用和 $GOROOT 一样的值，但从 Go 1.1 版本开始，你必须修改为其它 路径。它可以包含多个包含 Go 语言源码文件、包文件和可执行文件的路径，而这些路径 下又必须分别包含三个规定的目录: src 、 pkg 和 bin ，这三个目录分别用于存放源 码文件、包文件和可执行文件。
+
+$GOARM 
+专门针对基于 arm 架构的处理器，它的值可以是 5 或 6，默认为 6。
+
+$GOMAXPROCS 
+用于设置应用程序可使用的处理器个数与核数
+</code></pre>
+
+<p>其中最常用的就是<code>GOPATH</code>。你可以只设置一个GOPATH，然后把所有的项目都放在这个目录下。</p>
+
+<pre><code>cat &lt;&lt; EOF &gt;&gt; ~/.bash_profile
+export GOPATH=/root/gocode
+EOF 
+
+source ~/.bash_profile
+</code></pre>
+
+<h2 id="依赖管理工具">依赖管理工具</h2>
+
+<p>golang诞生之初，没有考虑依赖的管理，编译时候对于本地没有的包默认下载最新的。导致了一些依赖冲突的问题。于是社区里的人搞了各种工具来进行依赖管理，比如godep。</p>
+
+<p>到了golang 1.5以后，官方借鉴了社区已有的一些做法，将依赖管理集成到了golang中，即所谓的<code>vendor</code>。然后其余的工具纷纷升级，提供对官方依赖管理的支持。</p>
+
+<p>但是貌似官方还是没有提供一个管理工具，所以想用好依赖管理，还是要借助一些第三方的工具，比如：godep，glide(新发现的)。</p>
+
+<pre><code>对比rust，这点golang做的要差些。rust官方提供项目管理工具cargo，可以实现项目的create、build、test、依赖管理，一站式服务实在人人爱。
+</code></pre>
+
+<h2 id="项目编译">项目编译</h2>
+
+<p>格式化代码</p>
+
+<pre><code>go fmt *.go
+</code></pre>
+
+<p>编译安装</p>
+
+<pre><code>go build 
+编译项目，如果有可执行文件，生成到当前目录
+
+go install 
+编译项目，如果有可执行文件，生成到$GOPATH/bin下
+</code></pre>
+
+<p>执行单元测试</p>
+
+<pre><code>go test
+</code></pre>
+
+<p>下载一个golang的项目</p>
+
+<pre><code>go get github.com/spf13/hugo
+</code></pre>
+
+<p>开发环境大概就是这样，接下来熟悉一下golang的基本结构。</p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://asdfsx.github.io/post/golang/Golang%E9%87%8D%E6%96%B0%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E4%B9%8B%E6%97%85/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://asdfsx.github.io/post/golang/Golang%E9%87%8D%E6%96%B0%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E4%B9%8B%E6%97%85/">Golang重新从零开始之旅</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://asdfsx.github.io/post/golang/Golang%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84/">Golang代码组织结构</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://asdfsx.github.io/post/golang/Golang%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'Your Disqus shortname';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="https://asdfsx.github.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'Your Google Analytics tracking ID', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

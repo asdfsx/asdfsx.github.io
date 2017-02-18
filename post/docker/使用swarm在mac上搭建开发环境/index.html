@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="使用swarm在mac上搭建开发环境">
+  <meta name="generator" content="Hugo 0.19-DEV" />
+
+  <title>使用swarm在mac上搭建开发环境 &middot; asdfsx</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://asdfsx.github.io/img/favicon.ico" type="image/x-icon" />
+
+  
+    <link rel="stylesheet" href="https://asdfsx.github.io/css/my.css">
+  
+  
+    <script src="https://asdfsx.github.io/js/my.js"></script>
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://asdfsx.github.io/">asdfsx</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/tags/"><i class='fa fa-list fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://plus.google.com/+asdfsx" target="_blank"><i class="fa fa-google-plus-square fa-fw"></i>Google+</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://weibo.com/*" target="_blank"><i class="fa fa-weibo fa-fw"></i>Weibo</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/asdfsx" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://bitbucket.org/asdfsx" target="_blank"><i class="fa fa-bitbucket-square fa-fw"></i>Bitbucket</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>使用swarm在mac上搭建开发环境</h1>
+  <h2>使用swarm在mac上搭建开发环境</h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>18 Feb 2017, 10:12</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/docker">docker</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/swarm">swarm</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/golang">golang</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/kafka">kafka</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<h1 id="源起">源起</h1>
+
+<p>docker并不是新技术。作为 golang 社区内的旗舰级的项目，从诞生之初就吸引了很多人的瞩目，甚至可以说是获得了所有 golang 社区的人多瞩目吧。同时对推广 golang 也起了很大的作用。作为从一直关注着 golang 的人，大概2年前就开始尝试使用它了。不过由于其依赖 linux 的多项特性，导致在 mac 上使用必须要借助虚拟机，体验总是要差一点。最近经人提醒发现新的 docker for mac 可以不借助虚拟机就可以在 mac 上提供与 linux 上同样的体验，大喜！遂卸载虚拟机，打算用新软件搭个测试环境玩耍一下。</p>
+
+<h1 id="安装">安装</h1>
+
+<p>超级简单，照着说明来就好。顺便装上了 kitematic。这个确实也非常好用。</p>
+
+<h1 id="目标">目标</h1>
+
+<p>将一套以前用 python 实现的 kafka producer程序，移植到 golang 上。测试新程序的异常情况处理（特指连接失败的处理）。
+然后就被坑掉了。</p>
+
+<h1 id="坑1-网络的问题">坑1 网络的问题</h1>
+
+<p>最初只是想通过 docker 启动一个单点的 kafka，程序通过本地网络直接访问就可以了。通过之前安装的 kitematic 从 hub.docker.com 上下载了 spotify/kafka 镜像，并直接启动容器。通过kitematic连接到容器内，各项命令执行正常。但是执行程序的时候却发现，总是第一次连接成功后，后边的所有连接都是失败的。通过日志发现程序在第一次成功连接 kafka 之后，连接地址发生了变更，变成了容器内部的地址（直观的现象就是，端口从 kitematic 随机生成的 12345 变成了 9092）。然后又尝试了手动用 &ndash;net=host 方式启动，结果彻底连不上了。</p>
+
+<p>在对 github.com/shopify/sarama 简单的分析以后，发现它的连接过程是这样的：</p>
+
+<ul>
+<li>首次连接，根据配置信息连接服务器<br /></li>
+<li>连接成功后，从服务器获取broker信息</li>
+<li>根据获得到的broker信息，连接其余的broker</li>
+</ul>
+
+<p>问题就出现在最后一步上，服务器返回的broker信息中，网络地址都是容器内部的网络，没有办法从容器网络外部直接连接的。</p>
+
+<p>通过在github上查 issue， google 上查资料，有了以下不负责任的猜想：</p>
+
+<blockquote>
+<p>目前的 docker for mac 使用了自己搞的 github.com/docker/hyperkit 来实现轻量级的虚拟化。从项目的说明可以看到，其基于 github.com/mist64/xhyve，借助了 mac os 自身的 hypervisor.framework 来实现虚拟化。在 developer.apple.com 上可以看到相关的说明和 api refrence。它是 OS X v10.10 新增的一个功能，从 api 上来看，可以实现对 cpu 和 mem 的简单控制
+，并没有提供对网络的控制。网络这块是 xhyve 自己通过 virto-net 实现的。这可能也是导致网络这块体验比较差的原因吧。完善网络还需要花不少时间。</p>
+</blockquote>
+
+<p>测试还是要继续，从外部连接容器网络有问题，那就把测试程序也放到容器环境中去。</p>
+
+<p><strong>上SWARM吧，骚年！</strong></p>
+
+<h1 id="用swarm解决网络问题">用SWARM解决网络问题</h1>
+
+<p>业界已有很多容器集群方案：kubernetes、mesos、swarm等。各有优势，选择swarm，主要原因还是方便，直接与docker集成。顺便吐槽，容器的江湖也是乱啊！</p>
+
+<ul>
+<li>下载测试用到的镜像</li>
+</ul>
+
+<pre><code>  docker pull nginx
+  docker pull spotify/kafka:latest
+  docker pull prom/busybox:latest
+</code></pre>
+
+<ul>
+<li>在本地创建swarm</li>
+</ul>
+
+<pre><code>  docker swarm init
+</code></pre>
+
+<ul>
+<li>创建 overlay 网络</li>
+</ul>
+
+<pre><code>  docker network  create \
+    --driver overlay \
+    --subnet 10.0.9.0/24 \
+    --opt encrypted \
+    my-network
+</code></pre>
+
+<ul>
+<li><p>简单测试一下 overlay 网络，以及swarm中的服务发现</p>
+
+<ul>
+<li>启动一个 nginx 服务，并挂到 overlay 网络上</li>
+</ul>
+
+<pre><code>docker service create \
+  --replicas 1 \
+  --name my-web \
+  --network my-network \
+  nginx
+</code></pre>
+
+<ul>
+<li>检查服务</li>
+</ul>
+
+<pre><code>docker service ps my-web
+</code></pre>
+
+<ul>
+<li>检查网络</li>
+</ul>
+
+<pre><code>docker network inspect my-network
+</code></pre>
+
+<ul>
+<li>使用busybox检查服务发现，其实就是网络中的dns</li>
+</ul>
+
+<pre><code>docker service create \
+  --name dnstest \
+  --network my-network \
+  busybox \
+  sleep 3000
+  
+docker service ps dnstest
+
+docker exec -it dnstest.1.k8pjka8c9ikrpeje6spm6z8b5 sh
+
+nslookup my-web
+</code></pre></li>
+
+<li><p>启动 kafka 服务</p></li>
+</ul>
+
+<pre><code>  docker service create \
+    --name kafka \
+    --network my-network \
+    spotify/kafka:latest
+</code></pre>
+
+<ul>
+<li><p>测试 kafka
+用测试 my-web 的方法测试 kafka</p></li>
+
+<li><p>关闭服务</p></li>
+</ul>
+
+<pre><code>  docker service rm my-web
+  docker service rm kafka
+</code></pre>
+
+<h1 id="测试程序打包">测试程序打包</h1>
+
+<p>golang 支持交叉编译，也就是说我在 mac 上就可以直接编译出 linux 上可以使用的可执行程序。这真是极大的方便了开发人员。只需要<code>GOOS=linux GOARCH=amd64 go build ${LDFLAGS} ${PACKAGE}</code>就可以获得需要的可执行程序。然后简单的打包到镜像中就可以了。然后如愿以偿的掉入&hellip;</p>
+
+<h1 id="坑2-时区的问题">坑2 时区的问题</h1>
+
+<p>鉴于 golang 的可执行文件只是依赖 glibc，打包时选择了官方busybox作为基础镜像，好处就是小！小到连时区的支持都缩减到只有 UTC 一个，然后程序执行的时候就悲剧了。找到了最简单的一个解决办法是，设置环境变量<code>TZ</code>，设为<code>CST-8</code>表示中国标准时间，设为<code>JST-9</code>表示日本标准时间。这个对于 date 命令很好使，但是对于编译好的 golang 程序顶个球用。只能选择另外一个办法，换一个带时区支持的 <code>prom/busybox</code> 镜像，然后在Dockerfile中增加一个命令</p>
+
+<pre><code>RUN mv /etc/localtime /etc/localtime.bak &amp;&amp; \
+    ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+</code></pre>
+
+<p>时区问题搞定，测试顺利进行</p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%AE%80%E5%8C%96%E7%89%88refrence/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://asdfsx.github.io/post/odoo/odoo%E7%AE%80%E5%8C%96%E7%89%88refrence/">odoo简化版refrence</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'Your Disqus shortname';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="https://asdfsx.github.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'Your Google Analytics tracking ID', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

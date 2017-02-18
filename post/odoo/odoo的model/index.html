@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="odoo的模型 Model">
+  <meta name="generator" content="Hugo 0.19-DEV" />
+
+  <title>odoo的模型 Model &middot; asdfsx</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://asdfsx.github.io/img/favicon.ico" type="image/x-icon" />
+
+  
+    <link rel="stylesheet" href="https://asdfsx.github.io/css/my.css">
+  
+  
+    <script src="https://asdfsx.github.io/js/my.js"></script>
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://asdfsx.github.io/">asdfsx</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/tags/"><i class='fa fa-list fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://plus.google.com/+asdfsx" target="_blank"><i class="fa fa-google-plus-square fa-fw"></i>Google+</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://weibo.com/*" target="_blank"><i class="fa fa-weibo fa-fw"></i>Weibo</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/asdfsx" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://bitbucket.org/asdfsx" target="_blank"><i class="fa fa-bitbucket-square fa-fw"></i>Bitbucket</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>odoo的模型 Model</h1>
+  <h2>odoo的模型 Model</h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>30 Dec 2016, 14:31</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p><code>model</code>是<code>odoo</code>中最重要的部分之一。主要负责各种功能的实现，<code>crm</code>之类的业务模块中的功能姑且不论，页面渲染、工作流引擎、定时任务等核心的功能，也都是基于模型来实现。</p>
+
+<h3 id="元类的基础-odoo-api-meta">元类的基础：odoo.api.Meta</h3>
+
+<p>检查要创建的类中的所有函数，然后根据各函数<code>_api</code>属性进行特殊处理。处理完成后再创建该类型。</p>
+
+<pre><code>class Meta(type):
+    &quot;&quot;&quot; Metaclass that automatically decorates traditional-style methods by
+        guessing their API. It also implements the inheritance of the
+        :func:`returns` decorators.
+    &quot;&quot;&quot;
+
+    def __new__(meta, name, bases, attrs):
+        # dummy parent class to catch overridden methods decorated with 'returns'
+        parent = type.__new__(meta, name, bases, {})
+
+        for key, value in attrs.items():
+            if not key.startswith('__') and callable(value):
+                # make the method inherit from decorators
+                value = propagate(getattr(parent, key, None), value)
+
+                # guess calling convention if none is given
+                if not hasattr(value, '_api'):
+                    try:
+                        value = guess(value)
+                    except TypeError:
+                        pass
+
+                if (getattr(value, '_api', None) or '').startswith('cr'):
+                    _logger.warning(&quot;Deprecated method %s.%s in module %s&quot;, name, key, attrs.get('__module__'))
+
+                attrs[key] = value
+
+        return type.__new__(meta, name, bases, attrs)
+        
+</code></pre>
+
+<h3 id="元类-odoo-models-metamodel">元类：odoo.models.MetaModel</h3>
+
+<p>所有的模型的元类，继承了<code>odoo.api.Meta</code>，可以自动记录模型属于哪个模块。在Python的数据结构定义了<code>__new__</code>和<code>__init__</code>的区别。这里也可以发现，<code>Meta</code>中<code>__new__</code>负责创建类型对象，<code>MetaModel</code>中<code>__init__</code>负责初始化类型对象。</p>
+
+<pre><code>class MetaModel(api.Meta):
+    module_to_models = defaultdict(list)
+    def __init__(self, name, bases, attrs):
+        ...
+        if not self._custom:
+            self.module_to_models[self._module].append(self)
+        ...
+</code></pre>
+
+<h3 id="基类的基类-odoo-models-basemodel">基类的基类：odoo.models.BaseModel</h3>
+
+<p>这个基类不再是鸡肋了。它是所有模型的基类。它的作用大致如下：</p>
+
+<ul>
+<li>定义了一系列模型的属性</li>
+
+<li><p>根据类属性，用<code>_build_model</code>创建新模型类（要处理模型之间的继承关系），新模型类会存放在<code>registry</code>中。（<code>pool</code>变量其实就是<code>registry</code>）</p>
+
+<pre><code>@classmethod
+def _build_model(cls, pool, cr):
+    ...
+    ModelClass.pool = pool
+    pool[name] = ModelClass
+            
+    model = object.__new__(ModelClass)
+    model.__init__(pool, cr)
+    ...
+</code></pre></li>
+
+<li><p>根据模型属性，用<code>_setup_base</code>为新的模型类添加父模型的字段、删除不需要的字段。最重要的添加魔法字段<code>_add_magic_fields</code>，其中包括模型的主键<code>id</code>。</p></li>
+
+<li><p>根据模型属性，用<code>_setup_fields</code>为新的模型类添加字段。</p></li>
+
+<li><p>当新的模型类安装配置好以后，用<code>_auto_init</code>来进行初始化。</p>
+
+<ul>
+<li><p>根据<code>_fields</code>属性，在数据库中的<code>ir_model</code>等表中记录模型中的字段；</p>
+
+<pre><code>@api.model_cr_context
+def _field_create(self):
+    ...
+    cr.execute(&quot;&quot;&quot; INSERT INTO ir_model (model, name, info, state, transient)
+                   VALUES (%(model)s, %(name)s, %(info)s, %(state)s, %(transient)s)
+                   RETURNING id &quot;&quot;&quot;, params)
+    ...
+</code></pre></li>
+
+<li><p>根据<code>_table</code>属性，在数据库建表（建立一个只有主键的表）；</p>
+
+<pre><code>@api.model_cr
+def _create_table(self):
+    self._cr.execute('CREATE TABLE &quot;%s&quot; (id SERIAL NOT NULL, PRIMARY KEY(id))' % (self._table,))
+    self._cr.execute(&quot;COMMENT ON TABLE \&quot;%s\&quot; IS %%s&quot; % self._table, (self._description,))
+    _schema.debug(&quot;Table '%s': created&quot;, self._table)
+</code></pre></li>
+
+<li><p>根据<code>_fields</code>属性，修改之前建的表（用字段填充之间建的没有字段的表，或者改字段名，或者修改字段类型&hellip;&hellip;）</p>
+
+<pre><code>@api.model_cr_context
+def _auto_init(self):
+   ...
+   else :
+       # the column doesn't exist in database, create it
+       cr.execute('ALTER TABLE &quot;%s&quot; ADD COLUMN &quot;%s&quot; %s' % (self._table, name, field.column_type[1]))
+       cr.execute(&quot;COMMENT ON COLUMN %s.\&quot;%s\&quot; IS %%s&quot; % (self._table, name), (field.string,))
+       ...
+   ...
+</code></pre></li>
+
+<li><p>处理模型的依赖关系（可能反映到数据库上就是一个个外键约束）</p>
+
+<pre><code>@api.model_cr
+def _add_sql_constraints(self):
+    ...
+    def add(name, definition):
+        query = 'ALTER TABLE &quot;%s&quot; ADD CONSTRAINT &quot;%s&quot; %s' % (self._table, name, definition)
+    ...
+</code></pre></li>
+</ul></li>
+
+<li><p>处理模型的继承关系。<br />
+例如：在<code>_build_model</code>过程中，子类的<code>cls._table</code>属性可能直接使用了基类的<code>cls._table</code></p>
+
+<pre><code>for base in reversed(cls.__bases__):
+    if not getattr(base, 'pool', None):
+    ...
+        cls._table = base._table or cls._table
+    ...
+</code></pre></li>
+
+<li><p>创建模型对象<code>_create</code>，并返回一个模型类的新对象。<br />
+这个应该处理创建全新的模型记录。它会将新的模型记录存放到数据库中。</p>
+
+<pre><code>@api.model
+def _create(self, vals):
+    ...
+    query = &quot;&quot;&quot;INSERT INTO &quot;%s&quot; (%s) VALUES(%s) RETURNING id&quot;&quot;&quot; % (
+            self._table,
+            ', '.join('&quot;%s&quot;' % u[0] for u in updates),
+            ', '.join(u[1] for u in updates),
+        )
+    cr.execute(query, tuple(u[2] for u in updates if len(u) &gt; 2))
+
+    # from now on, self is the new record
+    id_new, = cr.fetchone()
+    self = self.browse(id_new)
+    ...
+</code></pre></li>
+
+<li><p>创建模型对象<code>_browse</code>。<br />
+可以看到利用<code>object.__new__(cls)</code>创建了对象，然后对对象里的属性进行设定。个人感觉，这里创建的模型对象里只有最基本的id，没有模型的其它属性。如果需要其它属性的话，还需要通过<code>search</code>来进行查询。这个函数应该用来处理系统中已存在的模型记录。</p>
+
+<pre><code>@classmethod
+def _browse(cls, ids, env, prefetch=None):
+    records = object.__new__(cls)
+    records.env = env
+    records._ids = ids
+    if prefetch is None:
+        prefetch = defaultdict(set)         # {model_name: set(ids)}
+    records._prefetch = prefetch
+    prefetch[cls._name].update(ids)
+    return records
+</code></pre></li>
+
+<li><p>模型数据的读取。<br />
+在基类中还定义了一些特殊的函数<code>__getitem__</code>、<code>__setitem__</code>。通过这些函数，可以像访问字典一样访问模型对象中的数据。</p></li>
+
+<li><p>模型数据的查询。</p>
+
+<pre><code>@api.model
+def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
+    ...
+    query_str = 'SELECT &quot;%s&quot;.id FROM ' % self._table + from_clause + where_str + order_by + limit_str + offset_str
+    self._cr.execute(query_str, where_clause_params)
+    res = self._cr.fetchall()
+    ...
+</code></pre></li>
+</ul>
+
+<pre><code>class BaseModel(object):
+    __metaclass__ = MetaModel
+    _auto = False               # don't create any database backend
+    _register = False           # not visible in ORM registry
+    _abstract = True            # whether model is abstract
+    _transient = False          # whether model is transient
+    
+    _name = None                # the model name
+    _table = None               # SQL table name used by model
+    ......
+    
+    @api.model_cr_context
+    def _field_create(self):
+        ...
+    
+    @classmethod
+    def _build_model(cls, pool, cr):
+        ...
+        
+    @api.model_cr_context
+    def _auto_init(self):
+        &quot;&quot;&quot; Instantiate a given model in the registry.
+        ...
+</code></pre>
+
+<h3 id="基类-odoo-models-model">基类：odoo.models.Model</h3>
+
+<p>模型大部分是继承这个类的。继承这个类的模型都会自动创建表。也就意味着会有数据写入表中。</p>
+
+<pre><code>AbstractModel = BaseModel
+
+class Model(AbstractModel):
+    _auto = True                # automatically create database backend
+    _register = False           # not visible in ORM registry, meant to be python-inherited only
+    _abstract = False           # not abstract
+    _transient = False          # not transient
+</code></pre>
+
+<h3 id="例子-odoo-addons-base-ir-ir-ui-view-view">例子：odoo.addons.base.ir.ir_ui_view.View</h3>
+
+<p>在之前研究请求处理的时候，看到了这个类。它主要是负责根据模版生成页面的。</p>
+
+<ul>
+<li>在<code>registry</code>可以通过它的名字<code>ir.ui.view</code>来获取这个模型的类。</li>
+<li>数据库里会有一个表叫做<code>ir_ui_view</code>。所有<code>View</code>的子类，都会将相关的信息写入这个表。</li>
+
+<li><p><code>render_template</code>用来生成页面</p>
+
+<ul>
+<li><p>使用<code>get_view_id</code>，获取<code>ir.model.data</code>对象，然后从<code>ir_model_data</code>表中根据模版名查找对应的</p>
+
+<pre><code>select * from ir_model_data where module='web' and name='webclient_bootstrap'
+</code></pre></li>
+
+<li><p>通过<code>browse</code>创建模型<code>ir.ui.View</code>的对象，模型对象里存放模版的id</p></li>
+
+<li><p>使用模型的<code>render</code>函数，制作页面</p>
+
+<pre><code>class View(models.Model):
+    _name = 'ir.ui.view'
+    _order = &quot;priority,name,id&quot;
+
+    # Holds the RNG schema
+    _relaxng_validator = None
+    
+    name = fields.Char(string='View Name', required=True)
+    model = fields.Char(index=True)
+    key = fields.Char()
+    priority = fields.Integer(string='Sequence', default=16, required=True)
+    type = fields.Selection([('tree', 'Tree'),
+                             ('form', 'Form'),
+                             ('graph', 'Graph'),
+                             ('pivot', 'Pivot'),
+                             ('calendar', 'Calendar'),
+                             ('diagram', 'Diagram'),
+                             ('gantt', 'Gantt'),
+                             ('kanban', 'Kanban'),
+                             ('search', 'Search'),
+                             ('qweb', 'QWeb')], string='View Type')
+    ......
+    
+    @api.model
+    def get_view_id(self, template):
+        ...
+        return self.env['ir.model.data'].xmlid_to_res_id(template, raise_if_not_found=True)
+        
+    ...
+    
+    @api.model
+    def render_template(self, template, values=None, engine='ir.qweb'):
+        return self.browse(self.get_view_id(template)).render(values, engine)
+        
+     @api.multi
+    def render(self, values=None, engine='ir.qweb'):
+        assert isinstance(self.id, (int, long))
+
+        qcontext = dict(
+            env=self.env,
+            keep_query=keep_query,
+            request=request, # might be unbound if we're not in an httprequest context
+            debug=request.debug if request else False,
+            json=json,
+            quote_plus=werkzeug.url_quote_plus,
+            time=time,
+            datetime=datetime,
+            relativedelta=relativedelta,
+            xmlid=self.key,
+        )
+        qcontext.update(values or {})
+
+        return self.env[engine].render(self.id, qcontext)
+</code></pre></li>
+
+<li><p>首先获取模版引擎，默认引擎是<code>ir.qweb</code></p></li>
+
+<li><p>使用模版引擎的<code>render</code>，生成页面</p>
+
+<pre><code>class IrQWeb(models.AbstractModel, QWeb):
+    _name = 'ir.qweb'
+            
+    @api.model
+    def render(self, id_or_xml_id, values=None, **options):
+        ...
+        return super(IrQWeb, self).render(id_or_xml_id, values=values, **context)
+                
+    ......
+        
+class QWeb(object):
+    ...
+    def render(self, template, values=None, **options):
+            
+    ...
+            
+    def compile(self, template, options):
+            
+    ...
+</code></pre></li>
+</ul></li>
+</ul>
+
+<h3 id="例子-odoo-addons-base-res-res-user">例子：odoo.addons.base.res.res_user</h3>
+
+<p>由<code>base</code>模块提供的一个保存<code>odoo</code>用户的一个模型。应该有很多模型都利用了这个模型。比如<code>crm</code>模块中的<code>odoo.addons.crm.models.res_user.User</code>，这个模型就继承并扩展了这个<code>base</code>模块中的模型。当安装<code>crm</code>模块的时候，会将<code>crm</code>中扩展的字段添加到<code>base</code>中已经建好的<code>res_user</code>表中。</p>
+
+<pre><code>下边为base模块中的模型
+
+class Users(models.Model):
+    _name = &quot;res.users&quot;
+    _description = 'Users'
+    _inherits = {'res.partner': 'partner_id'}
+    _order = 'name, login'
+    __uid_cache = defaultdict(dict)
+    
+    login = fields.Char(required=True, help=&quot;Used to log into the system&quot;)
+    password = fields.Char(default='', invisible=True, copy=False,
+    
+.....
+
+下边是crm模块中的模型    
+
+class Users(models.Model):
+
+    _inherit = 'res.users'
+
+    target_sales_won = fields.Integer('Won in Opportunities Target')
+    target_sales_done = fields.Integer('Activities Done Target')
+</code></pre>
+
+<h3 id="不算总结的总结">不算总结的总结</h3>
+
+<p>大概了解了一下模型的作用。还有遗漏的以后再补。这里遗留了一个问题，就是模型中的字段。
+看了一下模型中的字段也算是<code>odoo</code>自己实现的<code>orm</code>的一部分，包括了元类、基类、一堆扩展。单开一章吧。<code>view</code>在<code>odoo</code>中也是很大的一块，也单开一章介绍吧。</p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E4%B8%AD%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://asdfsx.github.io/post/odoo/odoo%E4%B8%AD%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86/">odoo中的请求处理</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://asdfsx.github.io/post/odoo/odoo%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84Field/">odoo模型中的Field</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84Field/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'Your Disqus shortname';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="https://asdfsx.github.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'Your Google Analytics tracking ID', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="odoo自定义模块">
+  <meta name="generator" content="Hugo 0.19-DEV" />
+
+  <title>odoo自定义模块 &middot; asdfsx</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://asdfsx.github.io/img/favicon.ico" type="image/x-icon" />
+
+  
+    <link rel="stylesheet" href="https://asdfsx.github.io/css/my.css">
+  
+  
+    <script src="https://asdfsx.github.io/js/my.js"></script>
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://asdfsx.github.io/">asdfsx</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/tags/"><i class='fa fa-list fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://plus.google.com/+asdfsx" target="_blank"><i class="fa fa-google-plus-square fa-fw"></i>Google+</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://weibo.com/*" target="_blank"><i class="fa fa-weibo fa-fw"></i>Weibo</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/asdfsx" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://bitbucket.org/asdfsx" target="_blank"><i class="fa fa-bitbucket-square fa-fw"></i>Bitbucket</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>odoo自定义模块</h1>
+  <h2>odoo自定义模块</h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>13 Jan 2017, 11:46</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>复制 <a href="http://blog.sunansheng.com/python/odoo/odoo.html">http://blog.sunansheng.com/python/odoo/odoo.html</a> 中的请假单例子，创建一个带工作流的例子，工作环境是<code>odoo 10.0</code>。<br />
+PS：在这个版本中官方自带的请假模块删掉了工作流～～何等的卧槽！</p>
+
+<h3 id="创建模块模版">创建模块模版：</h3>
+
+<pre><code>python odoo/odoo-bin scaffold qingjia odoo_dev/
+</code></pre>
+
+<p>在<code>odoo_dev</code>目录中可以找到新创建的模块，进入目录以后可以看到如下的目录结构</p>
+
+<pre><code>controllers  demo  __init__.py  __manifest__.py  models  security  views
+</code></pre>
+
+<p><code>__init__.py</code>不需要修改<br />
+<code>__manifest__.py</code>需要增加一点东西</p>
+
+<pre><code>&quot;application&quot;: True,
+</code></pre>
+
+<h3 id="创建模型">创建模型</h3>
+
+<p>修改<code>models/model.py</code>文件。添加新的模型</p>
+
+<pre><code># -*- coding: utf-8 -*-
+
+from odoo import models, fields, api
+
+class Qingjd(models.Model):
+    _name = 'qingjia.qingjd'
+    
+    name = fields.Many2one('res.users', string=&quot;申请人&quot;, required=True)
+    days = fields.Float(string=&quot;天数&quot;, required=True)
+    startdate = fields.Date(string=&quot;开始日期&quot;, required=True)
+    reason = fields.Text(string=&quot;请假事由&quot;)
+    
+    def send_qingjd(self):
+        self.sended = True
+        return self.sended
+        
+    def confirm_qingjd(self):
+        self.state = 'confirmed'
+        return self.state
+</code></pre>
+
+<h3 id="修改controller">修改controller</h3>
+
+<p>修改<code>controllers/controller.py</code>文件。由模版创建的<code>controller</code>已经提供了最基础的功能，只需要去掉注释，做简单的修改就可以使用（主要是和新添加的模型做个对应）。</p>
+
+<pre><code># -*- coding: utf-8 -*-
+from odoo import http
+class Qingjia(http.Controller):
+    @http.route('/qingjia/qingjia', auth='public')
+    def index(self, **kw):
+        return &quot;Hello, world&quot;
+        
+    @http.route('/qingjia/qingjia/objects/', auth='public')
+    def list(self, **kw):
+        return http.request.render('qingjia.listing', {
+            'root': '/qingjia/qingjia',
+            'objects': http.request.env['qingjia.qingjd'].search([]),
+        })
+
+    @http.route('/qingjia/qingjia/objects/&lt;model(&quot;qingjia.qingjd&quot;):obj&gt;/', auth='public')
+    def object(self, **kw):
+        return http.request.render('qingjia.object', {
+            'object': obj,
+        })
+
+</code></pre>
+
+<h3 id="修改模版">修改模版</h3>
+
+<p>在<code>controller</code>中，可以看到使用了两个模版<code>qingjia.listing</code>和<code>qingjia.object</code>。这两个模版定义在<code>views/templates.xml</code>文件中，只不过现在被注释掉了。只需要去掉注释就可以了，不需要做任何修改。</p>
+
+<pre><code>&lt;odoo&gt;
+    &lt;data&gt;
+        &lt;template id=&quot;listing&quot;&gt;
+            &lt;ul&gt;
+                &lt;li t-foreach=&quot;objects&quot; t-as=&quot;object&quot;&gt;
+                    &lt;a t-attf-href=&quot;#{ root }/objects/#{ object.id }&quot;&gt;
+                        &lt;t t-esc=&quot;object.display_name&quot;/&gt;
+                    &lt;/a&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/template&gt;
+        &lt;template id=&quot;object&quot;&gt;
+            &lt;h1&gt;&lt;t t-esc=&quot;object.display_name&quot;/&gt;&lt;/h1&gt;
+            &lt;dl&gt;
+                &lt;t t-foreach=&quot;object._fields&quot; t-as=&quot;field&quot;&gt;
+                    &lt;dt&gt;&lt;t t-esc=&quot;field&quot;/&gt;&lt;/dt&gt;
+                    &lt;dd&gt;&lt;t t-esc=&quot;object[field]/&gt;&lt;/dd&gt;
+                &lt;/t&gt;
+            &lt;/dl&gt;
+        &lt;/template&gt;
+    &lt;/data&gt;
+&lt;/odoo&gt;
+</code></pre>
+
+<h3 id="修改视图">修改视图</h3>
+
+<p>视图的信息定义在<code>views/views.xml</code>中。模版生成内容都被注释了，直接添加自己的内容好了。我们也可以从零开始。</p>
+
+<p>首先先把文件的框架建好</p>
+
+<pre><code>&lt;odoo&gt;
+    &lt;data&gt;
+    &lt;/data&gt;
+&lt;/odoo&gt;
+</code></pre>
+
+<h5 id="修改导航按钮">修改导航按钮</h5>
+
+<pre><code>&lt;menuitem id=&quot;menu_qingjia&quot; name=&quot;请假&quot; sequence=&quot;0&quot;&gt;&lt;/menuitem&gt;
+&lt;menuitem id=&quot;menu_qingjia_qingjiadan&quot; name=&quot;请假单&quot; parent=&quot;menu_qingjia&quot;&gt;&lt;/menuitem&gt;
+&lt;menuitem id=&quot;menu_qingjia_qingjiadan_qingjiadan&quot; name=&quot;列表&quot; parent=&quot;menu_qingjia_qingjiadan&quot; action=&quot;action_qingjia_qingjd&quot;&gt;&lt;/menuitem&gt;
+
+</code></pre>
+
+<h5 id="修改列表页">修改列表页</h5>
+
+<p>在<code>views/views.xml</code>中增加对列表页的定义。可以借鉴模版生成的<code>qingjia.list</code>模版，只需要修改下字段就可以了。</p>
+
+<pre><code>&lt;record model=&quot;ir.ui.view&quot; id=&quot;qingjia.list&quot;&gt;
+    &lt;field name=&quot;name&quot;&gt;qingjia list&lt;/field&gt;
+    &lt;field name=&quot;model&quot;&gt;qingjia.qingjd&lt;/field&gt;
+    &lt;field name=&quot;arch&quot; type=&quot;xml&quot;&gt;
+        &lt;tree&gt;
+            &lt;field name=&quot;name&quot;/&gt;
+            &lt;field name=&quot;days&quot;/&gt;
+            &lt;field name=&quot;startdate&quot;/&gt;
+        &lt;/tree&gt;
+    &lt;/field&gt;
+&lt;/record&gt;
+</code></pre>
+
+<h5 id="修改详情页">修改详情页</h5>
+
+<pre><code>&lt;record id=&quot;action_qingjia_qingjd&quot; model=&quot;ir.actions.act_window&quot;&gt;
+    &lt;field name=&quot;name&quot;&gt;请假单&lt;/field&gt;
+    &lt;field name=&quot;res_model&quot;&gt;qingjia.qingjd&lt;/field&gt;
+    &lt;field name=&quot;view_mode&quot;&gt;tree,form&lt;/field&gt;
+&lt;/record&gt;
+</code></pre>
+
+<p>注意：<code>tree,form</code>之间不能有空格，不然会报错～～～</p>
+
+<p>也可以对详情页进行定制</p>
+
+<pre><code>&lt;record id=&quot;action_qingjia_qingjd&quot; model=&quot;ir.actions.act_window&quot;&gt;
+    &lt;field name=&quot;name&quot;&gt;请假单&lt;/field&gt;
+    &lt;field name=&quot;res_model&quot;&gt;qingjia.qingjd&lt;/field&gt;
+    &lt;field name=&quot;arch&quot; type=&quot;xml&quot;&gt;
+        &lt;form&gt;
+        &lt;sheet&gt;
+        &lt;label for=&quot;name&quot;/&gt;&lt;field name=&quot;name&quot;/&gt;
+        &lt;label for=&quot;days&quot;/&gt;&lt;field name=&quot;days&quot;/&gt;
+        &lt;label for=&quot;startdate&quot;/&gt;&lt;field name=&quot;startdate&quot;/&gt;
+        &lt;label for=&quot;reason&quot;/&gt;&lt;field name=&quot;reason&quot;/&gt;
+        &lt;/sheet&gt;
+        &lt;/form&gt;
+    &lt;/field&gt;
+&lt;/record&gt;
+</code></pre>
+
+<p>也可以</p>
+
+<pre><code>&lt;record id=&quot;action_qingjia_qingjd&quot; model=&quot;ir.actions.act_window&quot;&gt;
+    &lt;field name=&quot;name&quot;&gt;请假单&lt;/field&gt;
+    &lt;field name=&quot;res_model&quot;&gt;qingjia.qingjd&lt;/field&gt;
+    &lt;field name=&quot;arch&quot; type=&quot;xml&quot;&gt;
+        &lt;form&gt;
+        &lt;group&gt;
+            &lt;field name=&quot;name&quot;/&gt;
+            &lt;field name=&quot;days&quot;/&gt;
+            &lt;field name=&quot;startdate&quot;/&gt;
+            &lt;field name=&quot;reason&quot;/&gt;
+        &lt;/group&gt;
+        &lt;/form&gt;
+    &lt;/field&gt;
+&lt;/record&gt;
+</code></pre>
+
+<p>目前这个例子还比较简单，看不出来<code>group</code>的作用。</p>
+
+<p>完成以上内容，就可以试着安装一下新模块了。</p>
+
+<h3 id="工作流">工作流</h3>
+
+<p>为了实现工作流，需要对模型进行修改</p>
+
+<h5 id="修改模型">修改模型</h5>
+
+<p>注意 odoo 10 不再支持旧版的api，即</p>
+
+<pre><code>    def draft(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'state':'draft'}, context=context)
+        return True
+</code></pre>
+
+<p>新版本里，从某种意义上对api进行了一些简化</p>
+
+<pre><code>    @api.model
+    def draft(self):
+        self.write({'state':'draft'})
+        return True
+</code></pre>
+
+<p>以下为完整代码</p>
+
+<pre><code>class Qingjd(models.Model):
+    _name = 'qingjia.qingjd'
+    name = fields.Many2one('res.users', string=&quot;申请人&quot;, required=True)
+    manager = fields.Many2one('res.users', string=&quot;主管&quot;, required=True)
+    beginning = fields.Date(string=&quot;开始日期&quot;, required=True, default=fields.Datetime.now())
+    ending = fields.Date(string=&quot;结束日期&quot;, required=True)
+    reason = fields.Text(string=&quot;请假事由&quot;, required=True)
+    accept_reason = fields.Text(string=&quot;同意理由&quot;, default=&quot;同意&quot;)
+
+    current_name = fields.Many2one('res.users', string=&quot;当前登录人&quot;, compute=&quot;_get_current_name&quot;)
+    is_manager = fields.Boolean(compute=&quot;_get_is_manager&quot;)
+
+    state = fields.Selection([('draft','草稿'),
+                              ('confirmed','待审批'),
+                              ('accepted','批准'),
+                              ('rejected','拒绝'),],
+                              string='状态', default='draft', readonly=True)
+
+    @api.model
+    def _get_default_name(self):
+        uid = self.env.uid
+        res = self.env['resource.resource'].search([('user_id', '=', uid)]) 
+        name = res.name
+        employee = self.env['hr.employee'].search([('name_related','=',name)])
+        return employee
+
+    @api.model
+    def _get_default_manager(self):
+        uid = self.env.uid
+        res = self.env['resource.resource'].search([('user_id', '=', uid)])
+        name = res.name
+        employee = self.env['hr.employee'].search([('name_related','=',name)])
+        return employee.parent_id
+    
+
+    defaults = {'name':_get_default_name,'manager':_get_default_manager,}
+
+    def _get_is_manager(self):
+        if self.current_name == self.manager:
+            self.is_manager = True
+        else:
+            self.is_manager = False
+
+    def _get_current_name(self):
+        uid = self.env.uid
+        res = self.env['res.users'].search([('id', '=', uid)])
+        self.current_name = res
+
+    @api.model
+    def draft(self):
+        self.write({'state':'draft'})
+        return True
+
+    @api.model
+    def confirm(self):
+        self.write({'state':'confirmed'})
+        return True
+
+    @api.model
+    def accept(self):
+        self.write({'state':'accepted'})
+        return True
+
+    @api.model
+    def reject(self):
+        self.write({'state':'rejected'})
+        return True
+</code></pre>
+
+<h5 id="增加视图">增加视图</h5>
+
+<pre><code>&lt;record model=&quot;ir.ui.view&quot; id=&quot;qingjia.qingjia_qingjd_form&quot;&gt;
+        &lt;field name=&quot;name&quot;&gt;qing jia dan form&lt;/field&gt;
+        &lt;field name=&quot;model&quot;&gt;qingjia.qingjd&lt;/field&gt;
+        &lt;field name=&quot;arch&quot; type=&quot;xml&quot;&gt;
+            &lt;form&gt;
+            &lt;header&gt;
+                &lt;button name=&quot;btn_confirm&quot; type=&quot;workflow&quot; states=&quot;draft&quot; string=&quot;发送&quot; class=&quot;oe_highlight&quot;/&gt;
+                &lt;button name=&quot;btn_accept&quot; type=&quot;workflow&quot; states=&quot;confirmed&quot; string=&quot;批准&quot; class=&quot;oe_highlight&quot;/&gt;
+                &lt;button name=&quot;btn_reject&quot; type=&quot;workflow&quot; states=&quot;confirmed&quot; string=&quot;拒绝&quot; class=&quot;oe_highlight&quot;/&gt;
+                &lt;field name=&quot;state&quot; widget=&quot;statusbar&quot; statusbar_visible=&quot;draft,confirmed,accepted,rejected&quot; class=&quot;oe_highlight&quot; type=&quot;workflow&quot;/&gt;
+            &lt;/header&gt;
+                &lt;sheet&gt;
+                    &lt;group name=&quot;group_top&quot; string=&quot;请假单&quot;&gt;
+                        &lt;group name=&quot;group_left&quot;&gt;
+                            &lt;field name=&quot;name&quot;/&gt;
+                            &lt;field name=&quot;beginning&quot;/&gt;
+                        &lt;/group&gt;
+                        &lt;group name=&quot;group_right&quot;&gt;
+                            &lt;field name=&quot;manager&quot;/&gt;
+                            &lt;field name=&quot;ending&quot;/&gt;
+                        &lt;/group&gt;
+                    &lt;/group&gt;
+                    &lt;group name=&quot;group_below&quot;&gt;
+                        &lt;field name=&quot;reason&quot;/&gt;
+                    &lt;/group&gt;
+                &lt;/sheet&gt;
+            &lt;/form&gt;
+        &lt;/field&gt;
+    &lt;/record&gt;
+</code></pre>
+
+<h5 id="增加工作流">增加工作流</h5>
+
+<pre><code>&lt;odoo&gt;
+    &lt;data noupdate=&quot;0&quot;&gt;
+        &lt;record id=&quot;wkf_qingjia&quot; model=&quot;workflow&quot;&gt;
+            &lt;field name=&quot;name&quot;&gt;wkf.qingjia&lt;/field&gt;
+            &lt;field name=&quot;osv&quot;&gt;qingjia.qingjd&lt;/field&gt;
+            &lt;field name=&quot;on_create&quot;&gt;True&lt;/field&gt;
+        &lt;/record&gt;
+        &lt;record id=&quot;act_draft&quot; model=&quot;workflow.activity&quot;&gt;
+            &lt;field name=&quot;wkf_id&quot; ref=&quot;wkf_qingjia&quot;/&gt;
+            &lt;field name=&quot;name&quot;&gt;draft&lt;/field&gt;
+            &lt;field name=&quot;flow_start&quot; eval=&quot;True&quot;/&gt;
+            &lt;field name=&quot;kind&quot;&gt;function&lt;/field&gt;
+            &lt;field name=&quot;action&quot;&gt;draft()&lt;/field&gt;
+        &lt;/record&gt;
+        &lt;record id=&quot;act_confirm&quot; model=&quot;workflow.activity&quot;&gt;
+            &lt;field name=&quot;wkf_id&quot; ref=&quot;wkf_qingjia&quot;/&gt;
+            &lt;field name=&quot;name&quot;&gt;confirm&lt;/field&gt;
+            &lt;field name=&quot;kind&quot;&gt;function&lt;/field&gt;
+            &lt;field name=&quot;action&quot;&gt;confirm()&lt;/field&gt;
+        &lt;/record&gt;
+        &lt;record id=&quot;act_accept&quot; model=&quot;workflow.activity&quot;&gt;
+            &lt;field name=&quot;wkf_id&quot; ref=&quot;wkf_qingjia&quot;/&gt;
+            &lt;field name=&quot;name&quot;&gt;accept&lt;/field&gt;
+            &lt;field name=&quot;kind&quot;&gt;function&lt;/field&gt;
+            &lt;field name=&quot;action&quot;&gt;accept()&lt;/field&gt;
+        &lt;/record&gt;
+        &lt;record id=&quot;act_reject&quot; model=&quot;workflow.activity&quot;&gt;
+            &lt;field name=&quot;wkf_id&quot; ref=&quot;wkf_qingjia&quot;/&gt;
+            &lt;field name=&quot;name&quot;&gt;reject&lt;/field&gt;
+            &lt;field name=&quot;kind&quot;&gt;function&lt;/field&gt;
+            &lt;field name=&quot;action&quot;&gt;reject()&lt;/field&gt;
+        &lt;/record&gt;
+        &lt;record id=&quot;qingjia_draft2confirm&quot; model=&quot;workflow.transition&quot;&gt;
+            &lt;field name=&quot;act_from&quot; ref=&quot;act_draft&quot;/&gt;
+            &lt;field name=&quot;act_to&quot; ref=&quot;act_confirm&quot;/&gt;
+            &lt;field name=&quot;signal&quot;&gt;btn_confirm&lt;/field&gt;
+        &lt;/record&gt;
+        &lt;record id=&quot;qingjia_confirm2accept&quot; model=&quot;workflow.transition&quot;&gt;
+            &lt;field name=&quot;act_from&quot; ref=&quot;act_confirm&quot;/&gt;
+            &lt;field name=&quot;act_to&quot; ref=&quot;act_accept&quot;/&gt;
+            &lt;field name=&quot;signal&quot;&gt;btn_accept&lt;/field&gt;
+            &lt;field name=&quot;condition&quot;&gt;is_manager&lt;/field&gt;
+        &lt;/record&gt;
+        &lt;record id=&quot;qingjia_confirm2reject&quot; model=&quot;workflow.transition&quot;&gt;
+            &lt;field name=&quot;act_from&quot; ref=&quot;act_confirm&quot;/&gt;
+            &lt;field name=&quot;act_to&quot; ref=&quot;act_reject&quot;/&gt;
+            &lt;field name=&quot;signal&quot;&gt;btn_reject&lt;/field&gt;
+            &lt;field name=&quot;condition&quot;&gt;is_manager&lt;/field&gt;
+        &lt;/record&gt;
+    &lt;/data&gt;
+&lt;/odoo&gt;
+</code></pre>
+
+<p>完整的项目：<a href="https://github.com/asdfsx/qingjia">https://github.com/asdfsx/qingjia</a></p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://asdfsx.github.io/post/python/python%E7%9A%84%E5%AF%BC%E5%85%A5%E7%B3%BB%E7%BB%9F/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://asdfsx.github.io/post/python/python%E7%9A%84%E5%AF%BC%E5%85%A5%E7%B3%BB%E7%BB%9F/">python的导入系统</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://asdfsx.github.io/post/odoo/odoo%E7%AE%80%E5%8C%96%E7%89%88refrence/">odoo简化版refrence</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%AE%80%E5%8C%96%E7%89%88refrence/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'Your Disqus shortname';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="https://asdfsx.github.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'Your Google Analytics tracking ID', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

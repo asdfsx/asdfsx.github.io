@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Import on asdfsx</title>
+    <link>https://asdfsx.github.io/tags/import/index.xml</link>
+    <description>Recent content in Import on asdfsx</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <atom:link href="https://asdfsx.github.io/tags/import/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>python的导入系统</title>
+      <link>https://asdfsx.github.io/post/python/python%E7%9A%84%E5%AF%BC%E5%85%A5%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Wed, 11 Jan 2017 12:01:19 +0800</pubDate>
+      
+      <guid>https://asdfsx.github.io/post/python/python%E7%9A%84%E5%AF%BC%E5%85%A5%E7%B3%BB%E7%BB%9F/</guid>
+      <description>
+
+&lt;p&gt;一个模块中的Python代码通过导入的过程获得对另一个模块中的代码的访问。&lt;code&gt;import&lt;/code&gt;语句是调用导入机制的最常用方法，但它不是唯一的方法。诸如&lt;code&gt;importlib.import_module()&lt;/code&gt;和内置&lt;code&gt;__import__()&lt;/code&gt;之类的函数也可以用于调用导入机制。&lt;/p&gt;
+
+&lt;p&gt;import语句组合两个操作；它搜索指定的模块，然后将该搜索的结果绑定到本地作用域中的名称。import语句的搜索操作被定义为使用适当的参数调用&lt;code&gt;__import__()&lt;/code&gt;函数。&lt;code&gt;__import__()&lt;/code&gt;的返回值用于执行import语句的名称绑定操作。有关该名称绑定操作的确切详细信息，请参见import语句。&lt;/p&gt;
+
+&lt;p&gt;直接调用&lt;code&gt;__import__()&lt;/code&gt;只执行模块搜索，如果找到，则执行模块创建操作。虽然可能会发生某些副作用，例如导入父包以及更新各种缓存（包括&lt;code&gt;sys.modules&lt;/code&gt;），但只有import语句会执行名称绑定操作。&lt;/p&gt;
+
+&lt;p&gt;当调用&lt;code&gt;__import__()&lt;/code&gt;作为import语句的一部分时，将调用标准的内置&lt;code&gt;__import__()&lt;/code&gt;。用于调用导入系统的其他机制（例如&lt;code&gt;importlib.import_module()&lt;/code&gt;）可以选择颠覆&lt;code&gt;__import__()&lt;/code&gt;并使用其自己的解决方案来实现导入语义。&lt;/p&gt;
+
+&lt;p&gt;首次导入模块时，Python会搜索模块，如果找到，它会创建一个模块对象[1]，并初始化它。如果找不到指定的模块，则会引发ImportError。当执行导入机制时，Python实现各种策略来搜索命名的模块。这些策略可以通过使用下面部分中描述的各种钩子来修改和扩展。&lt;/p&gt;
+
+&lt;p&gt;在版本3.3中更改：导入系统更新成完全实现 PEP 302的第二阶段。不再有任何隐式导入机制 - 完整导入系统通过sys.meta_path暴露。此外，已实现原生命名空间包支持（参见 PEP 420）。&lt;/p&gt;
+
+&lt;h3 id=&#34;1-importlib&#34;&gt;1. importlib&lt;/h3&gt;
+
+&lt;p&gt;importlib模块提供了一个丰富的API，用于与导入系统进行交互。例如&lt;code&gt;importlib.import_module()&lt;/code&gt;提供了一个比内置的&lt;code&gt;__import__()&lt;/code&gt;更简单的API来调用导入机制。有关其他详细信息，请参阅importlib库文档。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-包-packages&#34;&gt;2. 包&lt;code&gt;Packages&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;Python只有一种模块对象，所有的模块都是这种类型，不管这个模块是否是用Python，C，或者其他语言实现。为了帮助组织模块并提供命名层次结构，Python有一个概念：包。&lt;/p&gt;
+
+&lt;p&gt;你可以认为包是文件系统中的一个目录并且模块作为文件存放于目录中，但是不要做这种太字面化的类比因为包和模块不需要源于文件系统。从这篇文档的目的是我们用目录和文件这个方便的类比来解释包和模块。和文件系统一样，包有有层次的组织着，并且包本身也会包含子包，规则的模块也一样。&lt;/p&gt;
+
+&lt;p&gt;重要的是请注意所有的包都是模块，但不是所有的模块都是包。换句话说，包只是一种特殊形式的模块。具体来说，包含&lt;code&gt;__path__&lt;/code&gt;属性的任何模块都被视为包。&lt;/p&gt;
+
+&lt;p&gt;所有的模块都有名字。子模块的名字是通过点号从父模块中分离出来的，和Python标准的属性访问语法相似。因此，您可能有一个名为sys的模块和一个名为email的软件包，其中包含一个名为&lt;code&gt;email.mime&lt;/code&gt;的子包，名为&lt;code&gt;email.mime.text&lt;/code&gt;的子包。&lt;/p&gt;
+
+&lt;h5 id=&#34;2-1-普通包&#34;&gt;2.1 普通包&lt;/h5&gt;
+
+&lt;p&gt;Python defines two types of packages, regular packages and namespace packages. Regular packages are traditional packages as they existed in Python 3.2 and earlier. A regular package is typically implemented as a directory containing an &lt;strong&gt;init&lt;/strong&gt;.py file. When a regular package is imported, this &lt;strong&gt;init&lt;/strong&gt;.py file is  executed, and the objects it defines are bound to names in the package’s namespace. The &lt;strong&gt;init&lt;/strong&gt;.py file can contain the same Python code that any other module can contain, and Python will add some additional attributes to the module when it is imported.&lt;/p&gt;
+
+&lt;p&gt;Python定义了两种包，普通包和名字空间包。普通包就是传统的包，它们在Python3.2和更早的版本中就存在。一个普通包就是一个含有一个&lt;code&gt;__init__py&lt;/code&gt;文件的目录。当一个包被导入时，这个&lt;code&gt;__init__.py&lt;/code&gt;文件会在暗中执行，它定义的对象会绑定到包的名字空间中的名字上。&lt;code&gt;__init__.py&lt;/code&gt;文件中可以包含其它模块可以包含的Python代码，而且Python导入这个模块时可以添加些额外的属性到模块中。&lt;/p&gt;
+
+&lt;p&gt;比如：下面的文件系统层次定义了一个个包含3个子包的父包。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;parent/
+    __init__.py
+    one/
+        __init__.py
+    two/
+        __init__.py
+    three/
+        __init__.py
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;导入&lt;code&gt;parent.one&lt;/code&gt;会暗中执行&lt;code&gt;parent/__init__.py&lt;/code&gt;和&lt;code&gt;parent/one/__init__.py&lt;/code&gt;。之后再导入&lt;code&gt;parent.two&lt;/code&gt;或者&lt;code&gt;parent.three&lt;/code&gt;会执行&lt;code&gt;parent/two/__init__.py&lt;/code&gt;或者&lt;code&gt;parent/three/__init__.py&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;2-2-名字空间包&#34;&gt;2.2 名字空间包&lt;/h5&gt;
+
+&lt;h3 id=&#34;3-搜索&#34;&gt;3. 搜索&lt;/h3&gt;
+
+&lt;h5 id=&#34;3-1-模块缓存-the-module-cache&#34;&gt;3.1 模块缓存&lt;code&gt;The module cache&lt;/code&gt;&lt;/h5&gt;
+
+&lt;h5 id=&#34;3-2-查询器与装载器-finders-and-loaders&#34;&gt;3.2 查询器与装载器&lt;code&gt;Finders and loaders&lt;/code&gt;&lt;/h5&gt;
+
+&lt;h5 id=&#34;3-3-导入钩子-import-hooks&#34;&gt;3.3 导入钩子&lt;code&gt;Import hooks&lt;/code&gt;&lt;/h5&gt;
+
+&lt;h5 id=&#34;3-4-元路径-meta-path&#34;&gt;3.4 元路径&lt;code&gt;meta path&lt;/code&gt;&lt;/h5&gt;
+
+&lt;h3 id=&#34;4-装载&#34;&gt;4. 装载&lt;/h3&gt;
+
+&lt;p&gt;当找到模块描述后，导入系统将使用它导入模块。这里模拟一下导入过程中发生了什么：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;module = None
+if spec.loader is not None and hasattr(spec.loader, &#39;create_module&#39;):
+    # It is assumed &#39;exec_module&#39; will also be defined on the loader.
+    module = spec.loader.create_module(spec)
+if module is None:
+    module = ModuleType(spec.name)
+# The import-related module attributes get set here:
+_init_module_attrs(spec, module)
+
+if spec.loader is None:
+    if spec.submodule_search_locations is not None:
+        # namespace package
+        sys.modules[spec.name] = module
+    else:
+        # unsupported
+        raise ImportError
+elif not hasattr(spec.loader, &#39;exec_module&#39;):
+    module = spec.loader.load_module(spec.name)
+    # Set __loader__ and __package__ if missing.
+else:
+    sys.modules[spec.name] = module
+    try:
+        spec.loader.exec_module(module)
+    except BaseException:
+        try:
+            del sys.modules[spec.name]
+        except KeyError:
+            pass
+        raise
+return sys.modules[spec.name]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;注意以下内容：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;如果在&lt;code&gt;sys.modules&lt;/code&gt;中已经存在给定名称的模块对象，导入系统将会返回这个对象。&lt;/li&gt;
+&lt;li&gt;在装载器执行模块代码之前，模块将保存在&lt;code&gt;sys.modules&lt;/code&gt;中。这点非常重要，因为模块可能会导入自己（直接或间接）；把它预先添加到&lt;code&gt;sys.modules&lt;/code&gt;会避免循环绑定和反复装载。&lt;/li&gt;
+&lt;li&gt;如果装载失败，失败的模块 - 而且只有失败的模块 - 会从&lt;code&gt;sys.modules&lt;/code&gt;中移除。而&lt;code&gt;sys.modules&lt;/code&gt;中已有的模块，和导入过程中成功导入的那些模块仍然会保留在&lt;code&gt;sys.modules&lt;/code&gt;中。与之不同的是重新装载&lt;code&gt;reloading&lt;/code&gt;，即使失败也会保留在&lt;code&gt;sys.modules&lt;/code&gt;中。&lt;/li&gt;
+&lt;li&gt;当模块创建后但是还没有执行，导入机构会设置依赖导入&lt;code&gt;import-related&lt;/code&gt;的模块属性（&lt;code&gt;__init_module_attrs&lt;/code&gt;上边的伪代码例子中），在之后的部分会详细介绍。&lt;/li&gt;
+&lt;li&gt;执行模块时装在过程中很重要的一步，在这一步中会创建模块的名字空间。执行由装载器全权负责，它会决定生成什么和如何生成。&lt;/li&gt;
+&lt;li&gt;在装载过程中创建的模块有可能不是最终返回的模块，如果它被传递给&lt;code&gt;exec_module()&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;3.4版发生的变化：导入系统接管loader的引用功能，之前是由&lt;code&gt;importlib.abc.Loader.load_module()&lt;/code&gt;来执行。&lt;/p&gt;
+
+&lt;h5 id=&#34;4-1-装载器&#34;&gt;4.1 装载器&lt;/h5&gt;
+
+&lt;h5 id=&#34;4-2-子模块&#34;&gt;4.2 子模块&lt;/h5&gt;
+
+&lt;h5 id=&#34;4-3-模块描述&#34;&gt;4.3 模块描述&lt;/h5&gt;
+
+&lt;h5 id=&#34;4-4-导入时的模块属性&#34;&gt;4.4 导入时的模块属性&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;__name__&lt;/li&gt;
+&lt;li&gt;__loader__&lt;/li&gt;
+&lt;li&gt;__package__&lt;/li&gt;
+&lt;li&gt;__spec__&lt;/li&gt;
+&lt;li&gt;__path__&lt;/li&gt;
+&lt;li&gt;__file__&lt;/li&gt;
+&lt;li&gt;__cached__&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;4-5-module-path&#34;&gt;4.5 module.__path__&lt;/h5&gt;
+
+&lt;h5 id=&#34;4-6-module-reprs&#34;&gt;4.6 Module reprs&lt;/h5&gt;
+
+&lt;h3 id=&#34;5-基于路径的查找器&#34;&gt;5. 基于路径的查找器&lt;/h3&gt;
+
+&lt;h5 id=&#34;5-1-path-entry-finders&#34;&gt;5.1 Path entry finders&lt;/h5&gt;
+
+&lt;h5 id=&#34;5-2-path-entry-finder-protocol&#34;&gt;5.2 Path entry finder protocol&lt;/h5&gt;
+
+&lt;h3 id=&#34;6-替换标准的导入系统&#34;&gt;6. 替换标准的导入系统&lt;/h3&gt;
+
+&lt;p&gt;最可靠的替换整个导入系统的方法是删除&lt;code&gt;sys.meta_path&lt;/code&gt;的默认内容，用自定义的&lt;code&gt;meta path hook&lt;/code&gt;来彻底替换。&lt;/p&gt;
+
+&lt;p&gt;替换内置&lt;code&gt;__import__()&lt;/code&gt;函数就只能对导入系统的行为造成影响，而不能影响使用导入系统的其它API。这个技术可以在包内部使用，以修改包内部的导入行为。&lt;/p&gt;
+
+&lt;p&gt;为了有选择的避免通过&lt;code&gt;hook&lt;/code&gt;导入包早于扫描&lt;code&gt;meta path&lt;/code&gt;（甚至早于关闭整个标准导入系统），可以通过从&lt;code&gt;find_spec&lt;/code&gt;直接抛出&lt;code&gt;ModuleNoFoundError&lt;/code&gt;异常而不是返回一个&lt;code&gt;None&lt;/code&gt;。后者会让后续的&lt;code&gt;meta path&lt;/code&gt;搜索继续执行，而抛出异常会立即中断搜索。&lt;/p&gt;
+
+&lt;h3 id=&#34;7-main-的特殊考虑&#34;&gt;7. &lt;code&gt;__main__&lt;/code&gt;的特殊考虑&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;__main__&lt;/code&gt;模块是Python导入系统产生的特殊模块。就像别处提到的，&lt;code&gt;__main__&lt;/code&gt;模块是在解释器启动时被直接创建的，就像&lt;code&gt;sys&lt;/code&gt;和&lt;code&gt;builtings&lt;/code&gt;。但是与它们不同，&lt;code&gt;__main__&lt;/code&gt;不是严格意义上的内建模块。因为&lt;code&gt;__main__&lt;/code&gt;的创建方式由标志位、参数、以及解释器的实现来决定。&lt;/p&gt;
+
+&lt;h5 id=&#34;7-1-main-spec&#34;&gt;7.1 &lt;code&gt;__main__.__spec__&lt;/code&gt;&lt;/h5&gt;
+
+&lt;p&gt;根据&lt;code&gt;__main__&lt;/code&gt;的创建方式，&lt;code&gt;__main__.__spec__&lt;/code&gt;会被设置为合适的值或者&lt;code&gt;None&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;当Python启动时使用&lt;code&gt;-m&lt;/code&gt;参数，&lt;code&gt;__spec__&lt;/code&gt;的值就是对应模块或者包的模块名。当执行一个目录、&lt;code&gt;zip&lt;/code&gt;文件或其他&lt;code&gt;sys.path&lt;/code&gt;时，&lt;code&gt;__main__&lt;/code&gt;模块也会被装载，这时&lt;code&gt;__spec__&lt;/code&gt;也
+会产生。&lt;/p&gt;
+
+&lt;p&gt;在以下情况下&lt;code&gt;__main__.__spec__&lt;/code&gt;被设置为&lt;code&gt;None&lt;/code&gt;，当产生&lt;code&gt;__main__&lt;/code&gt;的代码不在一个可导入模块下：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;解释器命令行&lt;/li&gt;
+&lt;li&gt;通过&lt;code&gt;-c&lt;/code&gt;转换&lt;/li&gt;
+&lt;li&gt;从&lt;code&gt;stdin&lt;/code&gt;读入后执行&lt;/li&gt;
+&lt;li&gt;直接执行源码或者字节码文件&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;注意最后一种情况里&lt;code&gt;__main__.__spec__&lt;/code&gt;通常时&lt;code&gt;None&lt;/code&gt;，即便这个文件可以当作模块字节导入。如果&lt;code&gt;__main__&lt;/code&gt;需要模块的元数据，执行时可以使用&lt;code&gt;-m&lt;/code&gt;参数。&lt;/p&gt;
+
+&lt;p&gt;注意即便&lt;code&gt;__main__&lt;/code&gt;对应一个可导入模块，而且&lt;code&gt;__main__.__spec__&lt;/code&gt;也照样设置了，它们仍然被看作不同的模块。这是因为代码块被&lt;code&gt;if __name__ == &amp;quot;__main__&amp;quot;&lt;/code&gt;保护着：只有当模块是用于创建&lt;code&gt;__main__&lt;/code&gt;名字空间，而不是是普通的导入才会被执行。&lt;/p&gt;
+
+&lt;h3 id=&#34;8-open-issues&#34;&gt;8. Open issues&lt;/h3&gt;
+
+&lt;h3 id=&#34;9-references&#34;&gt;9. References&lt;/h3&gt;
+
+&lt;p&gt;导入机制从Python诞生至今不断的进化。原始的包说明书现在仍然可以使用，尽管很多细节已经发生了变化。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;翻的真烂！给自己刨的坑略多、略大！愚公移山慢慢弄吧！&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

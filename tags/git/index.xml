@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Git on asdfsx</title>
+    <link>https://asdfsx.github.io/tags/git/index.xml</link>
+    <description>Recent content in Git on asdfsx</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <atom:link href="https://asdfsx.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>git学习</title>
+      <link>https://asdfsx.github.io/post/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/git%E5%AD%A6%E4%B9%A0/</link>
+      <pubDate>Thu, 08 Dec 2016 17:05:34 +0800</pubDate>
+      
+      <guid>https://asdfsx.github.io/post/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/git%E5%AD%A6%E4%B9%A0/</guid>
+      <description>
+
+&lt;p&gt;参考资料：&lt;br /&gt;
+&lt;a href=&#34;https://git-scm.com/book/zh/v2&#34;&gt;https://git-scm.com/book/zh/v2&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;http://igit.linuxtoy.org/contents.html&#34;&gt;http://igit.linuxtoy.org/contents.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;git最基础操作&#34;&gt;git最基础操作&lt;/h2&gt;
+
+&lt;p&gt;配置用户&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git config --global user.email &amp;quot;user@gmail.com&amp;quot;
+git config --global user.name &amp;quot;user&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;本地创建git管理的项目&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir git_study
+git init
+git status
+git log
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;创建文件并提交&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo &amp;quot;hello Git&amp;quot; &amp;gt; readme.txt
+git add readme.txt
+git status
+git commit -m &amp;quot;project init&amp;quot;
+git log
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;更改文件并提交&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo &amp;quot;Git is Cool&amp;quot; &amp;gt;&amp;gt; readme.txt
+git status
+git diff
+git add readme.txt
+git status
+git commit -m &amp;quot;Git is Cool&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在上边的操作我们可以发现，在一个Git项目中文件的状态大概分成下面的两大类，而第二大类又分为三小类：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;未被跟踪的文件（untracked file）&lt;/li&gt;
+&lt;li&gt;已被跟踪的文件（tracked file）
+
+&lt;ol&gt;
+&lt;li&gt;被修改但未被暂存的文件（changed but not updated或modified）&lt;/li&gt;
+&lt;li&gt;已暂存可以被提交的文件（changes to be committed 或staged）&lt;/li&gt;
+&lt;li&gt;自上次提交以来，未修改的文件(clean 或 unmodified)&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;git是如何使用sha来管理内容&#34;&gt;git是如何使用sha来管理内容&lt;/h2&gt;
+
+&lt;p&gt;首先git的所有数据都保存在&lt;code&gt;.git&lt;/code&gt;目录下
+在这个目录下&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;find .git/objects
+
+......
+.git/objects/e9/13915d3d5bd4830fdd7a13d73a896a09bd3478
+.git/objects/ee
+.git/objects/ee/4e9782bf8b320c60a8d5d7aa070d47d752dba1
+.git/objects/ee/e94f02c4c32247c7aa5b87829f37693be90be4
+.git/objects/ef
+......
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;没有看到任何一个文件叫做readme.txt，那么文件存在哪里了呢？&lt;/p&gt;
+
+&lt;p&gt;执行&lt;code&gt;git log&lt;/code&gt;查看git历史&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git log
+  
+=============================================  
+commit e581b637ae12cc7c9975af04dc2bcc58a93b1274
+Author: user &amp;lt;user@gmail.com&amp;gt;
+Date:   Thu Jan 24 15:46:53 2013 +0800
+
+    Git is Cool
+=============================================
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以看到commit上有一串编号，这个就是这次提交的sha编号&lt;br /&gt;
+我们可以用&lt;code&gt;git cat-file&lt;/code&gt;看看这个编号对应的内容&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git cat-file -p e581b637ae12cc7c9975af04dc2bcc58a93b1274  
+
+=============================================
+tree f07fcbff9c87b1a3c3d4393184e2011744c7966e
+parent 1e7bd8de9ca7a624364a986243c9d26b4efe5ffa
+author user &amp;lt;user@gmail.com&amp;gt; 1359013613 +0800
+committer user &amp;lt;user@gmail.com&amp;gt; 1359013613 +0800
+
+Git is Cool
+=============================================
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以看到tree、parent有与之前类似的编码&lt;br /&gt;
+我们继续用&lt;code&gt;git cat-file&lt;/code&gt;看看它们的内容&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git cat-file -p f07fcbff9c87b1a3c3d4393184e2011744c7966e  
+
+=============================================
+100644 blob 49ec0d692868a0d17f3e663314e7601a55ae766a    readme.txt
+=============================================
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;从这个结果里我们又看到一个sha码&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git cat-file -p 49ec0d692868a0d17f3e663314e7601a55ae766a
+
+=============================================
+hello Git
+Git is Cool
+=============================================
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其实就是readme.txt的内容
+所以之前一个命令的结果，就可以解释为blob类型的数据，数据对应一个sha码，数据的文件名是readme.txt&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git cat-file -p 1e7bd8de9ca7a624364a986243c9d26b4efe5ffa  
+
+=============================================
+tree be2e44a49d0da5a3e1913b91d234eea7b0b610fe
+author user &amp;lt;user@gmail.com&amp;gt; 1359013080 +0800
+committer user &amp;lt;user@gmail.com&amp;gt; 1359013080 +0800
+
+project init
+=============================================
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后我们就找到了项目初建的地方&lt;/p&gt;
+
+&lt;h2 id=&#34;分支的简单实用&#34;&gt;分支的简单实用&lt;/h2&gt;
+
+&lt;p&gt;创建分支&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git branch develop
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;查看所有分支&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git branch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;切换分支&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git checkout develop
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;合并分支develop到master&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git checkout master
+git merge develop
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;保留合并之前的分支信息&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git merge develop --no-ff
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;删除已合并的分支&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git branch －d develop
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;强制删除分支&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git branch －D develop
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;查看历史&#34;&gt;查看历史&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;git log&lt;/code&gt;命令可以用来查看历史，配合参数可以看到不同的内容&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git log --oneline --graph --decorate  
+git log --pretty=format:&#39;%h : %s&#39; --topo-order --graph  
+git log --pretty=&#39;%h : %s&#39; --topo-order --graph  
+git log --graph  
+git log --graph --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;为了方便使用，我们可以创建alias, 编辑&lt;code&gt;.git/config&lt;/code&gt;，并添加下边的内容&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[alias]
+     lg = log --graph --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;或者执行命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git config --global alias.lg &amp;quot;log --graph --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后查看日志&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git lg  
+git lg -p  
+git lg --all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;标签的使用&#34;&gt;标签的使用&lt;/h2&gt;
+
+&lt;p&gt;列出标签&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git tag -l
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;创建标签&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;删除标签&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;远程服务器的管理&#34;&gt;远程服务器的管理&lt;/h2&gt;
+
+&lt;p&gt;显示当前项目有几个远程库&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git remote -v
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;增加新的远程库&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git remote add gitcafe &#39;git@gitcafe.com:user/project.git&#39;
+git push -u gitcafe master
+
+git remote add gitshell &#39;git@gitshell.com:user/project.git&#39;
+git push -u gitshell master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;远程库改名&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git remote rename gitcafe gitcafe1
+git remote rename gitshell gitshell1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;删除远程库&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git remote rm gitcafe
+git remote rm gitshell
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;一些所谓的奇技淫巧&#34;&gt;一些所谓的奇技淫巧&lt;/h2&gt;
+
+&lt;p&gt;修改git传输字节限制&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git config http.postBuffer  524288000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;找回reset后丢失某些节点&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git reflog
+b5ee6a7 HEAD@{0}: reset: moving to b5ee6a76f40e3dc4170b544ecf4b895b54e01863
+390744b HEAD@{1}: commit (amend): need ref host instead of a utm param list
+3da3e39 HEAD@{2}: checkout: moving from newfeature2 to newfeature2
+3da3e39 HEAD@{3}: checkout: moving from ptmind_etl_japan_250million to newfeature2
+1861139 HEAD@{4}: checkout: moving from ptmind_etl_china_test to ptmind_etl_japan_250million
+$ git cherry-pick 390744b
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;git https使用用户名密码&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git clone https://username:passowrd@gitshell.com/user/project.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;最后的最后&#34;&gt;最后的最后&lt;/h2&gt;
+
+&lt;p&gt;使用git，一定要常看它的版本树，了解项目的更新合并情况。&lt;br /&gt;
+为此选择一款好的gui客户端是很有必要的。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>git常用命令</title>
+      <link>https://asdfsx.github.io/post/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</link>
+      <pubDate>Tue, 06 Dec 2016 17:34:52 +0800</pubDate>
+      
+      <guid>https://asdfsx.github.io/post/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://ohrdj7osp.bkt.clouddn.com/5B4C5A20-DCFA-4BBA-910D-3B39A728AD06.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="odoo的阶段性总结：服务器的启动、模块的加载、请求处理、页面生成">
+  <meta name="generator" content="Hugo 0.19-DEV" />
+
+  <title>odoo的阶段性总结：服务器的启动、模块的加载、请求处理、页面生成 &middot; asdfsx</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://asdfsx.github.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://asdfsx.github.io/img/favicon.ico" type="image/x-icon" />
+
+  
+    <link rel="stylesheet" href="https://asdfsx.github.io/css/my.css">
+  
+  
+    <script src="https://asdfsx.github.io/js/my.js"></script>
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://asdfsx.github.io/">asdfsx</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/tags/"><i class='fa fa-list fa-fw'></i>Tags</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://asdfsx.github.io/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://plus.google.com/+asdfsx" target="_blank"><i class="fa fa-google-plus-square fa-fw"></i>Google+</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://weibo.com/*" target="_blank"><i class="fa fa-weibo fa-fw"></i>Weibo</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/asdfsx" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://bitbucket.org/asdfsx" target="_blank"><i class="fa fa-bitbucket-square fa-fw"></i>Bitbucket</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2016. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>odoo的阶段性总结：服务器的启动、模块的加载、请求处理、页面生成</h1>
+  <h2>odoo的阶段性总结：服务器的启动、模块的加载、请求处理、页面生成</h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>05 Jan 2017, 15:32</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+<p>经过漫长的阅读代码，搞清了启动的过程。先简单做个总结。如有遗漏之后再做补充。</p>
+
+<h3 id="系统的启动-模块的加载">系统的启动，模块的加载</h3>
+
+<p>结合之前研究过的<code>registry</code>，系统启动时会发生如下动作：</p>
+
+<ul>
+<li>首先加载全局模块<code>web</code>，<code>web_kanban</code>。（在没有确定数据库地址之前，只能显示数据库选择页面。所以这个时候只需要这两个模块就可以了）
+
+<ul>
+<li>在<code>import controller</code>时，由于元类的作用，<code>controller</code>类会自动加载到解释器中</li>
+</ul></li>
+<li>根据配置创建web服务器（线程的、进程的），所有的服务器都使用<code>odoo.service.wsgi_server.application</code>来处理请求。
+
+<ul>
+<li>具体处理请求的是<code>odoo.http.Root</code>
+
+<ul>
+<li>根据需要看要不要再次加载插件</li>
+<li>只有当首次接收请求的时候，才会执行加载插件</li>
+</ul></li>
+</ul></li>
+<li>启动服务器
+
+<ul>
+<li>在启动web服务器之前，首先创建<code>registry</code>。（在进程的实现中，registry会在进程<code>fork</code>之前创建，<code>fork</code>之后<code>registry</code>会被拷贝到各个进程的内存空间中）</li>
+<li>当数据库选定之后，<code>registry</code>会根据配置去加载模块
+
+<ul>
+<li>先加载<code>base</code>模块
+
+<ul>
+<li>先创建<code>base</code>模块的依赖关系图<code>graph</code></li>
+<li>使用<code>graph</code>加载<code>base</code>
+
+<ul>
+<li>获取模块中的所有模型</li>
+<li>组装配置模型类
+
+<ul>
+<li>根据模型的属性，创建新的模型类，并将模型类注册到<code>registry</code>中</li>
+<li>根据模型的属性，为新的模型类添加字段，关联关系等</li>
+</ul></li>
+<li>初始化模型
+
+<ul>
+<li>根据模型类，创建模型类对应的表</li>
+</ul></li>
+<li>装载定义在<code>__manifast__.py</code>中的模块的数据
+
+<ul>
+<li>获取文件列表</li>
+<li>调用<code>odoo.tools.convert.convert_file</code>装载文件。
+
+<ul>
+<li>判断文件类型，根据文件类型使用不同的方法解析</li>
+<li>根据情况将数据写入<code>ir.model.data</code></li>
+<li>根据情况将数据写入模型自己的数据表中</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>根据配置标注其它需要加载的模块</li>
+<li>根据标注加载模块
+
+<ul>
+<li>使用<code>graph</code>进行模块的记载（下边以<code>web</code>模块为例，看一下模块数据的加载）
+
+<ul>
+<li>获取数据文件：<code>views/webclient_templates.xml</code></li>
+<li>调用<code>odoo.tools.convert.convert_file</code>装载文件
+
+<ul>
+<li>创建<code>xml</code>专用的解析器对象<code>xml_import</code></li>
+<li>解析<code>xml</code>文件
+
+<ul>
+<li>遍历整个<code>xml</code>文档树，根据节点的类型调用不同的函数来进行处理。具体到<code>views/webclient_templates.xml</code>，这个文件由<code>template</code>组成，对应的函数是<code>_tag_template</code>。这个函数在结尾调用<code>_tag_record</code>，这个函数会将数据文件里的内容写入<code>ir_model_data</code>表中。</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>模块加载完毕后，服务器开始运行。等待处理请求。</li>
+</ul></li>
+</ul>
+
+<h3 id="请求处理">请求处理</h3>
+
+<ul>
+<li>首次接受到请求
+
+<ul>
+<li><code>odoo.http.Root</code>根据请求创建<code>JsonRequest</code>或者<code>HttpRequest</code></li>
+<li>从<code>Registry</code>中查找<code>ir.http</code>模型</li>
+<li>使用<code>ir.http</code>模型<code>_dispatch</code>转发请求
+
+<ul>
+<li><code>_dispatch</code>查询路由表
+
+<ul>
+<li>如果路由表不存在，使用<code>odoo.http.routing_map</code>创建路由表</li>
+<li>使用路由表获取处理请求的具体<code>controller</code></li>
+<li>校验用户</li>
+<li>将<code>controller</code>放入请求对象中</li>
+<li>调用<code>request.dispatch</code>处理请求</li>
+</ul></li>
+</ul></li>
+<li>在<code>request.dispatch</code>函数中（以HttpRequest为例），对请求参数、请求头、等进行校验，然后通过调用<code>_call_function</code>来调用之前放入<code>request</code>的<code>controller</code>。</li>
+<li>如果<code>controller</code>中的处理函数设置了延迟生成页面，则在<code>dispatch</code>结束的时候生成页面。</li>
+</ul></li>
+</ul>
+
+<h3 id="页面生成">页面生成</h3>
+
+<p>请求处理完成后，要生成显示的页面。以入口地址为例：</p>
+
+<ul>
+<li>处理<code>/</code>请求的<code>controller</code>为<code>addon.web.controllers.main.Home</code>，定义在<code>web</code>模块中，处理方式是直接跳转到<code>/web</code>。<br /></li>
+<li>处理<code>/web</code>请求的<code>controller</code>同上，使用<code>web.webclient_bootstrap</code>这个模版来生成页面。</li>
+</ul>
+
+<pre><code>class Home(http.Controller):
+    @http.route('/', type='http', auth=&quot;none&quot;)
+    def index(self, s_action=None, db=None, **kw):
+        return http.local_redirect('/web', query=request.params, keep_hash=True)
+        
+    @http.route('/web', type='http', auth=&quot;none&quot;)
+    def web_client(self, s_action=None, **kw):
+        ensure_db()
+        if not request.session.uid:
+            return werkzeug.utils.redirect('/web/login', 303)
+        if kw.get('redirect'):
+            return werkzeug.utils.redirect(kw.get('redirect'), 303)
+
+        request.uid = request.session.uid
+        context = request.env['ir.http'].webclient_rendering_context()
+
+        return request.render('web.webclient_bootstrap', qcontext=context)
+</code></pre>
+
+<ul>
+<li>请求的处理，之前已经提到过了。<code>request.render</code>函数里，会创建<code>Response</code>对象。不管是否使用延迟创建页面，最终是通过<code>response.render</code>来生成页面。</li>
+<li><code>response.render</code>会用<code>ir.ui.view</code>模型来根据模版来创建页面。具体到<code>/web</code>请求的处理，就是使用<code>ir.ui.view</code>模型的<code>render_template</code>函数，利用<code>web.webclient_bootstrap</code>模版来创建页面。
+
+<ul>
+<li>先用<code>ir.ui.view</code>模型的<code>get_view_id</code>函数中，先在<code>ir.model.data</code>模型中查找模版：根据模版的名字，获取<code>res_id</code>：
+<code>
+select ir_model_data.id from ir_model_data where module='web' and name='webclient_bootstrap'
+</code></li>
+<li>使用基类的<code>browse</code>函数，创建一个<code>View</code>对象，保存<code>res_id</code></li>
+<li>调用<code>View</code>的<code>render</code>函数
+
+<ul>
+<li>调用<code>ir.qweb</code>的<code>render</code>函数
+
+<ul>
+<li>调用<code>QWeb</code>的<code>render</code>函数
+
+<ul>
+<li>使用<code>ir.qweb</code>的<code>load</code>读入模版
+
+<ul>
+<li>使用<code>ir.ui.view</code>中的<code>read_template</code>读入模版
+
+<ul>
+<li>从<code>ir_ui_view</code>表中获取<code>arch_fs</code>信息，然后读取对应的文件作为<code>arch</code>。</li>
+</ul></li>
+</ul></li>
+<li>调用<code>ast</code>对模版进行处理，生成一个<code>python</code>函数</li>
+<li>用生成的函数生成最终的页面</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>通过访问<code>/web</code>只是获得了页面的框架、样式表、js等静态资源。然后<code>odoo</code>会通过自己实现的一套<code>js</code>框架，从服务器获取展示所需的其它部分绘制到页面上。</p>
+
+<p>接下来的部分基于对前端的一些猜测：
+当浏览器打开由模版生成的页面后，将页面上相关的静态资源下载到本地。其中的<code>js</code>加载到浏览器后，会向服务器发起请求，来获取当前页面上要的元素：</p>
+
+<ul>
+<li><p>/web/action/load<br />
+获取要展示模块的行为<br />
+json请求：</p>
+
+<pre><code>{jsonrpc:&quot;2.0&quot;,method=&quot;call&quot;,params:{action_id:261}}
+</code></pre>
+
+<p>服务器会从<code>ir_action</code>中查询<code>action_id</code>对应的记录，并返回<code>action</code>相关的信息</p>
+
+<pre><code>{ jsonrpc:&quot;2.0&quot;,
+result:{ ...
+    xml_id:&quot;qingjia.action_qingjia_qingjd&quot;,
+    ...
+    res_model:&quot;qingjiaj.qingjd&quot;,
+    search_view:&quot;{'name':'default','arch':....}&quot;,
+    ..
+    }
+}
+</code></pre>
+
+<p>odoo的js框架会根据收到的数据，在页面上添加响应的元素（如按钮）</p></li>
+
+<li><p>/web/dataset/call_kw/qingjia.qingjd/load_views<br />
+加载模块展示需要用到的view
+json请求：</p>
+
+<pre><code>{jsonrpc:&quot;2.0&quot;, method:&quot;call&quot;, params:{
+model:&quot;qingjia.qingjd&quot;,
+method:&quot;load_views&quot;,
+kwargs:{
+views:[[null, &quot;list&quot;],[null,&quot;from&quot;],[false,&quot;search&quot;]],
+...
+}
+}}
+</code></pre>
+
+<p>服务器会服务器返回结果：</p>
+
+<pre><code>{jsonrpc:&quot;2.0&quot;
+     result:{
+         fields:{
+             id:{...},
+             create_date:{...},
+             ...
+         },
+         fields_views:{
+             form:{},
+             list:{},
+             search:{},
+         },
+         ...
+     }
+}
+</code></pre>
+
+<p>可以看到在一次请求中，获得了3种view。这些结果会缓存在浏览器，odoo的js框架之后就不需要反复的去获取view。同时js框架会根据以上内容在页面上生成相应的内容。</p></li>
+</ul>
+
+<p>&hellip;&hellip;</p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84Field/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://asdfsx.github.io/post/odoo/odoo%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84Field/">odoo模型中的Field</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://asdfsx.github.io/post/odoo/odoo%E4%B8%AD%E9%A1%B5%E9%9D%A2%E7%9A%84%E7%94%9F%E6%88%90/">odoo中页面的生成</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E4%B8%AD%E9%A1%B5%E9%9D%A2%E7%9A%84%E7%94%9F%E6%88%90/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'Your Disqus shortname';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="https://asdfsx.github.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'Your Google Analytics tracking ID', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

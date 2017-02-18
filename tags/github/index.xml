@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Github on asdfsx</title>
+    <link>https://asdfsx.github.io/tags/github/index.xml</link>
+    <description>Recent content in Github on asdfsx</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <atom:link href="https://asdfsx.github.io/tags/github/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>使用hugo在github上搭建blog</title>
+      <link>https://asdfsx.github.io/post/hugo/%E4%BD%BF%E7%94%A8hugo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BAblog/</link>
+      <pubDate>Tue, 06 Dec 2016 19:29:11 +0800</pubDate>
+      
+      <guid>https://asdfsx.github.io/post/hugo/%E4%BD%BF%E7%94%A8hugo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BAblog/</guid>
+      <description>&lt;p&gt;安装golang的开发环境&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;brew install golang&lt;br /&gt;
+cat &amp;ldquo;export GOPATH=/root/gocode&amp;rdquo; &amp;gt;&amp;gt; ~/.bash_profile&lt;br /&gt;
+cat &amp;ldquo;export PATH=${GOPATH}/bin:$PATH&amp;rdquo; &amp;gt;&amp;gt; ~/.bash_profile&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;安装hugo&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;go get -v github.com/spf13/hugo&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;源码会下载到$GOPATH/src下
+可执行文件在$GOPATH/bin下
+如果没有生成可执行文件，就使用go install手动安装一下hugo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;创建一个站点&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;hugo new site localhost&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;执行命令的目录下会生成一个新目录localhost
+该站点的所有文件都保存在该目录下
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;给localhost下载一个theme&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;cd localhost/themes&lt;br /&gt;
+git clone &lt;a href=&#34;https://github.com/enten/hyde-y.git&#39;&#34;&gt;https://github.com/enten/hyde-y.git&#39;&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;修改localhost站点的配置, 用下边的值覆盖config.toml&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;vi config.toml&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;# hostname (and path) to the root eg. http://spf13.com/
+baseurl = &amp;quot;http://asdfsx.github.io&amp;quot;
+
+# Site title
+title = &amp;quot;asdfsx&amp;quot;
+
+# Copyright
+copyright = &amp;quot;(c) 2016 asdfsx.&amp;quot;
+
+# Language
+languageCode = &amp;quot;en-EN&amp;quot;
+
+# Metadata format
+# &amp;quot;yaml&amp;quot;, &amp;quot;toml&amp;quot;, &amp;quot;json&amp;quot;
+metaDataFormat = &amp;quot;toml&amp;quot;
+
+# Theme to use (located in /themes/THEMENAME/)
+theme = &amp;quot;hyde-y&amp;quot;
+
+# Pagination
+paginate = 10
+paginatePath = &amp;quot;page&amp;quot;
+
+# Enable Disqus integration
+#disqusShortname = &amp;quot;your_disqus_shortname&amp;quot;
+
+#[permalinks]
+#    post = &amp;quot;/:year/:month/:day/:slug/&amp;quot;
+#    code = &amp;quot;/:slug/&amp;quot;
+
+[taxonomies]
+    tag = &amp;quot;tags&amp;quot;
+    topic = &amp;quot;topics&amp;quot;
+
+[author]
+    name = &amp;quot;yourname&amp;quot;
+    email = &amp;quot;yourname@example.com&amp;quot;
+
+#
+# All parameters below here are optional and can be mixed and matched.
+#
+[params]
+    # You can use markdown here.
+    brand = &amp;quot;asdfsx&amp;quot;
+    topline = &amp;quot;sam&#39;s bodega&amp;quot;
+    footline = &amp;quot;code with &amp;lt;i class=&#39;fa fa-heart&#39;&amp;gt;&amp;lt;/i&amp;gt;&amp;quot;
+
+    # Sidebar position
+    # false, true, &amp;quot;left&amp;quot;, &amp;quot;right&amp;quot;
+    sidebar = &amp;quot;left&amp;quot;
+
+    # Text for the top menu link, which goes the root URL for the site.
+    # Default (if omitted) is &amp;quot;Home&amp;quot;.
+    home = &amp;quot;home&amp;quot;
+
+    # Select a syntax highight.
+    # Check the static/css/highlight directory for options.
+    highlight = &amp;quot;default&amp;quot;
+
+    # Google Analytics.
+    googleAnalytics = &amp;quot;Your Google Analytics tracking code&amp;quot;
+
+    # Sidebar social links.
+    github = &amp;quot;enten/hugo-boilerplate&amp;quot; # Your Github profile ID
+    bitbucket = &amp;quot;&amp;quot; # Your Bitbucket profile ID
+    linkedin = &amp;quot;&amp;quot; # Your LinkedIn profile ID (from public URL)
+    googleplus = &amp;quot;&amp;quot; # Your Google+ profile ID
+    facebook = &amp;quot;&amp;quot; # Your Facebook profile ID
+    twitter = &amp;quot;&amp;quot; # Your Twitter profile ID
+    youtube = &amp;quot;&amp;quot;  # Your Youtube channel ID
+    flattr = &amp;quot;&amp;quot;  # populate with your flattr uid
+    flickr = &amp;quot;&amp;quot; # Your Flickr profile ID
+    vimeo = &amp;quot;&amp;quot; # Your Vimeo profile ID
+
+    # Sidebar RSS link: will only show up if there is a RSS feed
+    # associated with the current page
+    rss = true
+
+[blackfriday]
+    angledQuotes = true
+    fractions = false
+    hrefTargetBlank = false
+    latexDashes = true
+    plainIdAnchors = true
+    extensions = []
+    extensionmask = []
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;修改侧边栏的菜单, 用下边的覆盖data/Menu.toml&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;vi data/Menu.toml&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;[about]
+    Name = &amp;quot;About&amp;quot;
+    URL = &amp;quot;/about/&amp;quot;
+[tags]
+    Name = &amp;quot;Tags&amp;quot;
+    URL = &amp;quot;/tags&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;给localhost站点创建一个文章&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;cd localhost&lt;br /&gt;
+hugo new post/first.md&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;先进入localhost目录，创建一篇文章。文章会在content目录里生成
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;启动hugo server&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;hugo server &amp;ndash;theme=hyde-y &amp;ndash;buildDrafts &amp;ndash;watch&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;生成静态资源&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;hugo &amp;ndash;theme=hyde-y &amp;ndash;baseUrl=&lt;a href=&#34;https://asdfsx.github.io/&#34;&gt;https://asdfsx.github.io/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;注意 baseurl里用了https。因为github现在全站使用https。
+如果不指定https，会用http来生成内部资源的链接。
+当加载css、js时可能会发生 “Blocked loading mixed active content” 的问题。
+导致页面显示异常
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;经过上边一步，静态资源生成，并保存在public目录下，接下来把public下的内容都上传到github上就好了&lt;/p&gt;
+
+&lt;p&gt;首先在GitHub 上创建一个repository,名字为: username.github.io&lt;br /&gt;
+然后将public下的内容都传到该项目里&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;cd public&lt;br /&gt;
+git init&lt;br /&gt;
+git add .&lt;br /&gt;
+git commit -m &amp;ldquo;first commit&amp;rdquo;&lt;br /&gt;
+git remote add origin &lt;a href=&#34;https://github.com/asdfsx/asdfsx.github.io&#34;&gt;https://github.com/asdfsx/asdfsx.github.io&lt;/a&gt;&lt;br /&gt;
+git push -u origin master&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;完成以上步骤以后就可以访问&lt;a href=&#34;https://asdfsx.github.io&#34;&gt;https://asdfsx.github.io&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

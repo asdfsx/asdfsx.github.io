@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on asdfsx</title>
+    <link>https://asdfsx.github.io/tags/golang/index.xml</link>
+    <description>Recent content in Golang on asdfsx</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <atom:link href="https://asdfsx.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>使用swarm在mac上搭建开发环境</title>
+      <link>https://asdfsx.github.io/post/docker/%E4%BD%BF%E7%94%A8swarm%E5%9C%A8mac%E4%B8%8A%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
+      <pubDate>Sat, 18 Feb 2017 10:12:39 +0800</pubDate>
+      
+      <guid>https://asdfsx.github.io/post/docker/%E4%BD%BF%E7%94%A8swarm%E5%9C%A8mac%E4%B8%8A%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
+      <description>
+
+&lt;h1 id=&#34;源起&#34;&gt;源起&lt;/h1&gt;
+
+&lt;p&gt;docker并不是新技术。作为 golang 社区内的旗舰级的项目，从诞生之初就吸引了很多人的瞩目，甚至可以说是获得了所有 golang 社区的人多瞩目吧。同时对推广 golang 也起了很大的作用。作为从一直关注着 golang 的人，大概2年前就开始尝试使用它了。不过由于其依赖 linux 的多项特性，导致在 mac 上使用必须要借助虚拟机，体验总是要差一点。最近经人提醒发现新的 docker for mac 可以不借助虚拟机就可以在 mac 上提供与 linux 上同样的体验，大喜！遂卸载虚拟机，打算用新软件搭个测试环境玩耍一下。&lt;/p&gt;
+
+&lt;h1 id=&#34;安装&#34;&gt;安装&lt;/h1&gt;
+
+&lt;p&gt;超级简单，照着说明来就好。顺便装上了 kitematic。这个确实也非常好用。&lt;/p&gt;
+
+&lt;h1 id=&#34;目标&#34;&gt;目标&lt;/h1&gt;
+
+&lt;p&gt;将一套以前用 python 实现的 kafka producer程序，移植到 golang 上。测试新程序的异常情况处理（特指连接失败的处理）。
+然后就被坑掉了。&lt;/p&gt;
+
+&lt;h1 id=&#34;坑1-网络的问题&#34;&gt;坑1 网络的问题&lt;/h1&gt;
+
+&lt;p&gt;最初只是想通过 docker 启动一个单点的 kafka，程序通过本地网络直接访问就可以了。通过之前安装的 kitematic 从 hub.docker.com 上下载了 spotify/kafka 镜像，并直接启动容器。通过kitematic连接到容器内，各项命令执行正常。但是执行程序的时候却发现，总是第一次连接成功后，后边的所有连接都是失败的。通过日志发现程序在第一次成功连接 kafka 之后，连接地址发生了变更，变成了容器内部的地址（直观的现象就是，端口从 kitematic 随机生成的 12345 变成了 9092）。然后又尝试了手动用 &amp;ndash;net=host 方式启动，结果彻底连不上了。&lt;/p&gt;
+
+&lt;p&gt;在对 github.com/shopify/sarama 简单的分析以后，发现它的连接过程是这样的：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;首次连接，根据配置信息连接服务器&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;连接成功后，从服务器获取broker信息&lt;/li&gt;
+&lt;li&gt;根据获得到的broker信息，连接其余的broker&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;问题就出现在最后一步上，服务器返回的broker信息中，网络地址都是容器内部的网络，没有办法从容器网络外部直接连接的。&lt;/p&gt;
+
+&lt;p&gt;通过在github上查 issue， google 上查资料，有了以下不负责任的猜想：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;目前的 docker for mac 使用了自己搞的 github.com/docker/hyperkit 来实现轻量级的虚拟化。从项目的说明可以看到，其基于 github.com/mist64/xhyve，借助了 mac os 自身的 hypervisor.framework 来实现虚拟化。在 developer.apple.com 上可以看到相关的说明和 api refrence。它是 OS X v10.10 新增的一个功能，从 api 上来看，可以实现对 cpu 和 mem 的简单控制
+，并没有提供对网络的控制。网络这块是 xhyve 自己通过 virto-net 实现的。这可能也是导致网络这块体验比较差的原因吧。完善网络还需要花不少时间。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;测试还是要继续，从外部连接容器网络有问题，那就把测试程序也放到容器环境中去。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;上SWARM吧，骚年！&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;用swarm解决网络问题&#34;&gt;用SWARM解决网络问题&lt;/h1&gt;
+
+&lt;p&gt;业界已有很多容器集群方案：kubernetes、mesos、swarm等。各有优势，选择swarm，主要原因还是方便，直接与docker集成。顺便吐槽，容器的江湖也是乱啊！&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;下载测试用到的镜像&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  docker pull nginx
+  docker pull spotify/kafka:latest
+  docker pull prom/busybox:latest
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;在本地创建swarm&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  docker swarm init
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;创建 overlay 网络&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  docker network  create \
+    --driver overlay \
+    --subnet 10.0.9.0/24 \
+    --opt encrypted \
+    my-network
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;简单测试一下 overlay 网络，以及swarm中的服务发现&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;启动一个 nginx 服务，并挂到 overlay 网络上&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;docker service create \
+  --replicas 1 \
+  --name my-web \
+  --network my-network \
+  nginx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;检查服务&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;docker service ps my-web
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;检查网络&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;docker network inspect my-network
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使用busybox检查服务发现，其实就是网络中的dns&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;docker service create \
+  --name dnstest \
+  --network my-network \
+  busybox \
+  sleep 3000
+  
+docker service ps dnstest
+
+docker exec -it dnstest.1.k8pjka8c9ikrpeje6spm6z8b5 sh
+
+nslookup my-web
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;启动 kafka 服务&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  docker service create \
+    --name kafka \
+    --network my-network \
+    spotify/kafka:latest
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;测试 kafka
+用测试 my-web 的方法测试 kafka&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;关闭服务&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;  docker service rm my-web
+  docker service rm kafka
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;测试程序打包&#34;&gt;测试程序打包&lt;/h1&gt;
+
+&lt;p&gt;golang 支持交叉编译，也就是说我在 mac 上就可以直接编译出 linux 上可以使用的可执行程序。这真是极大的方便了开发人员。只需要&lt;code&gt;GOOS=linux GOARCH=amd64 go build ${LDFLAGS} ${PACKAGE}&lt;/code&gt;就可以获得需要的可执行程序。然后简单的打包到镜像中就可以了。然后如愿以偿的掉入&amp;hellip;&lt;/p&gt;
+
+&lt;h1 id=&#34;坑2-时区的问题&#34;&gt;坑2 时区的问题&lt;/h1&gt;
+
+&lt;p&gt;鉴于 golang 的可执行文件只是依赖 glibc，打包时选择了官方busybox作为基础镜像，好处就是小！小到连时区的支持都缩减到只有 UTC 一个，然后程序执行的时候就悲剧了。找到了最简单的一个解决办法是，设置环境变量&lt;code&gt;TZ&lt;/code&gt;，设为&lt;code&gt;CST-8&lt;/code&gt;表示中国标准时间，设为&lt;code&gt;JST-9&lt;/code&gt;表示日本标准时间。这个对于 date 命令很好使，但是对于编译好的 golang 程序顶个球用。只能选择另外一个办法，换一个带时区支持的 &lt;code&gt;prom/busybox&lt;/code&gt; 镜像，然后在Dockerfile中增加一个命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;RUN mv /etc/localtime /etc/localtime.bak &amp;amp;&amp;amp; \
+    ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;时区问题搞定，测试顺利进行&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Golang代码组织结构</title>
+      <link>https://asdfsx.github.io/post/golang/Golang%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84/</link>
+      <pubDate>Sun, 11 Dec 2016 00:03:11 +0800</pubDate>
+      
+      <guid>https://asdfsx.github.io/post/golang/Golang%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84/</guid>
+      <description>
+
+&lt;p&gt;结合官方的文档，还有《The way to go》先来熟悉一下golang的代码结构。以下来自官方文档&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Go programs are constructed by linking together packages. A package in turn is constructed from one or more source files that together declare constants, types, variables and functions belonging to the package and which are accessible in all files of the same package. Those elements may be exported and used in another package.
+
+Each source file consists of a package clause defining the package to which it belongs, followed by a possibly empty set of import declarations that declare packages whose contents it wishes to use, followed by a possibly empty set of declarations of functions, types, variables, and constants.
+
+A package clause begins each source file and defines the package to which the file belongs.
+
+A set of files sharing the same PackageName form the implementation of a package. An implementation may require that all source files for a package inhabit the same directory.
+
+Within a package, package-level variables are initialized in declaration order but after any of the variables they depend on.
+
+Variables may also be initialized using functions named init declared in the package block, with no arguments and no result parameters.
+
+A complete program is created by linking a single, unimported package called the main package with all the packages it imports, transitively. The main package must have package name main and declare a function main that takes no arguments and returns no value.
+
+Program execution begins by initializing the main package and then invoking the function main. When that function invocation returns, the program exits. It does not wait for other (non-main) goroutines to complete.
+
+......
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;简单概括一下&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;golang的项目有多个包组成&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;每个包由多个文件组成&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;每个文件包含几部分：必须有的package声明，可能存在的import声明，可能存在的常量、类型、全局变量、函数等的声明&lt;/li&gt;
+&lt;li&gt;同一个包内的文件使用同一个package名称&lt;/li&gt;
+&lt;li&gt;同一个包内的文件要在同一个目录下&lt;/li&gt;
+&lt;li&gt;在包中，包级别的变量会按照声明顺序初始化&lt;/li&gt;
+&lt;li&gt;变量也可以由init函数来初始化，init含税可能会有多个&lt;/li&gt;
+&lt;li&gt;整个程序是由&lt;code&gt;main&lt;/code&gt;包创建的，这个包必须包含一个叫做&lt;code&gt;main&lt;/code&gt;的函数&lt;/li&gt;
+&lt;li&gt;程序执行是，先初始化&lt;code&gt;main&lt;/code&gt;包，然后执行&lt;code&gt;main&lt;/code&gt;函数&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;如果要再简单直白一点&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;一个包就是一个目录，包名就是目录名（其实一个目录下是可以有多个包存在的，用前边这种方式可以让代码结构简单明了）&lt;/li&gt;
+&lt;li&gt;目录下存放该包里的所有文件&lt;/li&gt;
+&lt;li&gt;每个包中可以有多个init函数，该函数会在import包时被自动调用&lt;/li&gt;
+&lt;li&gt;整个程序的入口为一个&lt;code&gt;main&lt;/code&gt;函数，该函数没有参数，没有返回值，属于一个不被引用的包&lt;code&gt;main&lt;/code&gt;包。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;也可以用一张图来概括
+&lt;img src=&#34;http://ohrdj7osp.bkt.clouddn.com/20150416173122272.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;补充&#34;&gt;补充&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;init函数的一个常见用途是包的初始化和注册&lt;br /&gt;
+举例：mozilla的heka项目，有多个插件组成，每个插件都是一个独立的包，插件的初始化和注册都是由包中的init函数来实现的。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;作为一个python程序员，有没有想到那个&lt;code&gt;__init__.py&lt;/code&gt;?不过这个init函数不是必须的。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;同一个目录里如果有多个main函数，不能简单的使用&lt;code&gt;go build&lt;/code&gt;来编译，会提示一个main函数被重复定义，只能一个一个文件来build。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;抄个例子：&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import &amp;quot;fmt&amp;quot;
+
+// Send the sequence 2, 3, 4, … to channel &#39;ch&#39;.
+func generate(ch chan&amp;lt;- int) {
+	for i := 2; ; i++ {
+		ch &amp;lt;- i  // Send &#39;i&#39; to channel &#39;ch&#39;.
+	}
+}
+
+// Copy the values from channel &#39;src&#39; to channel &#39;dst&#39;,
+// removing those divisible by &#39;prime&#39;.
+func filter(src &amp;lt;-chan int, dst chan&amp;lt;- int, prime int) {
+	for i := range src {  // Loop over values received from &#39;src&#39;.
+		if i%prime != 0 {
+			dst &amp;lt;- i  // Send &#39;i&#39; to channel &#39;dst&#39;.
+		}
+	}
+}
+
+// The prime sieve: Daisy-chain filter processes together.
+func sieve() {
+	ch := make(chan int)  // Create a new channel.
+	go generate(ch)       // Start generate() as a subprocess.
+	for {
+		prime := &amp;lt;-ch
+		fmt.Print(prime, &amp;quot;\n&amp;quot;)
+		ch1 := make(chan int)
+		go filter(ch, ch1, prime)
+		ch = ch1
+	}
+}
+
+func main() {
+	sieve()
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Golang开发环境设置</title>
+      <link>https://asdfsx.github.io/post/golang/Golang%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE/</link>
+      <pubDate>Sat, 10 Dec 2016 16:45:16 +0800</pubDate>
+      
+      <guid>https://asdfsx.github.io/post/golang/Golang%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE/</guid>
+      <description>
+
+&lt;h2 id=&#34;开发环境的设置&#34;&gt;开发环境的设置&lt;/h2&gt;
+
+&lt;p&gt;老调重提，先搞定使用环境再说怎么用&lt;br /&gt;
+关于安装，下载最新版的golang安装包，安装就好。这里重点说说环境变量的配置，摘抄一段《The way to go》里的一段&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$GOROOT 
+表示 Go 在你的电脑上的安装位置，它的值一般都是 $HOME/go ，
+当然，你也可以安装在别的地方。  
+
+$GOARCH 
+表示目标机器的处理器架构，它的值可以是 386、amd64 或 arm。
+
+$GOOS 
+表示目标机器的操作系统，它的值可以是 darwin、freebsd、linux 或 windows。 
+
+$GOBIN 
+表示编译器和链接器的安装位置，默认是 $GOROOT/bin ，如果你使用的是 Go 1.0.3 及以后的版本，一般情况下你可以将它的值设置为空，Go 将会使用前面提到的默 认值。  
+
+目标机器是指你打算运行你的 Go 应用程序的机器。  
+
+Go 编译器支持交叉编译，也就是说你可以在一台机器上构建运行在具有不同操作系统和处理 器架构上运行的应用程序，也就是说编写源代码的机器可以和目标机器有完全不同的特性 (操作系统与处理器架构)。
+为了区分本地机器和目标机器，你可以使用 $GOHOSTOS 和 $GOHOSTARCH 设置目标机器的参 数，这两个变量只有在进行交叉编译的时候才会用到，如果你不进行显示设置，他们的值会 和本地机器( $GOOS 和 $GOARCH )一样。
+
+$GOPATH 
+默认采用和 $GOROOT 一样的值，但从 Go 1.1 版本开始，你必须修改为其它 路径。它可以包含多个包含 Go 语言源码文件、包文件和可执行文件的路径，而这些路径 下又必须分别包含三个规定的目录: src 、 pkg 和 bin ，这三个目录分别用于存放源 码文件、包文件和可执行文件。
+
+$GOARM 
+专门针对基于 arm 架构的处理器，它的值可以是 5 或 6，默认为 6。
+
+$GOMAXPROCS 
+用于设置应用程序可使用的处理器个数与核数
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中最常用的就是&lt;code&gt;GOPATH&lt;/code&gt;。你可以只设置一个GOPATH，然后把所有的项目都放在这个目录下。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cat &amp;lt;&amp;lt; EOF &amp;gt;&amp;gt; ~/.bash_profile
+export GOPATH=/root/gocode
+EOF 
+
+source ~/.bash_profile
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;依赖管理工具&#34;&gt;依赖管理工具&lt;/h2&gt;
+
+&lt;p&gt;golang诞生之初，没有考虑依赖的管理，编译时候对于本地没有的包默认下载最新的。导致了一些依赖冲突的问题。于是社区里的人搞了各种工具来进行依赖管理，比如godep。&lt;/p&gt;
+
+&lt;p&gt;到了golang 1.5以后，官方借鉴了社区已有的一些做法，将依赖管理集成到了golang中，即所谓的&lt;code&gt;vendor&lt;/code&gt;。然后其余的工具纷纷升级，提供对官方依赖管理的支持。&lt;/p&gt;
+
+&lt;p&gt;但是貌似官方还是没有提供一个管理工具，所以想用好依赖管理，还是要借助一些第三方的工具，比如：godep，glide(新发现的)。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;对比rust，这点golang做的要差些。rust官方提供项目管理工具cargo，可以实现项目的create、build、test、依赖管理，一站式服务实在人人爱。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;项目编译&#34;&gt;项目编译&lt;/h2&gt;
+
+&lt;p&gt;格式化代码&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;go fmt *.go
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编译安装&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;go build 
+编译项目，如果有可执行文件，生成到当前目录
+
+go install 
+编译项目，如果有可执行文件，生成到$GOPATH/bin下
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;执行单元测试&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;go test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下载一个golang的项目&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;go get github.com/spf13/hugo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;开发环境大概就是这样，接下来熟悉一下golang的基本结构。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Golang重新从零开始之旅</title>
+      <link>https://asdfsx.github.io/post/golang/Golang%E9%87%8D%E6%96%B0%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E4%B9%8B%E6%97%85/</link>
+      <pubDate>Fri, 09 Dec 2016 19:20:36 +0800</pubDate>
+      
+      <guid>https://asdfsx.github.io/post/golang/Golang%E9%87%8D%E6%96%B0%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E4%B9%8B%E6%97%85/</guid>
+      <description>&lt;p&gt;第一次接触golang还是在4年前？当时的版本大概是0.9？&lt;/p&gt;
+
+&lt;p&gt;当时刚用python完成了一个ETL的项目。为了压榨机器的性能，python多进程是必不可少的。于是再一次被多进程搞得痛不欲生，内存的浪费（每个进程都要加载相同的数据），多进程之间的协同（硬是塞了多个队列到各个进程里），还有时不时出现的僵尸进程。虽然我仍然十分喜欢python，但是这些始终解决不了的问题，让我生出了寻找一个替代品的想法。&lt;/p&gt;
+
+&lt;p&gt;最初是打算使用erlang的。其实当时接触erlang有一阵子了，对于erlang的语法什么的也算比较熟。但是最后还是放弃了，原因就是对于语言的偏好吧：对于一个习惯了python中简单方便的使用list、map进行各种组合的人来说，erlang的数据结构用起来太麻烦了；另外就是感觉erlang的社区有一种很封闭的感觉？提到erlang，多说一句，这确实是个很好的语言，有很多非常好的特性，但是始终非常小众，原因我不认为是什么函数式语法的问题，更多的问题我觉得是社区吧。&lt;/p&gt;
+
+&lt;p&gt;在使用erlang重新实现了一部分python的功能模块之后，我终于放弃了蛋疼的一个个把python的map改成erlang的proplists，放弃了一个个把python中的for循环改成erlang中的尾递归。这个时候我遇到了golang。&lt;/p&gt;
+
+&lt;p&gt;最初如何发现golang的已经记不清了。随着了解的加深，对这门语法简单、性能不错，并发容易实现的语言，产生了很强的好感。随着golang社区的重磅项目陆续诞生，甚至认为可以在分布式计算领域诞生一个可以替代hadoop的项目。不过目前来看社区的主要发展方向好像还是基础设施的建设上，重磅的项目还是主要集中在容器、集群管理、监控这个方向。虽然对这个语言很有好感，但是可惜的是还是没有用起来。只是还持续的关注着golang和golang的社区。&lt;/p&gt;
+
+&lt;p&gt;最近开始看rust，想着把golang也重新拿来把玩一番，于是有了这堆牢骚。多余的不说，只是希望能把golang重新熟悉一下。顺便熟悉熟悉用&lt;code&gt;hugo&lt;/code&gt;搭blog，熟悉熟悉markdown，熟悉熟悉whatever。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
