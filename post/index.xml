@@ -6,8 +6,670 @@
     <description>Recent content in Posts on asdfsx</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&amp;copy; 2016. All rights reserved.</copyright>
-    <lastBuildDate>Sat, 18 Feb 2017 10:12:39 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 25 Feb 2017 20:15:52 +0800</lastBuildDate>
     <atom:link href="https://asdfsx.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Golang的类型</title>
+      <link>https://asdfsx.github.io/post/golang/Golang%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</link>
+      <pubDate>Sat, 25 Feb 2017 20:15:52 +0800</pubDate>
+      
+      <guid>https://asdfsx.github.io/post/golang/Golang%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</guid>
+      <description>
+
+&lt;p&gt;两个月前给自己挖的坑，就这么算是填上了吧。其实最重要的还是多看代码、多写代码。本文参考 Golang Specification 和 The way to go。&lt;/p&gt;
+
+&lt;h1 id=&#34;常量&#34;&gt;常量&lt;/h1&gt;
+
+&lt;h3 id=&#34;常量声明&#34;&gt;常量声明&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;const Pi float64 = 3.14159265358979323846
+const zero = 0.0         // untyped floating-point constant
+const (
+	size int64 = 1024
+	eof        = -1  // untyped integer constant
+)
+const a, b, c = 3, 4, &amp;quot;foo&amp;quot;  // a = 3, b = 4, c = &amp;quot;foo&amp;quot;, untyped integer and string constants
+const u, v float32 = 0, 3    // u = 0.0, v = 3.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;iota&#34;&gt;Iota&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;const (
+	Sunday = iota
+	Monday
+	Tuesday
+	Wednesday
+	Thursday
+	Friday
+	Partyday
+	numberOfDays  // this constant is not exported
+)
+
+const ( // iota is reset to 0
+	a = 1 &amp;lt;&amp;lt; iota  // a == 1
+	b = 1 &amp;lt;&amp;lt; iota  // b == 2
+	c = 3          // c == 3  (iota is not used but still incremented)
+	d = 1 &amp;lt;&amp;lt; iota  // d == 8  (注意这里的 &amp;lt;&amp;lt; 是在进行位移运算)
+)
+
+const ( // iota is reset to 0
+	c0 = iota  // c0 == 0
+	c1 = iota  // c1 == 1
+	c2 = iota  // c2 == 2
+)
+
+
+
+const ( // iota is reset to 0
+	u         = iota * 42  // u == 0     (untyped integer constant)
+	v float64 = iota * 42  // v == 42.0  (float64 constant)
+	w         = iota * 42  // w == 84    (untyped integer constant)
+)
+
+const x = iota  // x == 0  (iota has been reset)
+const y = iota  // y == 0  (iota has been reset)
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在同一个表达式中，iota 的值相同，因为只有在一个常量声明表达式结束之后，它才会增加&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;const (
+	bit0, mask0 = 1 &amp;lt;&amp;lt; iota, 1&amp;lt;&amp;lt;iota - 1  // bit0 == 1, mask0 == 0
+	bit1, mask1                           // bit1 == 2, mask1 == 1
+	_, _                                  // skips iota == 2
+	bit3, mask3                           // bit3 == 8, mask3 == 7
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;变量&#34;&gt;变量&lt;/h1&gt;
+
+&lt;p&gt;变量就是一个用来保存值的存储空间。其中能存放的值与变量的类型一致。&lt;/p&gt;
+
+&lt;p&gt;在函数声明时可以为函数参数和返回值定义变量，这会为已命名的变量预留存储空间。调用内建函数&lt;code&gt;new&lt;/code&gt;或者使用复合类型的地址可以在运行时获得存储空间。这样的匿名变量是通过指针直接或间接使用的。&lt;/p&gt;
+
+&lt;p&gt;结构化类型的变量，如数组、切片和结构体，都包含多个元素或者字段，它们的地址都是独立的。每个元素就像变量一样。&lt;/p&gt;
+
+&lt;p&gt;变量的静态类型在声明的时候定义，也可以通过一下的方式提供：通过调用&lt;code&gt;new&lt;/code&gt;或者复合字面量，或者结构化类型中元素的类型。接口类型的变量同样也有独特的动态类型，就是在运行时分配给变量的值的类型（预定义的标识符&lt;code&gt;nil&lt;/code&gt;除外,因为它没有类型）。动态类型可能会在计算时发生变化，但是存储在接口变量中的值总是可以赋给变量的静态类型。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var x interface{}  // x is nil and has static type interface{}
+var v *T           // v has value nil, static type *T
+x = 42             // x has value 42 and dynamic type int
+x = v              // x has value (*T)(nil) and dynamic type *T
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在表达式中，变量的值可以通过变量来获得；它只是最后一次赋予变量的值。如果一个变量还没有被赋值，它的值就是所属类型的&lt;code&gt;0&lt;/code&gt;值。&lt;/p&gt;
+
+&lt;h3 id=&#34;变量声明&#34;&gt;变量声明&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;var i int
+var U, V, W float64
+var k = 0
+var x, y float32 = -1, -2
+var (
+	i       int
+	u, v, s = 2.0, 3.0, &amp;quot;bar&amp;quot;
+)
+var re, im = complexSqrt(-1)
+var _, found = entries[name]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以发现，变量类型跑到了变量名后边。&lt;/p&gt;
+
+&lt;h3 id=&#34;简短变量声明&#34;&gt;简短变量声明&lt;/h3&gt;
+
+&lt;p&gt;在 &lt;strong&gt;函数内部&lt;/strong&gt; 还有一种简短的声明方式(注意是在 &lt;strong&gt;函数内部&lt;/strong&gt; )&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;i, j := 0, 10
+f := func() int { return 7 }
+ch := make(chan int)
+r, w := os.Pipe(fd)  // os.Pipe() returns two values
+_, y, _ := coord(p)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;不需要指定类型，golang可以自己推断。&lt;/p&gt;
+
+&lt;p&gt;另外就是，使用这种声明方式，可能会遇到重复声明变量的问题。对此官方文档有如下说明&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Unlike regular variable declarations, a short variable declaration may redeclare variables provided they were originally declared earlier in the same block with the same type, and at least one of the non-blank variables is new. As a consequence, redeclaration can only appear in a multi-variable short declaration. Redeclaration does not introduce a new variable; it just assigns a new value to the original.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;field1, offset := nextField(str, 0)
+field2, offset := nextField(str, offset)  // redeclares offset
+a, a := 1, 2                              // illegal: double declaration of a or no new variable if a was declared elsewhere
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;简单说，只要里边有一个变量是之前没有用过的，就没有问题。&lt;/p&gt;
+
+&lt;p&gt;这种声明方式也可以使用在 &lt;code&gt;if&lt;/code&gt;, &lt;code&gt;for&lt;/code&gt;, &lt;code&gt;switch&lt;/code&gt;语句的初始化部分，生成的变量只能在这几种语句的内部使用（也就是作用域范围内）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if test, ok := map[string]string{&amp;quot;test&amp;quot;:&amp;quot;test&amp;quot;}[&amp;quot;test&amp;quot;]; ok {
+	fmt.Println(test)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;类型&#34;&gt;类型&lt;/h1&gt;
+
+&lt;p&gt;一种类型决定一个值的可能的取值范围以及能对这个值所支持的操作。类型有可能是已命名的(named)也可能是未命名的（unnamed）。已命名的类型会有类型名称；未命名点类型可以用&lt;code&gt;type&lt;/code&gt;来定义，用已有的类型来组成新的类型。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Type      = TypeName | TypeLit | &amp;quot;(&amp;quot; Type &amp;quot;)&amp;quot; .
+TypeName  = identifier | QualifiedIdent .
+TypeLit   = ArrayType | StructType | PointerType | FunctionType | InterfaceType |
+	    SliceType | MapType | ChannelType .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;已命名的实例：布尔、数字、字符串都是预定义的。复合类型&amp;ndash;数组、结构体、指针、函数、接口、切片、字典、管道类型&amp;ndash;可能需要用类型字面量来定义。&lt;/p&gt;
+
+&lt;h3 id=&#34;方法集&#34;&gt;方法集&lt;/h3&gt;
+
+&lt;p&gt;一个类型可能会有一个和它相关的方法集合。一个接口类型的方法集就是它的接口。其他的类型&lt;code&gt;T&lt;/code&gt;的方法集是由那些接收者（参见方法定义）为&lt;code&gt;T&lt;/code&gt;的方法组合而成的。指针类型&lt;code&gt;*T&lt;/code&gt;的方法集是由哪些接收者是&lt;code&gt;*T&lt;/code&gt;或者&lt;code&gt;T&lt;/code&gt;的方法组合而成（也就是说它包含了&lt;code&gt;T&lt;/code&gt;的方法集）。&lt;/p&gt;
+
+&lt;h3 id=&#34;boolean&#34;&gt;Boolean&lt;/h3&gt;
+
+&lt;p&gt;布尔类型的声明和操作&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;```
+var a bool = false
+b := true 
+c := a == b
+c = a != b
+c = !a
+c = a &amp;amp;&amp;amp; b
+c = a || b
+```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;numeric&#34;&gt;Numeric&lt;/h3&gt;
+
+&lt;p&gt;数字类型如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;```
+uint8       the set of all unsigned  8-bit integers (0 to 255)
+uint16      the set of all unsigned 16-bit integers (0 to 65535)
+uint32      the set of all unsigned 32-bit integers (0 to 4294967295)
+uint64      the set of all unsigned 64-bit integers (0 to 18446744073709551615)
+
+int8        the set of all signed  8-bit integers (-128 to 127)
+int16       the set of all signed 16-bit integers (-32768 to 32767)
+int32       the set of all signed 32-bit integers (-2147483648 to 2147483647)
+int64       the set of all signed 64-bit integers (-9223372036854775808 to 9223372036854775807)
+
+float32     the set of all IEEE-754 32-bit floating-point numbers
+float64     the set of all IEEE-754 64-bit floating-point numbers
+
+complex64   the set of all complex numbers with float32 real and imaginary parts
+complex128  the set of all complex numbers with float64 real and imaginary parts
+
+byte        alias for uint8
+rune        alias for int32
+
+
+uint     either 32 or 64 bits
+int      same size as uint
+uintptr  an unsigned integer large enough to store the uninterpreted bits of a pointer value
+```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;变量声明及操作&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;```
+var a int
+var b uint16 = 20
+var c uint32
+c = uint32(b)
+
+var c1 complex64 = 5 + 10i
+```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;整数支持位运算&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;```
+1 &amp;amp; 1 //按位与
+0 &amp;amp; 1 //按位与
+1 | 1 //按位或
+0 | 1 //按位或
+1 ^ 1 //按位异或
+1 ^ 0 //按位异或
+1&amp;lt;&amp;lt;10 //位左移
+2&amp;gt;&amp;gt;1  //位右移
+```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;配合iota&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;```
+type ByteSize float64
+const (
+    _ = iota // 通过赋值给空白标识符来忽略值 KB ByteSize = 1&amp;lt;&amp;lt;(10*iota)
+    MB
+    GB
+    TB 
+    PB 
+    EB 
+    ZB 
+    YB
+)
+
+type BitFlag int
+const (
+    Active BitFlag = 1 &amp;lt;&amp;lt; iota // 1 &amp;lt;&amp;lt; 0 == 1
+    Send // 1 &amp;lt;&amp;lt; 1 == 2
+    Receive // 1 &amp;lt;&amp;lt; 2 == 4
+)
+flag := Active | Send // == 3
+```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;还有&lt;code&gt;+ - * / % ++ -- += -= *= /= %=&lt;/code&gt;等常规的数值计算&lt;br /&gt;
+还有&lt;code&gt;&amp;gt; &amp;lt; == &amp;gt;= &amp;lt;= !=&lt;/code&gt;等常规数值比较&lt;/p&gt;
+
+&lt;p&gt;另外字符类型可以用int来表示&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;```
+var ch int = &#39;\u0041&#39;
+var ch2 int = &#39;\u03B2&#39;
+var ch3 int = &#39;\U00101234&#39;
+fmt.Printf(&amp;quot;%d - %d - %d\n&amp;quot;, ch, ch2, ch3) // integer
+fmt.Printf(&amp;quot;%c - %c - %c\n&amp;quot;, ch, ch2, ch3) // character
+fmt.Printf(&amp;quot;%X - %X - %X\n&amp;quot;, ch, ch2, ch3) // UTF-8 bytes
+fmt.Printf(&amp;quot;%U - %U - %U&amp;quot;, ch, ch2, ch3) // UTF-8 code point
+```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;string&#34;&gt;String&lt;/h3&gt;
+
+&lt;p&gt;字符串由字节序列组成，一旦创建，它的内容就不可改变；它的长度由函数&lt;code&gt;len&lt;/code&gt;获得；字符串里的字节可以用下标访问；不能获取字符串里的字节的地址,&lt;code&gt;&amp;amp;s[i]&lt;/code&gt;是不合法的。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;变量声明与操作&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;```
+var a string = &amp;quot;hello&amp;quot;
+l := len(a)
+c := a[0]
+s:= &amp;quot;hel&amp;quot; + &amp;quot;lo&amp;quot;
+s += &amp;quot; world!&amp;quot;
+```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;更多的字符串操作可以通过包&lt;code&gt;strings&lt;/code&gt;和&lt;code&gt;strconv&lt;/code&gt;来实现。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;```
+strings.HasPrefix(s, prefix string) bool
+strings.HasSuffix(s, prefix string) bool
+strings.Contains(s, substr string) bool
+strings.Index(s, str string) int
+strings.LastIndex(s, str string) int
+strings.IndexRune(s string, r, rune) int
+strings.Replace(str, old, new, n) string
+strings.Count(s, str string) int
+strings.Repeat(s, count int) string
+strings.ToLower(s) string
+strings.ToHigher(s) string
+strings.TrimSpace(s string) string
+strings.Trim(s string, trim string) string
+strings.TrimLeft
+strings.TrimRight
+strings.Fields(s) []string
+strings.Split(s, sep) []string
+strings.Join(sl []string, sep string) string
+strings.NewReader(s string) Reader
+
+strconv.IntSize()
+strconv.Itoa(i int) string
+strconv.Atoi(s string) (i int, err error)
+strconv.FormatFloat(f float64, fmt byte, prec int, bitsize int) string
+strconv.ParseFloat(s string, bitsize int) (f float64, err error)
+```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;array&#34;&gt;Array&lt;/h3&gt;
+
+&lt;p&gt;由定长的，单一类型的数据组成的序列；长度由函数&lt;code&gt;len&lt;/code&gt;获得；可以用下标访问数组元素&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[32]byte
+[2*N] struct { x, y int32 }
+[1000]*float64
+[3][5]int
+[2][2][2]float64  // same as [2]([2]([2]float64))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;变量声明与操作&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr1 [5]int
+var arr2 = new([5]int) (数组是值类型，所以可以用new来创建，获得一个指向[5]int的指针)
+var arr3 = [5]int{1,2,3} ==&amp;gt; [1,2,3,0,0]
+var arr4 = [...]int{1,2,3} ==&amp;gt; 切片[1,2,3]
+var arr5 = [5]string{3:&amp;quot;Chris&amp;quot;, &amp;quot;4&amp;quot;:&amp;quot;Ron&amp;quot;} ==&amp;gt; [&amp;quot;&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;Chris&amp;quot;,&amp;quot;Ron&amp;quot;]
+length := len(arr1)
+captis := cap(arr1) (在数组中，len、cap的结果是一样的)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;数组的遍历&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;for i:= 0; i &amp;lt; len(arr1); i++ {
+	arr[i] = ...
+}
+
+for i, value := range arr1{
+	arr1[i] == value
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;多维数组&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var screen [800][600]int
+
+for i:= 0; i&amp;lt;len(screen);i++{
+    for j:= 0;j&amp;lt;len(screen[i]);i++{
+        fmt.Println(screen[i][j])
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;slice&#34;&gt;Slice&lt;/h3&gt;
+
+&lt;p&gt;可以看作一个长度可变的数组；内部应该是由一个数组来实现的（官方文档总是说_an underlying array_）；长度由函数&lt;code&gt;len&lt;/code&gt;获得；可以用下标访问元素；未初始化的slice的值是nil；相比数组多了一个容量的概念，可以由函数&lt;code&gt;cap&lt;/code&gt;获得。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;变量的声明&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var identifer []type (初始化之前 identifer 的值是 nil)
+var idenrifer []type = arr1[start:end]
+var idenrifer []type = arr1[start:]
+var idenrifer []type = arr[:end]
+var idenrifer []type = arr[:]
+
+var identi []int = []int{1,2,3,4,}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;使用&lt;code&gt;make&lt;/code&gt;函数创建slice&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;t := make([]int， 5) =&amp;gt; [0,0,0,0,0] (cap为5切片，并且切片里的值全部设为int的默认值)
+t := make([]int， 3， 5) =&amp;gt; [0,0,0] (cap为5的切片，并且其中的3个设为int的默认值)
+
+注意：
+使用 make([]int， 5) 创建的slice，已经被 0 填满。这时使用 append 添加新数据的时候，会加在slice的末尾。
+所以如果想用 make 预先分配一些空间出来，需要写成 make([]int, 0, 5)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;切片的复制和追加&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var from = []int{1,2,3}
+var to = make([]int, 0)
+
+n := copy(to, from)
+
+to = append(to, 1, 2, 3)
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;分片通常也是一维的，但是也可以组合出更高维的对象。对于数组的数组来说，内层的数组的长度在构造的时候总是一样的；然而分片的分片(分片的数组)的长度却是可以变化的。此外，内层的分片需要单独创建。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;切片和垃圾回收&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;切片的底层指向一个数组，该数组的实际体积可能要大于切片所定义的体积。只有在没有任何切片指向的时候，底层的数组内层才会被释放，这种特性有时会导致程序占用多余的内存。&lt;/p&gt;
+
+&lt;p&gt;示例 函数 FindDigits 将一个文件加载到内存，然后搜索其中所有的数字并返回一个切片。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var digitRegexp = regexp.MustCompile(&amp;quot;[0-9]+&amp;quot;)
+func FindDigits(filename string) []byte {
+    b, _ := ioutil.ReadFile(filename)
+    return digitRegexp.Find(b)
+} 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这段代码可以顺利运行，但返回的 []byte 指向的底层是整个文件的数据。只要该返回的切 片不被释放，垃圾回收器就不能释放整个文件所占用的内存。换句话说，一点点有用的数据 却占用了整个文件的内存。
+想要避免这个问题，可以通过拷贝我们需要的部分到一个新的切片中:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func FindDigits(filename string) []byte {
+   b, _ := ioutil.ReadFile(filename)
+   b = digitRegexp.Find(b)
+   c := make([]byte, len(b))
+   copy(c, b) 
+   return c 
+}  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;map&#34;&gt;Map&lt;/h3&gt;
+
+&lt;p&gt;Map是引用类型；未初始化的Map值是nil；长度由函数&lt;code&gt;len&lt;/code&gt;获得；删除元素由函数&lt;code&gt;delete&lt;/code&gt;完成；Map是无序的。&lt;/p&gt;
+
+&lt;p&gt;key的类型必须完整的实现了&lt;code&gt;comparison operators == and !=&lt;/code&gt;, 所以key不能是&lt;code&gt;function, map, or slice&lt;/code&gt;。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;map[string]int
+map[*T]struct{ x, y float64 }
+map[string]interface{}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;变量的声明&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var map1 map[string]string
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;创建map要用&lt;code&gt;make&lt;/code&gt;函数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;a := make(map[string]int)
+b := make(map[string]int， 100)
+b := make(map[string][]int， 100)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Map创建后，容量没有限制。&lt;/p&gt;
+
+&lt;h3 id=&#34;struct&#34;&gt;Struct&lt;/h3&gt;
+
+&lt;p&gt;由多个字段组成&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// An empty struct.
+struct {}
+
+// A struct with 6 fields.
+struct {
+	x, y int
+	u float32
+	_ float32  // padding
+	A *[]int
+	F func()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;字段可以匿名&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// A struct with four anonymous fields of type T1, *T2, P.T3 and *P.T4
+struct {
+	T1        // field name is T1
+	*T2       // field name is T2
+	P.T3      // field name is T3
+	*P.T4     // field name is T4
+	x, y int  // field names are x and y
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;也可以将一个 struct 嵌入到另外一个struct 中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;type A struct{
+	v int
+}
+type B struct {
+	A
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这时可以用 b.v 来访问 a 中的元素，这叫做 promoted。&lt;/p&gt;
+
+&lt;p&gt;一个字段的声明中可以跟着一个可选的字符串标签，它在相应的字段声明中会算做字段的一种属性/性质。这些标签在反射接口和类型一致那里中是可见的，其他的时候可以认为是忽略不计的。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// 一个用于时间戳协议缓冲区的结构体
+// 标签字符串定义了协议缓冲区字段号
+import reflect
+import fmt
+
+type Tagtest struct {
+  microsec  uint64 &amp;quot;field 1&amp;quot;
+  serverIP6 uint64 &amp;quot;field 2&amp;quot;
+  process   string &amp;quot;field 3&amp;quot;
+}
+
+tt := &amp;amp;Tagtest{}
+ttType := reflect.TypeOf(tt)
+for i:= 0;i&amp;lt;ttType.NumField();i++{
+    ixField := ttType.Field(i)
+    fmt.Println(ixField.Tag)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;创建结构体&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;type A struct {
+	a int
+}
+va := A{a:123}
+vb := &amp;amp;A{a:123}
+vc := new(A)
+
+func NewA() (a *A) {  //这个是一个很常用的模式
+    a = &amp;amp;A{}
+    return
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;pointer&#34;&gt;Pointer&lt;/h3&gt;
+
+&lt;p&gt;指针不多说，未初始化的指针值是nil。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var p *Point
+var pp *[4]int
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;function&#34;&gt;Function&lt;/h3&gt;
+
+&lt;p&gt;描述一类函数的特征，未初始化的函数变量的值是nil。&lt;br /&gt;
+在函数的参数/结果列表中，名字（标识符列表）可以都有也可以没有。如果有的话，一个名字代表对应类型的一项（参数/结果），非空名称必须不相同；如果没有，一个类型代表该类型的一项。参数/结果列表通常用小括号括起来，不过当只有一个返回值且没有名字的情况下，这个括号可以省略掉。&lt;br /&gt;
+一个函数签名的最后一个参数可能以&amp;hellip;为前缀，这样的函数我们叫可变函数，它们在调用的时候对于那个参数可以传递0或是多个值。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func()
+func(x int) int
+func(a, _ int, z float32) bool
+func(a, b int, z float32) (bool)
+func(prefix string, values ...int)
+func(a, b int, z float64, opt ...interface{}) (success bool)
+func(int, int, float64) (float64, *[]int)
+func(n int) func(p *T)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;interface&#34;&gt;Interface&lt;/h3&gt;
+
+&lt;p&gt;接口类型定义了一个方法组。接口类型的变量可以存放任何实现了这个方法组的类型的值。未初始化的接口类型值为 nil。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// A simple File interface
+interface {
+	Read(b Buffer) bool
+	Write(b Buffer) bool
+	Close()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;特殊的接口类型&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;interface{}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;任何类型都实现了空接口&lt;/p&gt;
+
+&lt;h3 id=&#34;channel&#34;&gt;Channel&lt;/h3&gt;
+
+&lt;p&gt;管道用来实现并发编程中的通信。为初始化的管道的值是nil。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;chan T          // can be used to send and receive values of type T
+chan&amp;lt;- float64  // can only be used to send float64s
+&amp;lt;-chan int      // can only be used to receive ints
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;初始化管道要用函数&lt;code&gt;make&lt;/code&gt;
+用内建函数 &lt;code&gt;close()&lt;/code&gt; 来关闭一个管道&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;channel := make(chan int, 100)
+channel &amp;lt;- 3 (向管道内放一个数字)
+v1 := &amp;lt;-channel （从管道接收一个数字）
+var x, ok = &amp;lt;-channel
+close(channel)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;发送消息会阻塞&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Communication blocks until the send can proceed. A send on an unbuffered channel can proceed if a receiver is ready. A send on a buffered channel can proceed if there is room in the buffer. A send on a closed channel proceeds by causing a run-time panic. A send on a nil channel blocks forever.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;接收消息会阻塞&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;The expression blocks until a value is available. Receiving from a nil channel blocks forever. A receive operation on a closed channel can always proceed immediately, yielding the element type&amp;rsquo;s zero value after any previously sent values have been received.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;处理阻塞&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;可以用 select 来处理阻塞&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//无阻塞的接收
+select {
+    case msg := &amp;lt;-messages:
+        fmt.Println(&amp;quot;received message&amp;quot;, msg)
+    default:
+        fmt.Println(&amp;quot;no message received&amp;quot;)
+    }
+    
+//无阻塞的发送
+select {
+    case messages &amp;lt;- msg:
+        fmt.Println(&amp;quot;sent message&amp;quot;, msg)
+    default:
+        fmt.Println(&amp;quot;no message sent&amp;quot;)
+    }
+    
+//同时处理多个管道    
+select {
+    case msg := &amp;lt;-messages:
+        fmt.Println(&amp;quot;received message&amp;quot;, msg)
+    case sig := &amp;lt;-signals:
+        fmt.Println(&amp;quot;received signal&amp;quot;, sig)
+    default:
+        fmt.Println(&amp;quot;no activity&amp;quot;)
+    }
+
+//超时处理    
+select {
+    case msg := &amp;lt;-messages:
+        fmt.Println(&amp;quot;received message&amp;quot;, msg)
+    case sig := &amp;lt;-signals:
+        fmt.Println(&amp;quot;received signal&amp;quot;, sig)
+    default time.After(time.Second * 3):
+        fmt.Println(&amp;quot;no activity&amp;quot;)
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;自定义类型&#34;&gt;自定义类型&lt;/h3&gt;
+
+&lt;p&gt;使用&lt;code&gt;type&lt;/code&gt;来自定义类型&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;type IntArray [16]int
+
+type (
+	Point struct{ x, y float64 }
+	Polar Point
+)
+
+type TreeNode struct {
+	left, right *TreeNode
+	value *Comparable
+}
+
+type Block interface {
+	BlockSize() int
+	Encrypt(src, dst []byte)
+	Decrypt(src, dst []byte)
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>使用swarm在mac上搭建开发环境</title>
@@ -4588,960 +5250,6 @@ Odoo 所做的可用性改善会自动应用于我们充分集成的所有应用
 采用这种方式，Odoo 比其他解决方案发展更快。
 
 &lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Python的数据模型</title>
-      <link>https://asdfsx.github.io/post/python/Python%E7%9A%84%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/</link>
-      <pubDate>Tue, 13 Dec 2016 15:12:39 +0800</pubDate>
-      
-      <guid>https://asdfsx.github.io/post/python/Python%E7%9A%84%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/</guid>
-      <description>
-
-&lt;p&gt;本文基于Python 3.5.2官方文档中数据模型部分完成&lt;/p&gt;
-
-&lt;h1 id=&#34;1-对象-值-和-类型&#34;&gt;1.对象，值 和 类型&lt;/h1&gt;
-
-&lt;p&gt;Python把数据抽象为Objects。Python程序中所有的数据都体现为对象，或者对象之间的关系。(从某种程度上讲，为了与冯.诺伊曼的&lt;code&gt;存储程序型计算机&lt;/code&gt;模型相一致，代码同样也体现为对象。)&lt;/p&gt;
-
-&lt;p&gt;每个对象都有一个标识，一个类型和一个值。对象一旦创建，它的标识就不会变更；你可以理解为它就像对象在内存中的地址。&lt;code&gt;is&lt;/code&gt;操作用来比较两个对象的标识；&lt;code&gt;id()&lt;/code&gt;函数返回一个整数来表示它的标识。&lt;/p&gt;
-
-&lt;p&gt;CPython实现细节：id(x)返回x在内存的存放地址。&lt;/p&gt;
-
-&lt;p&gt;对象的类型决定了对象支持哪些操作（比如，这个对象有长度吗？），同时也定义了对象中可能存在哪些值。&lt;code&gt;type()&lt;/code&gt;函数返回一个对象的类型（类型也是一个对象）。就像它的标识，一个对象的类型也是不可变的。&lt;/p&gt;
-
-&lt;p&gt;一些对象的值是可修改的。可以修改的的对象被称为可变的&lt;code&gt;to be mutable&lt;/code&gt;；创建后不能修改的对象被称为不可变的&lt;code&gt;immutable&lt;/code&gt;。（不可变容器对象的值如果是一个可变对象的引用，那么当后者的值发生改变的时候，前者的值也会改变；但是这个容器仍然被认为是不可变的，因为容器内部包含的对象都没有发生变化。所以，不可变性&lt;code&gt;immutability&lt;/code&gt;并不意味着拥有一个不可修改的值&lt;code&gt;unchangeable&lt;/code&gt;，这很微妙）。一个对象是否可变取决于它的类型；比如：数字、字符串、元组是不可变的，字典和数组是可变的。&lt;/p&gt;
-
-&lt;p&gt;对象不会明确的被销毁；只有当它们不可达的时候，它们才有可能被垃圾回收。只要可达的对象不要被回收掉，如何实现延迟垃圾回收，并统一释放他们，这就是垃圾回收的实现质量问题了。&lt;/p&gt;
-
-&lt;p&gt;CPython实现细节：CPython现在使用引用计数机制和（可选的）循环垃圾延迟检测机制，对象一旦不可达就尽量收集，但是无法保证能回收循环引用的垃圾。查看&lt;code&gt;gc&lt;/code&gt;模块的文档，来了解更多关于如何回收循环引用垃圾的信息。其他的实现可能不一样，而且CPtyhon也可能会改变策略。不要指望对象不可达以后，就会马上会被回收掉（所以你总是应该明确的关闭文件）。&lt;/p&gt;
-
-&lt;p&gt;注意跟踪调试工具会让一些本该回收掉的对象始终可达。同时使用&lt;code&gt;try...except&lt;/code&gt;处理异常也会使对象始终可达。&lt;/p&gt;
-
-&lt;p&gt;一些对象包含对&amp;rdquo;外部&amp;rdquo;资源的引用。我们知道当这些对象被垃圾回收后这些资源也会被释放，但是因为垃圾回收不能保证这些对像会被回收，所以这些对象会提供一个明确方式来释放资源，通常是&lt;code&gt;close()&lt;/code&gt;函数。强烈建议在程序中明确的关闭这样的对象。可以用&lt;code&gt;try...finally&lt;/code&gt;语句和&lt;code&gt;with&lt;/code&gt;语句来方便的执行它。&lt;/p&gt;
-
-&lt;p&gt;一些对象包含对其他对象的应用；这些对象叫做容器&lt;code&gt;containers&lt;/code&gt;。这样的例子有元组、数组和字段。应用是容器的值的一部分。大部分的情况下，当我们说起容器中的值，指的是值，而不是容器内对象的标识；而当我们说容器的可变性，指的是容器中当前对象的标识。所以，一个不可变容器（比如元组）包含一个可变对象的引用，它的值是可变的，当那个可变对象发生变更的时候。&lt;/p&gt;
-
-&lt;p&gt;类型几乎影响了对象的所有行为。在一些场景下甚至影响对象标识的重要性：对于不可变类型，计算新值的操作可能实际返回的是一个已存在的，拥有相同类型和值的对象的引用；而对于可变对象这是不允许的。比如，执行&lt;code&gt;a=1; b=1&lt;/code&gt;，a 和 b 可能（也可能不是）指向同一个包含&lt;code&gt;1&lt;/code&gt;的对象，取决于具体实现; 但是执行&lt;code&gt;c=[];d[]&lt;/code&gt;，c 和 d 保证指向两个完全不同的，独立的，新创建的空数组。（注意，&lt;code&gt;c = d = []&lt;/code&gt; 将同一个对象分配给了c 和 d 。）&lt;/p&gt;
-
-&lt;h1 id=&#34;2-标准类型层级&#34;&gt;2.标准类型层级&lt;/h1&gt;
-
-&lt;p&gt;下边是Python中内建类型列表。扩展模块（由C，Java，或其他语言实现的）会定义附加的类型。未来版本的 Python 可能会在此类型层次中增加新的类型 (例如：有理数，高效存储的整数数组等)，不过这些类型通常是在标准库中定义的。&lt;/p&gt;
-
-&lt;p&gt;以下个别类型描述中可能有介绍&lt;code&gt;特殊属性&lt;/code&gt;的段落，它们是供实现访问的，不作为一般用途。这些定义在未来有可能发生改变：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;None&lt;br /&gt;
-这个类型只具有一个值，并且这种类型也只有一个对象，这个对象可以通过内建名字&lt;code&gt;None&lt;/code&gt;访问，在许多场合里它表示无值，例如，没有显式返回值的函数会返回&lt;code&gt;None&lt;/code&gt;。这个对象的真值为假。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;NotImplemented&lt;br /&gt;
-这个类型只具有一个值，并且这种类型也只有一个对象。这个对象可以通过内建名字&lt;code&gt;NotImplemented&lt;/code&gt;访问。如果操作数没有对应实现，数值方法和复杂比较方法&lt;code&gt;rich comparison method&lt;/code&gt;应该返回这个值 (解释器会尝试反射操作，或者其它操作，根据具体的操作)。它的真值为真。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Ellipsis&lt;br /&gt;
-这个类型只具有一个值，并且这种类型也只有一个对象。这个对象可以通过字面值 &amp;hellip; 或者内建名字 Ellipsis 访问。它的真值为真。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;numbers.Number&lt;br /&gt;
-它们由数值型字面值产生，或者是算术运算符和内建数学函数的返回值。数值型对象是不可变 的，即一旦创建，其值就不可改变。Python 数值型和数学上的数字关系当然是非常密切的，但也受到计算机数值表达能力的限制。&lt;/p&gt;
-
-&lt;p&gt;Python 区分整数，浮点数和复数:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;numbers.Integral&lt;br /&gt;
-描述了数学上的整数集 (正负数).&lt;br /&gt;
-有两类整数:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Integers (int)&lt;br /&gt;
-整数类型。表示不限范围的数字。移位和掩码操作符可以认为整数是这样组织的: 负数用二进制补码的一种变体表示，符号位会扩展至左边无限多位.&lt;/li&gt;
-&lt;li&gt;Booleans (bool)&lt;br /&gt;
-如此设计整数表示方法的一个目的是，使得负数在移位和掩码操作中能够更有意义.&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;numbers.Real (float)&lt;br /&gt;
-浮点数。本类型表示了机器级的双精度浮点数。硬件的底层体系结构 (和 C，Java 实现) 对你隐藏了浮点数取值范围和溢出处理的复杂细节。Python不支持单精度浮点数。使用单精度浮点数的原因一般是为了降低CPU负荷和节省内存，但是这个努力会被 Python 的对象处理代价所抵消，因此没有必要同时支持两种浮点数，使 Python 复杂化.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;numbers.Complex (complex)&lt;br /&gt;
-复数。本类型用一对机器级的双精度浮点数表示复数。关于浮点数的介绍也适用于复数类型。复数 z 的实部和虚部可以通过属性 z.real 和 z.imag 获得.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Sequences&lt;br /&gt;
-它们代表了有限有序的集合，并由非负数字作为索引。内建函数&lt;code&gt;len()&lt;/code&gt;返回序列中的元素个数。当序列的长度为&lt;code&gt;n&lt;/code&gt;，索引集合中的数字有&lt;code&gt;0, 1, ... , n-1&lt;/code&gt;。通过&lt;code&gt;a[i]&lt;/code&gt;来访问序列&lt;code&gt;a&lt;/code&gt;中的&lt;code&gt;i&lt;/code&gt;元素。&lt;/p&gt;
-
-&lt;p&gt;序列也支持切片：&lt;code&gt;a[i: j]&lt;/code&gt;表示满足&lt;code&gt;i &amp;lt;= k &amp;lt; j&lt;/code&gt;的所有项 &lt;code&gt;a[k]&lt;/code&gt;。在作为表达式使用时，这个切片与原始的序列类型相同，这隐含着会重新编号索引，即从零开始。&lt;/p&gt;
-
-&lt;p&gt;个别序列还支持有第三个 “步长” 参数的 扩展切片：&lt;code&gt;a[i:j:k]&lt;/code&gt;选择了所有索引&lt;code&gt;x: x = i + n*k, n &amp;gt;= 0&lt;/code&gt;并且&lt;code&gt;i &amp;lt;= x &amp;lt; j&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;序列按照可变性可以分为：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Immutable sequences&lt;br /&gt;
-一个不可变序列对象一旦创建就不能修改。（如果该对象包含其他对象的引用，其他对象是可以被修改的。但是被一个不可变序列直接引用的对象不能改变。）&lt;br /&gt;
-下边都是不可变序列&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Strings&lt;br /&gt;
-字符串是一组&lt;code&gt;Unicode code points&lt;/code&gt;组成的序列。所有取值范围在&lt;code&gt;U+0000 - U+10FFFF&lt;/code&gt;的&lt;code&gt;code points&lt;/code&gt;都可以用来组成字符串。Python没有字符类型；取而代之的是字符串中的每个&lt;code&gt;code point&lt;/code&gt;都表示为一个长度为&lt;code&gt;1&lt;/code&gt;的字符串对象。内建函数&lt;code&gt;ord()&lt;/code&gt;可以把一个&lt;code&gt;code point&lt;/code&gt;从它的字符串格式转化为取值范围是&lt;code&gt;0 - 10FFFF&lt;/code&gt;的整型。&lt;code&gt;chr()&lt;/code&gt;把一个取值范围是&lt;code&gt;0 - 10FFFF&lt;/code&gt;的整型数字转化为长度为1的字符串。&lt;code&gt;str.encode()&lt;/code&gt;可以用指定的字符集把一个字符串转变成一个bytes，&lt;code&gt;bytes.decode()&lt;/code&gt;用来做相反的操作。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Tuples&lt;br /&gt;
-元组的元素是任意的python对象。包含2个或者更多元素的元组的格式是一列被&lt;code&gt;,&lt;/code&gt;分隔的表达式。只包含一个元素的元组的格式是一个以&lt;code&gt;,&lt;/code&gt;号结尾的表达式（一个表达式自己不能创建一个元组，since parentheses must be usable for grouping of expressions）。一个空元组，用&lt;code&gt;()&lt;/code&gt;表示。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Bytes&lt;br /&gt;
-bytes对象是一个不可修改的数组。元素都是&lt;code&gt;8-bit bytes&lt;/code&gt;, 可以表示为0到256之间的一个整数。&lt;br /&gt;
-bytes字面量(比如，&lt;code&gt;b&#39;abc&#39;&lt;/code&gt;）和内建函数&lt;code&gt;bytes()&lt;/code&gt;可以用来创建&lt;code&gt;bytes&lt;/code&gt;对象。另外&lt;code&gt;bytes&lt;/code&gt;对象可以通过函数&lt;code&gt;decode()&lt;/code&gt;解码变成字符串。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Mutable sequences&lt;br /&gt;
-可变序列在创建后可以被修改。其下标表示和切片表示可以作为赋值语句和&lt;code&gt;del&lt;/code&gt;语句的目标。&lt;br /&gt;
-目前有两种自带的可变序列。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Lists&lt;br /&gt;
-一个list中的元素可以是任意的python对象。&lt;code&gt;Lists&lt;/code&gt;的格式是在&lt;code&gt;[]&lt;/code&gt;中放置一些由&lt;code&gt;,&lt;/code&gt;隔开的表达式。&lt;/li&gt;
-&lt;li&gt;Byte Arrays&lt;br /&gt;
-一个&lt;code&gt;bytearray&lt;/code&gt;对象是一个可变的数组。它是由内建函数&lt;code&gt;bytearray()&lt;/code&gt;创建的。除了可变（也因此不可哈希），&lt;code&gt;byte array&lt;/code&gt;还提供了与不可修改的&lt;code&gt;bytes&lt;/code&gt;对象相同的接口和功能。&lt;br /&gt;
-扩展模块&lt;code&gt;array&lt;/code&gt;提供了一个额外的可变序列的例子，&lt;code&gt;collections&lt;/code&gt;模块也是如此。&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Set types&lt;br /&gt;
-这个类型描述的是由有限数量的不可变对象构成的无序集合。因此它们不能用任何索引作为下标，但它们可以被迭代，内建函数&lt;code&gt;len()&lt;/code&gt;可以返回集合中的元素总数。集合的常用场合是快速测试某元素是否在集合中, 或者是从一个序列中删除重复元素，或者是做一些数学运算，比如求集合的交集，并集，差和对称差。&lt;br /&gt;
-集合的元素与字典键一样，都是不可变性对象。注意，数值类型遵守数值比较的正常规则：如果两个数字相同（例如，1 和 1.0），只有一个能存在于集合中。&lt;br /&gt;
-当前有两种内建的集合类型：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Sets
-表示一个可变的集合。由内建函数&lt;code&gt;set()&lt;/code&gt;创建，可以被多个函数修改，例如&lt;code&gt;add()&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;Frozen sets
-表示一个不可变的集合。由内建函数&lt;code&gt;frozenset()&lt;/code&gt;创建。因为&lt;code&gt;frozenset&lt;/code&gt;不可变而且可以哈希，它可以作为另外一个集合的元素，也可以作为字典的key
-&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Mappings&lt;br /&gt;
-表示由任意类型作索引的有限对象集合。下标记法&lt;code&gt;a[k]&lt;/code&gt;表示在映射类型对象 a 中选择以 k 为索引的项，这该项可以用于表达式，作为赋值语句和&lt;code&gt;del&lt;/code&gt;语句的目标，内建函数&lt;code&gt;len()&lt;/code&gt;返回映射对象的元素数量。&lt;br /&gt;
-目前只有一种内建映射类型:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Dictionaries&lt;br /&gt;
-表示一个有限对象集合，几乎可以用任意值索引其中的对象。包括列表和字典的值可以是值，但不能是键，或者其它通过值比较而不是以对象标识比较的可变对象也不能作为键，其原因是字典的实现效率要求键的散列值保持不变。数值类型遵守数值比较的正常规则：如果两个数字相同（例如，1 和 1.0）那么它们可以作为字典中同一个实体的索引。&lt;br /&gt;
-字典是可变的, 可以用 {&amp;hellip;} 语法创建它们。&lt;br /&gt;
-扩展模块&lt;code&gt;dbm.ndbm, dbm.gnu, collections&lt;/code&gt;提供了其他映射类型的例子。
-&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Callable types&lt;br /&gt;
-下边是函数调用操作可以接受的类型：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;User-defined functions&lt;br /&gt;
-通过函数定义可以创建用户自定义的函数对象（查看函数定义）。在调用它的时候要按照函数定义的参数列表传递相同个数的参数。
-特殊属性：&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Attribute&lt;/th&gt;
-&lt;th&gt;Meaning&lt;/th&gt;
-&lt;th&gt;&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__doc__&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;函数的文档字符串, 如果没有为&lt;code&gt;None&lt;/code&gt;; 不会被子类继承&lt;/td&gt;
-&lt;td&gt;Writable&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__name__&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;函数的名字&lt;/td&gt;
-&lt;td&gt;Writable&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__qualname__&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;函数的&lt;code&gt;qualified name&lt;/code&gt;，在3.3版中新增的&lt;/td&gt;
-&lt;td&gt;Writable&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__module__&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;函数所在的模块，如果没有就是&lt;code&gt;None&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;Writable&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__defaults__&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;一个用来存放默认参数的元组，如果没有默认参值为&lt;code&gt;None&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;Writable&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__code__&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;函数体经过编译后生成的代码对象&lt;/td&gt;
-&lt;td&gt;Writable&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__globals__&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;指向函数可调用的全局变量的引用-函数所在模块的全局名字空间&lt;/td&gt;
-&lt;td&gt;Read-only&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__dict__&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;名字空间，支持任意的函数属性&lt;/td&gt;
-&lt;td&gt;Writable&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__closure__&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;元组，含有函数自由变量绑定，如果没有自由变量，就为&lt;code&gt;None&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;Read-only&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__annotations__&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;存储参数注解（annotations）的字典。键为参数名。如果有返回值，返回值的键为&lt;code&gt;return&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;Writable&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__kwdefaults__&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;存储关键字参数默认值的字典&lt;/td&gt;
-&lt;td&gt;Writable&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Instance methods&lt;br /&gt;
-实例方法对象由类、类的实例、可调用对象（通常是用户自定义函数）组合而成。&lt;/p&gt;
-
-&lt;p&gt;特殊的只读属性：&lt;code&gt;__self__&lt;/code&gt;是类的实例对象；&lt;code&gt;__func__&lt;/code&gt;是函数对象；&lt;code&gt;__doc__&lt;/code&gt;是方法的文档（就像&lt;code&gt;__func__.__doc__&lt;/code&gt;）；&lt;code&gt;__name__&lt;/code&gt;是方法的名字（就像&lt;code&gt;__func__.__name__&lt;/code&gt;）；&lt;code&gt;__module__&lt;/code&gt;是方法所在的模块名字，如果没有就是&lt;code&gt;None&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;方法也支持对底层函数对象任意属性的访问，但不支持设置。&lt;/p&gt;
-
-&lt;p&gt;用户定义方法对象可以通过获取类属性（也可能是通过该类的一个实例）创建，但前提是这个属性是用户定义函数对象，或者类方法对象。&lt;/p&gt;
-
-&lt;p&gt;通过检索一个类实例的用户自定义方法，可以创建实例方法对象&lt;code&gt;instance method object&lt;/code&gt;。实例方法对象的属性&lt;code&gt;__self__&lt;/code&gt;指向该类实例，这个方法称为是&lt;code&gt;被绑定的&lt;/code&gt;。这个方法的属性&lt;code&gt;__func__&lt;/code&gt;指向原来的方法对象。&lt;/p&gt;
-
-&lt;p&gt;通过检索另外一个类或着实例的方法对象，可以创建用户自定义方法对象&lt;code&gt;user-defined method object&lt;/code&gt;。这个操作类似创建方法对象，只不过新的实例等&lt;code&gt;__func__&lt;/code&gt;属性不在指向原来的方法对象，而是自己的&lt;code&gt;__func__&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;在类或实例中检索方法对象过程中生成的实例方法对象是，它的&lt;code&gt;__self__&lt;/code&gt;属性就是类本身，它的&lt;code&gt;__func__&lt;/code&gt;属性存放的函数对象就是类中的方法。&lt;/p&gt;
-
-&lt;p&gt;当一个实例的方法对象被调用的时候，它对应的底层函数（&lt;code&gt;__func__&lt;/code&gt;）被调用，类实例（&lt;code&gt;__self__&lt;/code&gt;）被插到参数列表的最前边。例如，类&lt;code&gt;C&lt;/code&gt;由一个函数&lt;code&gt;f()&lt;/code&gt;，&lt;code&gt;x&lt;/code&gt;是&lt;code&gt;C&lt;/code&gt;的一个实例，&lt;code&gt;x.f(1)&lt;/code&gt;的行为其实就是&lt;code&gt;C.f(x, 1)&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;如果一个实例方法对象是由类方法对象中推导出来的，保存&lt;code&gt;类实例&lt;/code&gt;的&lt;code&gt;__self__&lt;/code&gt;其实就是类本身，所以调用&lt;code&gt;x.f(1)&lt;/code&gt;或者&lt;code&gt;C.f(1)&lt;/code&gt;都等于调用&lt;code&gt;f(C,1)&lt;/code&gt;，f是底层函数。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Generator functions&lt;br /&gt;
-生成器函数就是使用了yield语句（请查看yield语句）的函数或者方法。这样的一个函数被调用的时候会返回一个用来执行函数体的迭代器对象：调用这个迭代器的函数&lt;code&gt;iterator.__next__()&lt;/code&gt;就会让这个函数执行，直到遇到yield语句返回一个值。
-当函数遇到return语句或者执行到末尾，会抛出一个&lt;code&gt;StopIteration&lt;/code&gt;，而且迭代器将会到达所有返回值的末尾。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Coroutine functions&lt;br /&gt;
-一个用&lt;code&gt;async def&lt;/code&gt;来定义的函数或方法，叫做协同程序函数。这样的函数在调用时会返回一个协程对象。它可能包含&lt;code&gt;await&lt;/code&gt;表达式，也可能是&lt;code&gt;async with&lt;/code&gt;和&lt;code&gt;async for&lt;/code&gt;语句。详情查看&lt;code&gt;协程对象&lt;/code&gt;部分&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Built-in functions&lt;br /&gt;
-内建函数是对C函数的一个包装。例如&lt;code&gt;len()&lt;/code&gt;, &lt;code&gt;math.sin()&lt;/code&gt;(&lt;code&gt;math&lt;/code&gt;是一个标准的内建模块)。参数的类型和个数是在C函数中定义的。特殊的只读属性：&lt;code&gt;__doc__&lt;/code&gt;是函数的文档字符串，如果没有就是&lt;code&gt;None&lt;/code&gt;；&lt;code&gt;__name__&lt;/code&gt;是函数的名字；&lt;code&gt;__self__&lt;/code&gt;被设置为&lt;code&gt;None&lt;/code&gt;(但是留意下部分)；&lt;code&gt;__module__&lt;/code&gt;是函数所在模块的名字，如果没有那就是&lt;code&gt;None&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Built-in methods&lt;br /&gt;
-这其实是一个内建函数的伪装，这次通过一个隐藏的参数将一个对象传给了C函数。例如内建函数&lt;code&gt;alist.append()&lt;/code&gt;，其中&lt;code&gt;alist&lt;/code&gt;是一个数组对象。在这个例子中，一个特殊的只读参数&lt;code&gt;__self__&lt;/code&gt;被传递，它表示&lt;code&gt;alist&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Classes&lt;br /&gt;
-类可以被调用。这样的对象就像是自己实例等工厂一样，但是通过覆盖&lt;code&gt;__new__()&lt;/code&gt;可以改变这个行为。调用参数会被传递到&lt;code&gt;__new__()&lt;/code&gt;, 然后在大部分情况下传递给&lt;code&gt;__init__()&lt;/code&gt;来初始化一个实例。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Class Instances&lt;br /&gt;
-一个纯Python类的实例可以变成可被调用的，只要在类中实现了方法&lt;code&gt;__call__()&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Modules&lt;br /&gt;
-模块是Python代码的基本组织单位，它由导入系统&lt;code&gt;import system&lt;/code&gt;生成，方法有使用import语句，或者调用类似&lt;code&gt;importlib.import_module()&lt;/code&gt;的方法，或者内建函数&lt;code&gt;__import__()&lt;/code&gt;。一个模块对象有一个由字典对象实现的名字空间（模块中定义的函数可以通过&lt;code&gt;__globals__&lt;/code&gt;属性获得这个字典）。模块属性的访问被转换成查找这个字典，例如&lt;code&gt;m.x&lt;/code&gt;等价于&lt;code&gt;m.__dict__[&amp;quot; x&amp;quot; ]&lt;/code&gt;。模块对象不包含初始化该模块的代码对象 (因为初始化完成后就不再需要它了)。
-对模块属性的赋值会更新模块的名字空间，例如&lt;code&gt;m.x = 1&lt;/code&gt;等价于&lt;code&gt;m.__dict__[&amp;quot;x&amp;quot;] = 1&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;只读特殊属性&lt;code&gt;__dict__&lt;/code&gt;就是模块名字空间的字典对象。&lt;/p&gt;
-
-&lt;p&gt;预定义的可写属性：&lt;code&gt;__name__&lt;/code&gt;是模块名；&lt;code&gt;__doc__&lt;/code&gt;是模块的文档字符串或&lt;code&gt;None&lt;/code&gt;。如果模块是由文件加载的，&lt;code&gt;__file__&lt;/code&gt;是对应文件的路径名，用C语言编写的静态链接进解释器的模块没有这个属性，而对于从共享库加载的模块，这个属性的值就是共享库的路径。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Custom classes&lt;br /&gt;
-自定义类类型一般是由类定义创建的。类的名字空间是由字典对象实现的。类的属性都是从这个字典对象中查找的，例如，&lt;code&gt;C.x&lt;/code&gt;其实就是&lt;code&gt;C.__dict__[&amp;quot;x&amp;quot;]&lt;/code&gt;(另外还有很多种机制去定位属性)。当属性名没有在这里找到，会继续到基类中去查找属性。基类中的搜索方法使用C3方法解析顺序, 这种方法即便是多重继承里出现了公共祖先类的 “菱形” 结构也能保持正确行为. 关于Python使用的 C3 MRO 额外细节可以在 2.3 版本的附带文档中找到:&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;http://www.python.org/download/releases/2.3/mro/.&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;当一个类 (假如是类 C) 的属性引用会产生类方法对象时, 它就会被转换成实例方法对象, 并将这个对象的&lt;code&gt;__self__&lt;/code&gt;属性指向&lt;code&gt;C&lt;/code&gt;. 当要产生静态方法对象时, 它会被转换成用静态方法对象包装的对象. 另一种获取与&lt;code&gt;__dict__&lt;/code&gt;实际内容不同的属性的方法可以参考 实现描述符.&lt;/p&gt;
-
-&lt;p&gt;类属性的赋值会更新类的字典, 而不是基类的字典.&lt;/p&gt;
-
-&lt;p&gt;一个类对象可以被调用 (如上所述), 以产生一个类实例 (下述)。&lt;/p&gt;
-
-&lt;p&gt;特殊属性：&lt;code&gt;__name__&lt;/code&gt;是类名，&lt;code&gt;__module__&lt;/code&gt;是类定义所在的模块名；&lt;code&gt;__dict__&lt;/code&gt;是类的名字空间字典。&lt;code&gt;__bases__&lt;/code&gt;是基类元组 (可能为空或独元)，基类的顺序以定义时基类列表中的排列次序为准。&lt;code&gt;__doc__&lt;/code&gt;是类的文档字符串或者 None。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Class instances&lt;br /&gt;
-类实例是用类对象调用创建的。类实例有一个用字典实现的名字空间，它是进行属性搜索的第一个地方。如果属性没在那找到，但实例的类中有那个名字的属性，就继续在类属性中查找。如果找到的是一个用户定义函数对象，它被转换成实例方法对象，这个对象的&lt;code&gt;__self__&lt;/code&gt;属性指向实例本身。静态方法和类方法对象也会按上面&lt;code&gt;Classes&lt;/code&gt;中的介绍那样进行转换。另一种获取与&lt;code&gt;__dict__&lt;/code&gt;实际内容不同的属性的方法可以参考 实现描述符。如果没有找到匹配的类属性，但对象的类提供了&lt;code&gt;__getattr__()&lt;/code&gt;方法，那么最后就会调用它完成属性搜索。&lt;/p&gt;
-
-&lt;p&gt;属性的赋值和删除会更新实例字典，而不是类的字典。如果类具有方法&lt;code&gt;__setattr__()&lt;/code&gt;或者&lt;code&gt;__delattr__()&lt;/code&gt;就会调用它们，而不是直接更新字典。&lt;/p&gt;
-
-&lt;p&gt;如果提供了相应特别方法的定义，类实例可以伪装成数值，序列或者映射类型，参见 特殊方法名。&lt;/p&gt;
-
-&lt;p&gt;特殊属性：&lt;code&gt;__dict__&lt;/code&gt;是属性字典；&lt;code&gt;__class__&lt;/code&gt;是实例的类。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;I/O objects (also known as file objects)&lt;br /&gt;
-一个文件对象表示一个打开的文件。创建一个文件对像有很多方法：内建函数&lt;code&gt;open()&lt;/code&gt;，还有&lt;code&gt;os.popen()&lt;/code&gt;, &lt;code&gt;os.fdopen()&lt;/code&gt;，还有&lt;code&gt;socket&lt;/code&gt;对象中的&lt;code&gt;makefile()&lt;/code&gt;方法(还有一些扩展模块kennel也会提供一些函数和方法)。&lt;/p&gt;
-
-&lt;p&gt;对象&lt;code&gt;sys.stdin&lt;/code&gt;，&lt;code&gt;sys.stdout&lt;/code&gt;和&lt;code&gt;sys.stderr&lt;/code&gt;被初始化为解释器相应的标准输入流，标准输出流和标准错误输出流。它们都以文本模式打开，因此都遵循抽象类&lt;code&gt;io.TextIOBase&lt;/code&gt;定义的接口。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Internal types&lt;br /&gt;
-有少量解释器内部使用的类型是用户可见的，它们的定义可能会在未来版本中改变，出于完整性的考虑这里也会提一下它们。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Code objects&lt;br /&gt;
-代码对象表示&lt;code&gt;字节编译&lt;/code&gt;过的可执行Python代码，或者称为&lt;code&gt;bytecode&lt;/code&gt;。代码对象与函数对象的不同在于函数对象包含了函数全局变量的引用（所在模块定义的），而代码对象不包括上下文。默认参数值也保存在函数对象里，而不在代码对象中（因为它们表示的是运行时计算出来的值）。不像函数对象，代码对象是不可变的，并且不包括对可变对象的（直接或间接的）引用。&lt;/p&gt;
-
-&lt;p&gt;特殊的只读属性：&lt;code&gt;co_name&lt;/code&gt;给出了函数名；&lt;code&gt;co_argcount&lt;/code&gt;是位置参数的数目（包括有默认值的参数）；&lt;code&gt;co_nlocals&lt;/code&gt;是函数使用的局部变量的数目（包括参数）。&lt;code&gt;co_varnames&lt;/code&gt;是一个包括局部变量名的元组（从参数的名字开始）。&lt;code&gt;co_cellvars&lt;/code&gt;是一个元组，包括由嵌套函数引用的局部变量名；&lt;code&gt;co_freevals&lt;/code&gt;元组包括了自由变量的名字；&lt;code&gt;co_code&lt;/code&gt;是字节编译后的指令序列的字符串表示；&lt;code&gt;co_consts&lt;/code&gt;元组包括字节码中使用的字面值；&lt;code&gt;co_names&lt;/code&gt;元组包括字节码中使用的名字；&lt;code&gt;co_ﬁlename&lt;/code&gt;记录了字节码来自于什么文件；&lt;code&gt;co_ﬁrstlineno&lt;/code&gt;是函数首行号；&lt;code&gt;co_lnotab&lt;/code&gt;是一个字符串, 它表示从字节码偏移到行号的映射（细节可以在解释器代码中找到）；&lt;code&gt;co_stacksize&lt;/code&gt;是需要的堆栈尺寸（包括局部变量）；&lt;code&gt;co_ﬂags&lt;/code&gt;是一个表示解释器各种标志的整数。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;co_ﬂags&lt;/code&gt;定义了如下标志位：如果函数使用了&lt;code&gt;*arguments&lt;/code&gt;语法接收任意数目的位置参数就会把&lt;code&gt;0x04&lt;/code&gt;置位；如果函数使用了&lt;code&gt;**keywords&lt;/code&gt;语法接收任意数量的关键字参数，就会把&lt;code&gt;0x08&lt;/code&gt;置位。如果函数是一个产生器（generator），就会置为&lt;code&gt;0x20&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;Future功能声明&lt;code&gt;from __future__ import division&lt;/code&gt;也使用了&lt;code&gt;co_flags&lt;/code&gt;的标志位指出代码对象在编译时是否打开某些特定功能：如果函数是打开了&lt;code&gt;future division&lt;/code&gt;编译的，就会把&lt;code&gt;0x2000&lt;/code&gt;置位；之前版本的Python使用过位&lt;code&gt;0x10&lt;/code&gt;和&lt;code&gt;0x1000&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;co_flags&lt;/code&gt;中其它位由解释器内部保留。&lt;/p&gt;
-
-&lt;p&gt;如果代码对象表示的是函数，那么&lt;code&gt;co_consts&lt;/code&gt;的第一个项是函数的文档字符串，或者为&lt;code&gt;None&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Frame objects&lt;br /&gt;
-栈对象表示执行时的栈桢，它们会在回溯对象中出现（下述）。&lt;/p&gt;
-
-&lt;p&gt;特殊的只读属性：属性&lt;code&gt;f_back&lt;/code&gt;指向前一个栈（朝着调用者的方向），如果位于堆栈底部它就是&lt;code&gt;None&lt;/code&gt;；属性&lt;code&gt;f_code&lt;/code&gt;指向在这个栈结构上执行的代码对象。属性&lt;code&gt;f_locals&lt;/code&gt;是用于查找局部变量的字典；属性&lt;code&gt;f_globals&lt;/code&gt;字典用于查找全局变量；属性&lt;code&gt;f_builtins&lt;/code&gt;字典用于查找内建名字；属性&lt;code&gt;lasti&lt;/code&gt;以代码对象里指令字符串的索引的形式给出了精确的指令。&lt;/p&gt;
-
-&lt;p&gt;特殊的可写属性：属性&lt;code&gt;f_trace&lt;/code&gt;如果不是&lt;code&gt;None&lt;/code&gt;，就是这个栈所在函数的名称（用于调试器）。 属性&lt;code&gt;f_lineno&lt;/code&gt;是此栈当前行的行号，在跟踪函数里如果写入这个属性，可以使程序跳转到新行上（只能用于最底部的栈桢），调试器可以这样实现跳转命令（即 “指定下一步” 语句）。&lt;/p&gt;
-
-&lt;p&gt;栈对象支持一个方法：&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;frame.clear()&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;这个方法将清除当前栈中所持有的所有本地变量的引用。另外，如果这个栈属于一个生成器，这个生成器也将结束。这有助与打破涉及栈对象的循环依赖（例如获取异常后对它的异常回溯进行排序以便之后使用）。&lt;/p&gt;
-
-&lt;p&gt;如果这个栈当前正在执行中，异常&lt;code&gt;RuntimeError&lt;/code&gt;将被触发。&lt;/p&gt;
-
-&lt;p&gt;3.4版新增。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Traceback objects&lt;br /&gt;
-回溯对象是对一个异常的栈回溯。当异常发生时回创建这个对象。当我们在栈桢内搜索异常处理器时，每当要搜索一个栈桢就会把一个回溯对象会插入到当前回溯对象的前面。在进入异常处理器时，程序就可以使用回溯对象了。（参见&lt;code&gt;try&lt;/code&gt;语句）。这些回溯对象可以通过 &lt;code&gt;sys.exc_info()&lt;/code&gt;返回元组的第三项访问。当程序中没有适当的异常处理器，回溯对象就被打印到标准错误输出上。如果工作在交互模式上，也可以通过&lt;code&gt;sys.last_traceback&lt;/code&gt;访问。&lt;br /&gt;
-特殊的只读属性：&lt;code&gt;tb_text&lt;/code&gt;是堆栈回溯的下一级（向着发生异常的那个栈桢），或者如果没有下一级就为&lt;code&gt;None&lt;/code&gt;。属性&lt;code&gt;tb_frame&lt;/code&gt;指向当前的栈桢对象；属性&lt;code&gt;tb_lineno&lt;/code&gt;给出发生异常的行号；属性&lt;code&gt;tb_lasti&lt;/code&gt;精确地指出对应的指令。如果异常发生在没有匹配&lt;code&gt;except&lt;/code&gt;或&lt;code&gt;finally&lt;/code&gt;子句的&lt;code&gt;try&lt;/code&gt;语句中，回溯对象中的行号和指令可能与栈桢对象中的行号和指令不同。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Slice objects&lt;br /&gt;
-切片对象用于在&lt;code&gt;__getitem__()&lt;/code&gt;方法中表示切片信息，也可以用内建函数&lt;code&gt;slice()&lt;/code&gt;创建。&lt;/p&gt;
-
-&lt;p&gt;特殊的只读属性：&lt;code&gt;start&lt;/code&gt;是下界；&lt;code&gt;stop&lt;/code&gt;是上界；&lt;code&gt;step&lt;/code&gt;是步长，如果忽略任何一个，就取&lt;code&gt;None&lt;/code&gt;值。这些属性可以是任意类型。&lt;/p&gt;
-
-&lt;p&gt;切片对象只支持一个方法：&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;slice.indices(self, length)&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;这个方法根据整数参数&lt;code&gt;length&lt;/code&gt;判断切片对象是否能够描述&lt;code&gt;length&lt;/code&gt;长的元素序列。它返回一个包含三个整数的元组，分别是索引&lt;code&gt;start&lt;/code&gt;，&lt;code&gt;stop&lt;/code&gt;和步长&lt;code&gt;step&lt;/code&gt;。对于索引不足或者说越界的情况，返回值提供的是切片对象中能够提供的最大 (最小) 边界索引。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Static method objects&lt;br /&gt;
-静态方法对象提供了一种避免上边说过情形的方法，即避免将函数对象转变成方法对象。静态方法对象其实是对任意对象的一个包装，通常是用户自定义函数。当从类或着类的实例中检索一个静态方法对象时，返回的其实就是一个包装过的对象，而且并没有经过之前任何转换。静态方法对象自己时不可调用的，尽管它们包装的都是可调用的。静态方法对象是由内建构造器&lt;code&gt;staticmethod()&lt;/code&gt;创建的。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Class method objects&lt;br /&gt;
-类方法对象，就像静态方法对象，是另外一个对象的包装，通过这个包装可以改变从类和泪实例中检索对象的行为。检索累方法对象的行为已经在上边描述过，在&lt;code&gt;User-defined methods&lt;/code&gt;部分。类方法对象是由内建构造器&lt;code&gt;classmethod()&lt;/code&gt;创建的。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;3-特殊名字的方法&#34;&gt;3.特殊名字的方法&lt;/h1&gt;
-
-&lt;p&gt;通过定义名字特殊的方法，一个类能够实现特殊语法所调用的操作（例如算术运算，下标及切片操作）。这是Python式的运算符重载&lt;code&gt;operator overloading&lt;/code&gt;，让类可以定义自己的行为并充分利用语言中的操作符。例如，一个类如果定义了方法&lt;code&gt;__getitem__()&lt;/code&gt;，然后&lt;code&gt;x&lt;/code&gt;是这个类的实例，那么&lt;code&gt;x[i]&lt;/code&gt;基本上就等于&lt;code&gt;type(x).__getitem__(x, i)&lt;/code&gt;。除非特别标示，在没有适当定义方法的类上执行操作会导致抛出异常，一般是&lt;code&gt;AttributeError&lt;/code&gt;或者&lt;code&gt;TypeError&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;在实现要模拟任意内建类型的类时，需要特别指出的是 “模拟” 只是达到了满足使用的程度，这点需要特别指出。例如，获取某些序列的单个元素是正常的，但使用切片却是没有意义的（一个例子是在W3C文档对象模型中的&lt;code&gt;NodeList&lt;/code&gt;接口。）&lt;/p&gt;
-
-&lt;h4 id=&#34;3-1-基础定制&#34;&gt;3.1 基础定制&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;object.__new__(cls[, &amp;hellip;])&lt;br /&gt;
-调用时创建类&lt;code&gt;cls&lt;/code&gt;的实例。&lt;code&gt;__new()&lt;/code&gt;是一个静态方法（特殊函数所以你不需要定义），第一个参数是需要创建实例等类。其余的参数会创递给实例构造器（调用类）。&lt;code&gt;__new__()&lt;/code&gt;的返回值是类的新对象实例（通常是&lt;code&gt;cls&lt;/code&gt;的实例）。&lt;/p&gt;
-
-&lt;p&gt;常见的情况下是通过&lt;code&gt;super(currentclass, cls).__new__(cls[, ...])&lt;/code&gt;的方式，传递对应的参数调用父类的&lt;code&gt;__new__()&lt;/code&gt;的来实现创建一个类的新实例，然后再返回实例之前根据需求对实例进行相应的修改。&lt;/p&gt;
-
-&lt;p&gt;如果&lt;code&gt;__new__()&lt;/code&gt;返回类&lt;code&gt;cls&lt;/code&gt;的新实例，那么新实例的&lt;code&gt;__init__()&lt;/code&gt;方法将会被调用&lt;code&gt;__init__(self[, ...])&lt;/code&gt;，&lt;code&gt;self&lt;/code&gt;就是新实例自己，其余参数就是传递给&lt;code&gt;__new__()&lt;/code&gt;的参数。&lt;/p&gt;
-
-&lt;p&gt;如果&lt;code&gt;__new__()&lt;/code&gt;返回的不是类&lt;code&gt;cls&lt;/code&gt;的实例，那么新实例的&lt;code&gt;__init__&lt;/code&gt;方法不会被调用。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;__new__&lt;/code&gt;方法主要用于让不可变类型的子类（比如：int，str，tuple）可以定制化实例的创建。在自定义&lt;code&gt;metaclass&lt;/code&gt;的时候，这个函数也经常被覆盖，以定制类的创建。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__init__(self[, &amp;hellip;])&lt;br /&gt;
-实例被&lt;code&gt;__new__()&lt;/code&gt;创建以后，并在返回调用者之前被调用。参数就是那些传递给类构造表达式的值。如果基类有&lt;code&gt;__init__()&lt;/code&gt;方法，推断类的&lt;code&gt;__init__()&lt;/code&gt;方法，如果有，必须显示的调用它来确保新实例中基类的部分被正确的初始化；比如：&lt;code&gt;BaseClass.__init__(self, [args...])&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;因为&lt;code&gt;__new__()&lt;/code&gt;和&lt;code&gt;__init__()&lt;/code&gt;在构建对象的时候共同工作（&lt;code&gt;__new__()&lt;/code&gt;创建对象，&lt;code&gt;__init__()定制对象&lt;/code&gt;），&lt;code&gt;__init__()&lt;/code&gt;不会返回任何值；这样做会在运行时导致&lt;code&gt;TypeError&lt;/code&gt;异常。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__del__(self)&lt;br /&gt;
-当实例要被销毁的时候被调用。这个方法也可以被叫做销毁器。如果基类有&lt;code&gt;__del__()&lt;/code&gt;方法，推断类里是否有&lt;code&gt;__del__()&lt;/code&gt;方法，如果有，必须显式调用这个函数确保实例中基类部分被正确的销毁。注意：在&lt;code&gt;__del__()&lt;/code&gt;里可以创建本对象的新引用来达到推迟删除的目的，但这并不是推荐做法。&lt;code&gt;__del__()&lt;/code&gt;方法在删除最后一个引用后不久调用。但不能保证，在解释器退出时所有存活对象的&lt;code&gt;__del__()&lt;/code&gt;方法都能被调用。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Note：`del x`并不直接调用`x.__del__()`——— 前者将引用计数减一，而后者只有在引用计数减到零时才被调用。引用计数无法达到零的一些常见情况有：对象之间的循环引用 （例如，一个双链表或一个具有父子指针的树状数据结构)；对出现异常的函式的栈桢上对象的引用`(sys.ext_info()[2]`中的回溯对象保证了栈桢不会被删除）；或者交互模式下出现未拦截异常的栈桢上的对象的引用（`sys.last_traceback`中的回溯对象保证了栈桢不会被删除）。第一种情况只有能通过地打破循环才能解决。后两种情况，可以通过将 `sys.last_traceback`赋予`None`解决。只有在打开循环检查器选项时（这是默认的），循环引用才能被垃圾回收机制发现，但前提是Python脚本中的`__del__()`方法不要参与进来。关于`__del__()`与循环检查器是如何相互影响的详细信息，可以参见`gc`模块的介绍，尤其是其中的 garbage 值的描述。
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;Warning：因为调用`__del__()`方法时环境的不确定性，它执行时产生的异常会被忽略掉，只是在`sys.stderr`打印警告信息。另外，当因为删除模块而调用`__del__()`方法时（例如，程序退出时），有些`__del__()`所引用的全局名字可能已经删除了，或者正在删除（例如，正在清理`import`关系）。 由于这些原因，`__del__()`方法对外部不变式的要求应该保持最小。从Python1.5开始，Python可以保证以单下划线开始的全局名字一定在其它全局名字之前从该模块中删除，如果没有其它对这种全局名字的引用，这个功能有助于保证导入的模块在调用`__del__()`时还是有效的。
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__repr__(self)&lt;br /&gt;
-有内建函数&lt;code&gt;repr()&lt;/code&gt;调用，来获得一个对象的“正式的”表达字符串。如果可能的话，这个字符串是一个可用的python表达式，可以用来重新创建一个具有相同值的对象。如果不可能，会返回一个格式为&lt;code&gt;&amp;lt;...有用的描述...&amp;gt;&lt;/code&gt;的字符串。返回值必须是一个字符串对象。如果一个类只定义了&lt;code&gt;__repr__()&lt;/code&gt;而没有&lt;code&gt;__str__()&lt;/code&gt;，&lt;code&gt;__repr__()&lt;/code&gt;会同样用来获得一个这个类的实例的“非正式”表达字符串。&lt;/p&gt;
-
-&lt;p&gt;这个通常用于调试，所以描述字符串的信息丰富性和无歧义性是很重要的.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__str__(self)&lt;br /&gt;
-由&lt;code&gt;str(object)&lt;/code&gt;调用，也可以由内建函数&lt;code&gt;format()&lt;/code&gt;和&lt;code&gt;print()&lt;/code&gt;调用，来得到一个&lt;code&gt;非正规的&lt;/code&gt;、容易打印的、表示这个对象的字符串。返回值必须是一个字符串对象。&lt;/p&gt;
-
-&lt;p&gt;这个方法与&lt;code&gt;object.__repr__()&lt;/code&gt;的不同之处在于，&lt;code&gt;__str__()&lt;/code&gt;不一定会返回一个可用的python表达式，返回的是更简单易用的表示。&lt;/p&gt;
-
-&lt;p&gt;默认的实现是由内建类型&lt;code&gt;object&lt;/code&gt;定义的：调用&lt;code&gt;object.__repr__()&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__bytes__(self)&lt;br /&gt;
-由函数&lt;code&gt;bytes()&lt;/code&gt;调用，来得到一个用来表示对像的一个字节字符串。这会返回一个字节对像。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__format__(self, format_spec)&lt;br /&gt;
-由内建函数&lt;code&gt;format()&lt;/code&gt;（和&lt;code&gt;str&lt;/code&gt;类的方法&lt;code&gt;format()&lt;/code&gt;）调用，用来构造对象的“格式化”字符串描述。&lt;code&gt;format_spec&lt;/code&gt;参数是描述格式选项的字符串。&lt;code&gt;format_spec&lt;/code&gt;的解释依赖于实现&lt;code&gt;__format__()&lt;/code&gt;的类型，但一般来说，大多数类要么把格式化任务委托（转交）给某个内建类型，或者使用与内建类型类似的格式化选项。&lt;/p&gt;
-
-&lt;p&gt;关于标准格式语法的描述，可以参考&lt;code&gt;Format Specification Mini-Language&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;返回值必须是字符串对象。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;在Python 3.4版发生的变化：
-如果传递任意的非空字符给`__format__`方法，会产生`TypeError`异常。
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__lt__(self, other)&lt;br /&gt;
-object.__le__(self, other)&lt;br /&gt;
-object.__eq__(self, other)&lt;br /&gt;
-object.__ne__(self, other)&lt;br /&gt;
-object.__gt__(self, other)&lt;br /&gt;
-object.__ge__(self, other)&lt;br /&gt;
-它们称为“富比较”方法。运算符与方法名的对应关系如下：&lt;code&gt;x&amp;lt;y&lt;/code&gt;调用&lt;code&gt;x.__lt__(y)&lt;/code&gt;，&lt;code&gt;x&amp;lt;=y&lt;/code&gt;调用&lt;code&gt;x.__le__(y)&lt;/code&gt;，&lt;code&gt;x==y&lt;/code&gt;调用&lt;code&gt;x.__eq__(y)&lt;/code&gt;，&lt;code&gt;x!=y&lt;/code&gt;调用&lt;code&gt;x.__ne__(y)&lt;/code&gt;，&lt;code&gt;x&amp;gt;y&lt;/code&gt;调用&lt;code&gt;x.__gt__(y)&lt;/code&gt;，&lt;code&gt;x&amp;gt;=y&lt;/code&gt;调用&lt;code&gt;x.__ge__(y)&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;不是所有厚比较方法都要同时实现的，如果个别厚比较方法没有实现，可以直接返回 NotImplemented。从习惯上讲，一次成功的比较应该返回&lt;code&gt;False&lt;/code&gt;或&lt;code&gt;True&lt;/code&gt;。但是这些方法也可以返回任何值，所以如果比较运算发生在布尔上下文中（例如&lt;code&gt;if&lt;/code&gt;语句中的条件测试），Python会在返回值上调用函式&lt;code&gt;bool()&lt;/code&gt;确定返回值的真值。&lt;/p&gt;
-
-&lt;p&gt;在比较运算符之间并没有潜在的相互关系。&lt;code&gt;x==y&lt;/code&gt;为真并不意味着&lt;code&gt;x!=y&lt;/code&gt;为假。因此，如果定义了方法&lt;code&gt;__eq__()&lt;/code&gt;，那么也应该定义&lt;code&gt;__ne__()&lt;/code&gt;，这样才可以得到期望的效果。关于如何创建可以作为字典键使用的&lt;code&gt;hashable&lt;/code&gt;对象，还需要参考&lt;code&gt;__hash__()&lt;/code&gt;的介绍。&lt;/p&gt;
-
-&lt;p&gt;没有参数交换版本的方法定义（这可以用于当左边参数不支持操作，但右边参数支持的情况）。&lt;code&gt;__lt__()&lt;/code&gt;和&lt;code&gt;__gt__()&lt;/code&gt;相互反射（即互为参数交换版本）；&lt;code&gt;__le__()&lt;/code&gt;和&lt;code&gt;__ge__()&lt;/code&gt;相互反射；&lt;code&gt;__eq__()&lt;/code&gt;和&lt;code&gt;__ne__()&lt;/code&gt;相互反射。&lt;/p&gt;
-
-&lt;p&gt;传递给厚比较方法的参数不能是被自动强制类型转换的（coerced）。&lt;/p&gt;
-
-&lt;p&gt;关于如何从一个根操作自动生成顺序判定操作，可以参考 &lt;code&gt;functools.total_ordering()&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__hash__(self)&lt;br /&gt;
-由内建函式&lt;code&gt;hash()&lt;/code&gt;，或者是在可散列集合（&lt;code&gt;hashed collections&lt;/code&gt;，包括 set，frozenset，dict）成员上的操作调用。这个方法应该返回一个整数。只有一个要求，具有相同值的对象应该有相同的散列值。应该考虑以某种方式（例如排斥或）把在对象比较中起作用的部分与散列值关联起来。&lt;/p&gt;
-
-&lt;p&gt;如果类没有定义&lt;code&gt;__eq__()&lt;/code&gt;方法，那么它也不应该定义&lt;code&gt;__hash__()&lt;/code&gt;方法；如果一个类只定义了&lt;code&gt;__eq__()&lt;/code&gt;方法，那么它是不适合作散列键的。如果可变对象实现了&lt;code&gt;__eq__()&lt;/code&gt;方法，它也不应该实现&lt;code&gt;__hash__()&lt;/code&gt;方法，因为可散列集合要求键值是不可变的(如果对象的散列值发生了改变，它会被放在错误的桶（bucket）中）。&lt;/p&gt;
-
-&lt;p&gt;所有用户定义类默认都定义了方法&lt;code&gt;__eq__()&lt;/code&gt;和&lt;code&gt;__hash__()&lt;/code&gt;，这样，所有对象都可以进行相等比较（除了与自身比较）。&lt;code&gt;x.__hash__()&lt;/code&gt;返回&lt;code&gt;id(x)&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;如果子类从父类继承了方法&lt;code&gt;__hash__()&lt;/code&gt;，但修改了&lt;code&gt;__eq__()&lt;/code&gt;，这时子类继承的散列值就不再正确了（例如，可能从默认的标识相等的比较切换成了值相等的比较），这时在在类定义时显式地将&lt;code&gt;__hash__()&lt;/code&gt;设置成&lt;code&gt;None&lt;/code&gt;就行了。这样，在使用这个子类对象作为散列键时就会抛出&lt;code&gt;TypeError&lt;/code&gt;异常，或者也可以使用常规的可散列检查&lt;code&gt;isinstance(obj, collections.Hashable)&lt;/code&gt;确定它的不可散列性（使用这种检查方式时，这种达到不可散列的方法与在&lt;code&gt;__hash__()&lt;/code&gt;中显式抛出异常的方法是的计算结果就不一样了）。&lt;/p&gt;
-
-&lt;p&gt;如果子类修改了&lt;code&gt;__eq__()&lt;/code&gt;方法，但需要保留父类的&lt;code&gt;__hash__()&lt;/code&gt;，它必须显式地告诉解释器&lt;code&gt;__hash__ = &amp;lt;ParentClass&amp;gt;.__hash__&lt;/code&gt;，否则&lt;code&gt;__hash__()&lt;/code&gt;的继承会被阻止，就像设置&lt;code&gt;__hash__&lt;/code&gt;为&lt;code&gt;None&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__bool__(self)&lt;br /&gt;
-在实现真值测试和内建操作&lt;code&gt;bool()&lt;/code&gt;中调用，应该返回&lt;code&gt;False&lt;/code&gt;和&lt;code&gt;True&lt;/code&gt;。如果没有这个定义方法，转而使用&lt;code&gt;__len__()&lt;/code&gt;。非零返回值，当作“真”。如果这两个方法都没有定义，就认为该实例为“真”。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;3-2-定制访问属性&#34;&gt;3.2 定制访问属性&lt;/h4&gt;
-
-&lt;p&gt;以下方法可以用于定制访问类实例属性的含义（例如，赋值，或删除&lt;code&gt;x.name&lt;/code&gt;）&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;object.__getattr__(self, name)&lt;br /&gt;
-在正常方式访问属性无法成功时（就是说，self属性既不是实例的，在类树结构中找不到）使用。&lt;code&gt;name&lt;/code&gt;是属性名。应该返回一个计算好的属性值，或抛出一个&lt;code&gt;AttributeError&lt;/code&gt;异常。&lt;/p&gt;
-
-&lt;p&gt;注意，如果属性可以通过正常方法访问，&lt;code&gt;__getattr__()&lt;/code&gt;是不会被调用的（是有意将&lt;code&gt;__getattr__()&lt;/code&gt;和&lt;code&gt;__setattr__()&lt;/code&gt;设计成不对称的）。这样做的原因是基于效率的考虑，并且这样也不会让&lt;code&gt;__getattr__()&lt;/code&gt;干涉正常属性。注意，至少对于类实例而言，不必非要更新实例字典伪装属性（但可以将它们插入到其它对象中）。需要全面控制属性访问，可以参考以下&lt;code&gt;__getattribute__()&lt;/code&gt;的介绍。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__getattribute__(self, name)&lt;br /&gt;
-在访问类实例的属性时无条件调用这个方法。如果类也定义了方法 &lt;code&gt;__getattr__()&lt;/code&gt;，那么除非&lt;code&gt;__getattribute__()&lt;/code&gt;显式地调用了它，或者抛出了&lt;code&gt;AttributeError&lt;/code&gt;异常，否则它就不会被调用。这个方法应该返回一个计算好的属性值，或者抛出异常&lt;code&gt;AttributeError&lt;/code&gt;。为了避免无穷递归，对于任何它需要访问的属性，这个方法应该调用基类的同名方法，例如，&lt;code&gt;object.__getattribute__(self, name)&lt;/code&gt;。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Note：但是，通过特定语法或者内建函式，做隐式调用搜索特殊方法时，这个方法可能会被跳过。参见 搜索特殊方法。
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__setattr__(self, name, value)&lt;br /&gt;
-在属性要被赋值时调用。这会替代正常机制（即把值保存在实例字典中）。&lt;code&gt;name&lt;/code&gt;是属性名，&lt;code&gt;vaule&lt;/code&gt;是要赋的值。&lt;/p&gt;
-
-&lt;p&gt;如果在&lt;code&gt;__setattr__()&lt;/code&gt;里要对一个实例属性赋值，它应该调用父类的同名方法，例如，&lt;code&gt;object.__setattr__(self, name, value)&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__delattr__(self, name)&lt;br /&gt;
-与&lt;code&gt;__setattr__()&lt;/code&gt;类似，但它的功能是删除属性。当&lt;code&gt;del obj.name&lt;/code&gt;对对象有意义时，才需要实现它。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__dir__(self)&lt;br /&gt;
-在对象上调用&lt;code&gt;dir()&lt;/code&gt;时调用，它需要返回一个序列。&lt;code&gt;dir()&lt;/code&gt;会将返回的序列转成一个列表，并进行排序。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h5 id=&#34;3-2-1-实现描述符&#34;&gt;3.2.1 实现描述符&lt;/h5&gt;
-
-&lt;p&gt;含有所有者类&lt;code&gt;owner class&lt;/code&gt;中的方法的类被叫做描述符类，下边的方法只会出现在描述符类的实例中。描述符要么在所有者的类字典中，或者在他们父类的类字典中。在下面的例子里，“属性”指名字出现在所有者类&lt;code&gt;__dict__&lt;/code&gt;中的属性。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;object.__get__(self, instance, owner)
-调用这个方法可以获得所有者类中的属性（获取类属性）也可以获取类的实例的属性（获取实例属性）。&lt;code&gt;owner&lt;/code&gt;是所有者类，当&lt;code&gt;instance&lt;/code&gt;是&lt;code&gt;None&lt;/code&gt;时从&lt;code&gt;owner&lt;/code&gt;中获取属性，当&lt;code&gt;instance&lt;/code&gt;是一个实例时从&lt;code&gt;instance&lt;/code&gt;中获取属性。这个方法应该返回属性值，或者产生&lt;code&gt;AttributeError&lt;/code&gt;异常。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__set__(self, instance, value)&lt;br /&gt;
-调用这个方法可以为所有者类的实例&lt;code&gt;instance&lt;/code&gt;的属性设置新值&lt;code&gt;value&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__delete__(self, instance)&lt;br /&gt;
-调用这个方法来删除所有者类实例&lt;code&gt;instance&lt;/code&gt;中的属性。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h5 id=&#34;3-2-2-使用描述&#34;&gt;3.2.2 使用描述&lt;/h5&gt;
-
-&lt;h5 id=&#34;3-2-3-slots&#34;&gt;3.2.3 __slots__&lt;/h5&gt;
-
-&lt;p&gt;默认情况下，类实例使用字典管理属性。在对象只有少量实例变量时这就会占用不少空间。当有大量实例时，空间消耗会变得更为严重。&lt;/p&gt;
-
-&lt;p&gt;这个默认行为可以通过在类定义中定义&lt;code&gt;__slots__&lt;/code&gt;修改。&lt;code&gt;__slots__&lt;/code&gt;声明只为该类的所有实例预留刚刚够用的空间。因为不会为每个实例创建&lt;code&gt;__dict__&lt;/code&gt;，因此空间节省下来了。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;object.__slots__&lt;br /&gt;
-这个类变量可以赋值为一个字符串，一个可迭代对象。或者一个字符串序列（每个字符串表示实例所用的变量名）。如果定义了&lt;code&gt;__slots__&lt;/code&gt;，Python就会为实例预留出存储声明变量的空间，并且不会为每个实例自动创建&lt;code&gt;__dict__&lt;/code&gt;和&lt;code&gt;__weakref__&lt;/code&gt;。&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h6 id=&#34;3-2-3-1-使用-slots-的注意事项&#34;&gt;3.2.3.1 使用__slots__的注意事项&lt;/h6&gt;
-
-&lt;ul&gt;
-&lt;li&gt;如果从一个没有定义&lt;code&gt;__slots__&lt;/code&gt;的基类继承，子类一定存在&lt;code&gt;__dict__&lt;/code&gt;属性。所以，在这种子类中定义&lt;code&gt;__slots__&lt;/code&gt;是没有意义的。&lt;/li&gt;
-&lt;li&gt;没有定义&lt;code&gt;__dict__&lt;/code&gt;的实例不支持对不在&lt;code&gt;__slot__&lt;/code&gt;中的属性赋值。如果需要支持这个功能, 可以把&lt;code&gt;__dict__&lt;/code&gt;放到&lt;code&gt;__slots__&lt;/code&gt;声明中。&lt;/li&gt;
-&lt;li&gt;没有定义&lt;code&gt;__weakref__&lt;/code&gt;的，使用&lt;code&gt;__slot__&lt;/code&gt;的实例不支持对它的 “弱引用”。如果需要支持弱引用，可以把&lt;code&gt;__weakref__&lt;/code&gt;放到&lt;code&gt;__slots__&lt;/code&gt;声明中。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;__slots__&lt;/code&gt;是在类这一级实现的，通过为每个实例创建描述符 (实现描述符)。因此，不能使用类属性为实例的&lt;code&gt;__slots__&lt;/code&gt;中定义的属性设置默认值。否则，类属性会覆盖描述符的赋值操作。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;__slots__&lt;/code&gt;声明的行为只限于其定义所在的类。因此，如果子类没有定义自己的&lt;code&gt;__slots__&lt;/code&gt;(它必须只包括那些 额外的&lt;code&gt;slots&lt;/code&gt;)，子类仍然会使用&lt;code&gt;__dict__&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;如果类定义的&lt;code&gt;slot&lt;/code&gt;与父类中的相同，那么父类&lt;code&gt;slot&lt;/code&gt;中的变量将成为不可访问的 (除非直接从基类中获取描述符)。这使得程序行为变得有一点模糊，以后可能会增加一个防止出现这种情况的检查。&lt;/li&gt;
-&lt;li&gt;从“变长”内建类型，例如&lt;code&gt;int&lt;/code&gt;、&lt;code&gt;str&lt;/code&gt;和&lt;code&gt;tuple&lt;/code&gt;继承的子类的非空&lt;code&gt;__slots__&lt;/code&gt;不会起作用。&lt;/li&gt;
-&lt;li&gt;任何非字符串可迭代对象都可以赋给&lt;code&gt;__slots__&lt;/code&gt;。映射类型也是允许的，但是，以后版本的Python可能给 “键” 赋予特殊意义。&lt;/li&gt;
-&lt;li&gt;只有在两个类的&lt;code&gt;__slots__&lt;/code&gt;相同时，&lt;code&gt;__class__&lt;/code&gt;赋值才会正常工作。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;3-3-定制类的生成&#34;&gt;3.3 定制类的生成&lt;/h4&gt;
-
-&lt;p&gt;默认情况下，类是由&lt;code&gt;type()&lt;/code&gt;来构建的。类的实体是在新的名字空间中执行，而且类的名字是与&lt;code&gt;type(name, bases, namespace)&lt;/code&gt;的结果绑定的。&lt;br /&gt;
-类的创建过程可以通过在类声明的时候指定&lt;code&gt;metaclass&lt;/code&gt;定制，也可以通过继承已有的、包含这个参数的类来实现。在下边的例子中&lt;code&gt;MyClass&lt;/code&gt;和&lt;code&gt;MySubclass&lt;/code&gt;都是&lt;code&gt;Meta&lt;/code&gt;的实例：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;class Meta(type):
-    pass
-
-class MyClass(metaclass=Meta):
-    pass
-
-class MySubclass(MyClass):
-    pass  
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;其他在类定义中使用到的关键字变量，都会被传递到下边描述的所有的&lt;code&gt;metaclass&lt;/code&gt;操作中。&lt;br /&gt;
-当一个类定义执行时，会执行如下操作：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;选择合适的metaclass&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;准备类的名字空间&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;执行类的内容（body）&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;创建类对象&lt;br /&gt;
-
-&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h5 id=&#34;3-3-1-选择合适的-metaclass&#34;&gt;3.3.1 选择合适的&lt;code&gt;Metaclass&lt;/code&gt;&lt;/h5&gt;
-
-&lt;p&gt;下面定义了什么样的的&lt;code&gt;metaclass&lt;/code&gt;对于一个类定义来说是合适的&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;如果没有定义基类，也没有特别指定&lt;code&gt;metaclass&lt;/code&gt;，那么就使用&lt;code&gt;type()&lt;/code&gt;&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;如果给定一个&lt;code&gt;metaclass&lt;/code&gt;，而且它不是&lt;code&gt;type()&lt;/code&gt;的实例，那么它就被直接用作&lt;code&gt;metaclass&lt;/code&gt;&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;如果给定一个&lt;code&gt;type()&lt;/code&gt;的实例作为&lt;code&gt;metaclass&lt;/code&gt;，或者定义了基类, 那就使用最底层的&lt;code&gt;metaclass&lt;/code&gt;&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;底层&lt;code&gt;metaclass&lt;/code&gt;是从给定的&lt;code&gt;metaclass&lt;/code&gt;和所有基类的metaclass中选出的。底层&lt;code&gt;metaclass&lt;/code&gt;是所有候选&lt;code&gt;metaclass&lt;/code&gt;的子类型。如果候选&lt;code&gt;metaclass&lt;/code&gt;中没有一个满足条件，那么类定义就会失败，并抛出&lt;code&gt;TypeError&lt;/code&gt;异常。&lt;/p&gt;
-
-&lt;h5 id=&#34;3-3-2-准备类的名字空间&#34;&gt;3.3.2 准备类的名字空间&lt;/h5&gt;
-
-&lt;p&gt;一旦合适的&lt;code&gt;metaclass&lt;/code&gt;被确认后，类的名字空间就准备好了。如果&lt;code&gt;metaclass&lt;/code&gt;有&lt;code&gt;__prepare__&lt;/code&gt;属性，就执行&lt;code&gt;namespace = metaclass.__prepare__(name, bases, **kwds)&lt;/code&gt;(其中的关键字参数，是来自类定义里的)。&lt;/p&gt;
-
-&lt;p&gt;如果&lt;code&gt;metaclass&lt;/code&gt;没有&lt;code&gt;__prepare__&lt;/code&gt;属性，那么类的名字空间就被初始化为一个空的字典实例。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;See also
-PEP 3115 - Metaclasses in Python 3000
-Introduced the __prepare__ namespace hook
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5 id=&#34;3-3-3-执行类的内容-body&#34;&gt;3.3.3 执行类的内容（body）&lt;/h5&gt;
-
-&lt;p&gt;类的&lt;code&gt;body&lt;/code&gt;是以类似&lt;code&gt;exec(body, globals(), namespace)&lt;/code&gt;的方式执行的。与普通调用&lt;code&gt;exec()&lt;/code&gt;的主要区别在于，当类定义发生在一个函数内部时，词法作用域允许类的&lt;code&gt;body&lt;/code&gt;（包括任何的函数）引用任何当前或者外部作用域的名称。&lt;/p&gt;
-
-&lt;p&gt;尽管里的定义发生在&lt;code&gt;exec&lt;/code&gt;函数里，但是类中定义的方法仍然无法看到类中的其它名字。如果要使用类的变量必须通过实例或类方法的第一个参数，而且不能被静态静态方法使用。&lt;/p&gt;
-
-&lt;h5 id=&#34;3-3-4-创建类对象&#34;&gt;3.3.4 创建类对象&lt;/h5&gt;
-
-&lt;p&gt;当类的内容被执行，并构成了类的名字空间后，类对象就通过调用&lt;code&gt;metaclass(name, bases, namespace, **kwds)&lt;/code&gt;创建好了(传递到这里的关键字变量与传递到&lt;code&gt;__prepare__&lt;/code&gt;中的一样)。&lt;/p&gt;
-
-&lt;p&gt;一个类对象的引用保存在不含参的&lt;code&gt;super().__class__&lt;/code&gt;里，它是一个由编译器创建的隐藏的闭包，任何类&lt;code&gt;body&lt;/code&gt;中的方法都可以被&lt;code&gt;__class__&lt;/code&gt;或者&lt;code&gt;super&lt;/code&gt;引用。这样的话，如果当前的调用需要使用传递到方法中的第一个参数来识别类或对象时，执行调用的类或者实例这样无参的&lt;code&gt;super()&lt;/code&gt;就可以正确的识别那些在词法作用域定义的类。&lt;/p&gt;
-
-&lt;p&gt;当类对象被创建后，它被传递给类中的的装饰器，作为结果的类对象会被绑定在本地名字空间中作为定义好的类。&lt;/p&gt;
-
-&lt;p&gt;当一个新的类通过&lt;code&gt;type.__new__&lt;/code&gt;被创建，新的类对象将名字空间参数复制到一个标准的Python字典中，然后将原始的类对象抛弃。新复制的字典成为类对象的&lt;code&gt;__dict__&lt;/code&gt;属性。&lt;/p&gt;
-
-&lt;h5 id=&#34;3-3-5-metaclass-实例&#34;&gt;3.3.5 &lt;code&gt;Metaclass&lt;/code&gt;实例&lt;/h5&gt;
-
-&lt;p&gt;&lt;code&gt;metaclass&lt;/code&gt;的使用方式是五花八门的。有些方法已经被验证过了比如，日志、接口检查、自动授权、自动创建参数、代理、框架、自动资源锁／同步。&lt;/p&gt;
-
-&lt;p&gt;这里给出一个&lt;code&gt;metaclass&lt;/code&gt;的例子，使用&lt;code&gt;collections.OrderedDict&lt;/code&gt;来记录类中的变量被创建的顺序。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;class OrderedClass(type):  
-    @classmethod  
-    def __prepare__(metacls, name, bases, **kwds):  
-        return collections.OrderedDict()  
-
-    def __new__(cls, name, bases, namespace, **kwds):  
-        result = type.__new__(cls, name, bases, dict(namespace))  
-        result.members = tuple(namespace)  
-        return result  
-
-class A(metaclass=OrderedClass):  
-    def one(self): pass  
-    def two(self): pass  
-    def three(self): pass  
-    def four(self): pass  
-
-&amp;gt;&amp;gt;&amp;gt; A.members  
-(&#39;__module__&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;four&#39;)  
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;当执行&lt;code&gt;A&lt;/code&gt;的类定义时，首先执行&lt;code&gt;metaclass&lt;/code&gt;的&lt;code&gt;__prepare__()&lt;/code&gt;方法，这个方法返回一个空的&lt;code&gt;collections.OrderedDict&lt;/code&gt;。这个字典会记录类&lt;code&gt;A&lt;/code&gt;中定义的方法和属性。当这些定义执行完，这个有序字段就成为类的一部分，然后&lt;code&gt;__new__()&lt;/code&gt;开始被调用。这个方法会创建新的&lt;code&gt;type&lt;/code&gt;类型，将有序字典的&lt;code&gt;key&lt;/code&gt;保存到这个类型的属性&lt;code&gt;memebers&lt;/code&gt;中。&lt;/p&gt;
-
-&lt;h4 id=&#34;3-4-定制实例和子类的检查&#34;&gt;3.4 定制实例和子类的检查&lt;/h4&gt;
-
-&lt;p&gt;以下函数可以用于定制内建函式&lt;code&gt;isinstance()&lt;/code&gt;和&lt;code&gt;issubclass()&lt;/code&gt;的默认行为。&lt;/p&gt;
-
-&lt;p&gt;具体地，元类&lt;code&gt;abc.ABCMeta&lt;/code&gt;实现了这些方法，以允许把抽象基类（ABC）作为任何类或者类型（包括内建类型），也包括其他ABC的“虚拟基类”。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;class.__instancecheck__(self, instance)&lt;br /&gt;
-如果&lt;code&gt;instance&lt;/code&gt;应该被看作&lt;code&gt;class&lt;/code&gt;的一个直接或者间接的实例，就返回真。如果定义了这个方法, 它就会被用于实现&lt;code&gt;isinstance(instance, class)&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;class.__subclasscheck__(self, subclass)&lt;br /&gt;
-如果&lt;code&gt;subclass&lt;/code&gt;应该被看作是&lt;code&gt;class&lt;/code&gt;的一个直接或者间接的基类，就返回真。如果定义了这个方法，它就会被用于实现&lt;code&gt;issubclass(subclass, class)&lt;/code&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;注意，这个方法会在一个类的类型（元类）中查找。它们不能作为一个类方法在类中定义。这个机制，与在实例上查找要调用的特殊方法的机制是一致的，因为在这个情况下实例本身就是一个类。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;See also:
-PEP 3119 - Introducing Abstract Base Classes　 (抽象基类介绍)
-包括定制通过 __instancecheck__() 和 __subclasscheck__()　定制 isinstance() 和 issubclass() 行为的规范，以及在语言上增加抽象基类 (见 abc 模块) 这个背景设置这个功能的动机。
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&#34;3-5-模拟可调用对象&#34;&gt;3.5 模拟可调用对象&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;object.__call__(self[, args&amp;hellip;])&lt;br /&gt;
-当实例作为函式使用时调用本方法。如果定义了这个方法，&lt;code&gt;x(arg1, arg2,...)&lt;/code&gt;就相当于&lt;code&gt;x.__call__(arg1, arg2,...)&lt;/code&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;3-6-模拟容器类型&#34;&gt;3.6 模拟容器类型&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;object.__len__(self)&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;object.__length_hint__(self)&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;object.__getitem__(self, key)&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;object.__missing__(self, key)&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;object.__setitem__(self, key, value)&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;object.__delitem__(self, key)&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;object.__iter__(self)&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;object.__reversed__(self)&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;object.__contains__(self, item)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;3-7-模拟数字类型&#34;&gt;3.7 模拟数字类型&lt;/h4&gt;
-
-&lt;p&gt;以下方法用于模拟数值类型。不同数值类型所支持的操作符并不完全相同，如果一个类型不支持某些操作符（例如非整数值上的位运算），对应的方法就不应该被实现。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;object.__add__(self, other)&lt;br /&gt;
-object.__sub__(self, other)&lt;br /&gt;
-object.__mul__(self, other)&lt;br /&gt;
-object.__matmul__(self, other)&lt;br /&gt;
-object.__truediv__(self, other)&lt;br /&gt;
-object.__floordiv__(self, other)&lt;br /&gt;
-object.__mod__(self, other)&lt;br /&gt;
-object.__divmod__(self, other)&lt;br /&gt;
-object.__pow__(self, other[, modulo])&lt;br /&gt;
-object.__lshift__(self, other)&lt;br /&gt;
-object.__rshift__(self, other)&lt;br /&gt;
-object.__and__(self, other)&lt;br /&gt;
-object.__xor__(self, other)&lt;br /&gt;
-object.__or__(self, other)&lt;br /&gt;
-这些方法用于二元算术操作（+，-，*，/，//，%，divmod()，pow()，**，&amp;lt;&amp;lt;，&amp;gt;&amp;gt;，&amp;amp;，^，|）。 例如，在计算表达式&lt;code&gt;x + y&lt;/code&gt;时,&lt;code&gt;x&lt;/code&gt;是一个定义了&lt;code&gt;__add__()&lt;/code&gt;的类的实例，那么就会调用&lt;code&gt;x.__add__(y)&lt;/code&gt;。方法&lt;code&gt;__divmod__()&lt;/code&gt;应该与使用 &lt;code&gt;__floordiv__()&lt;/code&gt;和&lt;code&gt;__mod__()&lt;/code&gt;的结果相同，但应该与&lt;code&gt;__truediv__()&lt;/code&gt;无关。注意如果要支持三参数版本的内建函式&lt;code&gt;pow()&lt;/code&gt;的话，方法&lt;code&gt;__pow__()&lt;/code&gt;应该被定义成可以接受第三个可选参数的。&lt;/p&gt;
-
-&lt;p&gt;如果以上任一方法无法处理根据参数完成计算的话，就应该返回&lt;code&gt;NotImplemented&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__radd__(self, other)&lt;br /&gt;
-object.__rsub__(self, other)&lt;br /&gt;
-object.__rmul__(self, other)&lt;br /&gt;
-object.__rmatmul__(self, other)&lt;br /&gt;
-object.__rtruediv__(self, other)&lt;br /&gt;
-object.__rfloordiv__(self, other)&lt;br /&gt;
-object.__rmod__(self, other)&lt;br /&gt;
-object.__rdivmod__(self, other)&lt;br /&gt;
-object.__rpow__(self, other)&lt;br /&gt;
-object.__rlshift__(self, other)&lt;br /&gt;
-object.__rrshift__(self, other)&lt;br /&gt;
-object.__rand__(self, other)&lt;br /&gt;
-object.__rxor__(self, other)&lt;br /&gt;
-object.__ror__(self, other)&lt;br /&gt;
-这些方法用于实现二元算术操作（+，-，*，/，//，%，divmod()，pow()，**，&amp;lt;&amp;lt;，&amp;gt;&amp;gt;，&amp;amp;，^，|），但用于操作数反射（即参数顺序是相反的）。这些函式只有在左操作数不支持相应操作，并且是参数是不同类型时才会被使用。例如，计算表达式&lt;code&gt;x - y&lt;/code&gt;，&lt;code&gt;y&lt;/code&gt;是一个定义了方法&lt;code&gt;__rsub__()&lt;/code&gt;的类实例，那么在 x.&lt;strong&gt;sub&lt;/strong&gt;(y) 返回&lt;code&gt;NotImplemented&lt;/code&gt;时才会调用&lt;code&gt;y.__rsub__(x)&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;注意三参数版本的&lt;code&gt;pow()&lt;/code&gt;不会试图调用&lt;code&gt;__rpow__()&lt;/code&gt;。（这会导致类型自动转换规则过于复杂）&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__iadd__(self, other)&lt;br /&gt;
-object.__isub__(self, other)&lt;br /&gt;
-object.__imul__(self, other)&lt;br /&gt;
-object.__imatmul__(self, other)&lt;br /&gt;
-object.__itruediv__(self, other)&lt;br /&gt;
-object.__ifloordiv__(self, other)&lt;br /&gt;
-object.__imod__(self, other)&lt;br /&gt;
-object.__ipow__(self, other[, modulo])&lt;br /&gt;
-object.__ilshift__(self, other)&lt;br /&gt;
-object.__irshift__(self, other)&lt;br /&gt;
-object.__iand__(self, other)&lt;br /&gt;
-object.__ixor__(self, other)&lt;br /&gt;
-object.__ior__(self, other)&lt;br /&gt;
-这些方法用于实现参数化算术赋值操作（+=，-=，*=，/=，//=，%=，**=，&amp;lt;&amp;lt;=，&amp;gt;&amp;gt;=，&amp;amp;=，^=，|=）。这些方法应该是就地操作的（即直接修改&lt;code&gt;self&lt;/code&gt;）并返回结果（一般来讲，这里应该是对&lt;code&gt;self&lt;/code&gt;直接操作，但并不是一定要求如此）。如果没有实现某个对应方法的话，参数化赋值会蜕化为正常方法。例如，执行语句&lt;code&gt;x += y&lt;/code&gt;时，&lt;code&gt;x&lt;/code&gt;是一个实现了 &lt;code&gt;__iadd__()&lt;/code&gt;方法的实例，&lt;code&gt;x.__iadd__(y)&lt;/code&gt;就会被调用。如果&lt;code&gt;x&lt;/code&gt;没有定义 &lt;code&gt;__iadd__()&lt;/code&gt;，就会选择&lt;code&gt;x.__add__(y)&lt;/code&gt;或者&lt;code&gt;y.__radd__(x)&lt;/code&gt;，与&lt;code&gt;x + y&lt;/code&gt;类似。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__neg__(self)&lt;br /&gt;
-object.__pos__(self)&lt;br /&gt;
-object.__abs__(self)&lt;br /&gt;
-object.__invert__(self)&lt;br /&gt;
-用于实现一元算术操作（-，+，&lt;code&gt;abs()&lt;/code&gt;和~）。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__complex__(self)&lt;br /&gt;
-object.__int__(self)&lt;br /&gt;
-object.__float__(self)&lt;br /&gt;
-object.__round__(self[, n])&lt;br /&gt;
-用于实现内建函式&lt;code&gt;complex()&lt;/code&gt;，&lt;code&gt;int()&lt;/code&gt;，&lt;code&gt;float()&lt;/code&gt;和&lt;code&gt;round()&lt;/code&gt;。应该返回对应的类型值。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__index__(self)&lt;br /&gt;
-用于实现函式&lt;code&gt;operator.index()&lt;/code&gt;，或者在Python需要一个整数对象时调用（例如在分片时（slicing），或者在内建函式函式&lt;code&gt;bin()&lt;/code&gt;，&lt;code&gt;hex()&lt;/code&gt;和&lt;code&gt;oct()&lt;/code&gt;中）。这个方法必须返回一个整数。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;3-8-with语句和上下文管理器&#34;&gt;3.8 With语句和上下文管理器&lt;/h4&gt;
-
-&lt;p&gt;上下文管理器&lt;code&gt;context manager&lt;/code&gt;是一个对象，这个对象定义了执行&lt;code&gt;with&lt;/code&gt;语句时要建立的运行时上下文。上下文管理器负责处理执行某代码块时对应的运行时上下文进入和退出。运行时上下文的使用一般通过&lt;code&gt;with&lt;/code&gt;语句（参见&lt;code&gt;with&lt;/code&gt;语句），但也可以直接调用它的方法。&lt;/p&gt;
-
-&lt;p&gt;上下文管理器的典型用途包括保存和恢复各种全局状态，锁定和解锁资源，关闭打开的文件等等。&lt;/p&gt;
-
-&lt;p&gt;关于上下文管理的更多信息，可以参考 Context Manager Types。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;object.__enter__(self)&lt;br /&gt;
-进入与这个对象关联的运行时上下文。&lt;code&gt;with&lt;/code&gt;语句会把这个方法的返回值与&lt;code&gt;as&lt;/code&gt;子句指定的目标绑定在一起 (如果指定了的话)。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.__exit__(self, exc_type, exc_value, traceback)&lt;br /&gt;
-退出与这个对象相关的运行时上下文。参数描述了导致上下文退出的异常，如果是无异常退出，则这三个参数都为&lt;code&gt;None&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;如果给出了一个异常，而这个方法决定要压制它（即防止它把传播出去），那么它应该返回真。否则，在退出这个方法时，这个异常会按正常方式处理。&lt;/p&gt;
-
-&lt;p&gt;注意方法&lt;code&gt;__exit__()&lt;/code&gt;不应该把传入的异常重新抛出，这是调用者的责任。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;See also
-PEP 0343 - The “with” statement（“with” 语句）
-Python with 语句的规范，背景和例子。
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&#34;3-9-搜索特殊方法&#34;&gt;3.9 搜索特殊方法&lt;/h4&gt;
-
-&lt;p&gt;对于定制类，只有在对象类型的字典里定义好，才能保证成功调用特殊方法。这是以下代码发生异常的原因：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; class C:
-...     pass
-...
-&amp;gt;&amp;gt;&amp;gt; c = C()
-&amp;gt;&amp;gt;&amp;gt; c.__len__ = lambda: 5
-&amp;gt;&amp;gt;&amp;gt; len(c)
-Traceback (most recent call last):
-  File &amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;, line 1, in &amp;lt;module&amp;gt;
-TypeError: object of type &#39;C&#39; has no len()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这个行为的原因在于，有不少特殊方法在所有对象中都得到了实现，例如&lt;code&gt;__hash__()&lt;/code&gt;和&lt;code&gt;__repr__()&lt;/code&gt;。如果按照常规的搜索过程搜索这些方法，在涉及到类型对象时就会出错。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; 1.__hash__() == hash(1)
-True
-&amp;gt;&amp;gt;&amp;gt; int.__hash__() == hash(int)
-Traceback (most recent call last):
-  File &amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;, line 1, in &amp;lt;module&amp;gt;
-TypeError: descriptor &#39;__hash__&#39; of &#39;int&#39; object needs an argument
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;试图以这种错误方式调用一个类的未绑定方法有时叫作&lt;code&gt;metaclass confusion&lt;/code&gt;，可以通过在搜索特殊方法时跳过实例避免：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; type(1).__hash__(1) == hash(1)
-True
-&amp;gt;&amp;gt;&amp;gt; type(int).__hash__(int) == hash(int)
-True
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;除了因为正确性的原因而跳过实例属性之外，特殊方法搜索也会跳过&lt;code&gt;__getattribute__()&lt;/code&gt;方法，甚至是元类中的：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; class Meta(type):
-...    def __getattribute__(*args):
-...       print(&amp;quot;Metaclass getattribute invoked&amp;quot;)
-...       return type.__getattribute__(*args)
-...
-&amp;gt;&amp;gt;&amp;gt; class C(object, metaclass=Meta):
-...     def __len__(self):
-...         return 10
-...     def __getattribute__(*args):
-...         print(&amp;quot;Class getattribute invoked&amp;quot;)
-...         return object.__getattribute__(*args)
-...
-&amp;gt;&amp;gt;&amp;gt; c = C()
-&amp;gt;&amp;gt;&amp;gt; c.__len__()                 # Explicit lookup via instance
-Class getattribute invoked
-10
-&amp;gt;&amp;gt;&amp;gt; type(c).__len__(c)          # Explicit lookup via type
-Metaclass getattribute invoked
-10
-&amp;gt;&amp;gt;&amp;gt; len(c)                      # Implicit lookup
-10
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这种跳过&lt;code&gt;__getattribute__()&lt;/code&gt;的机制为解释器的时间性能优化提供了充分的余地，代价是牺牲了处理特殊方法时的部分灵活性（为了保持与解释器的一致，特殊方法必须在类对象中定义）。&lt;/p&gt;
-
-&lt;h1 id=&#34;4-coroutines&#34;&gt;4. Coroutines&lt;/h1&gt;
-
-&lt;h6 id=&#34;4-1-可等待对象&#34;&gt;4.1. 可等待对象&lt;/h6&gt;
-
-&lt;p&gt;一个可等待对象一般会实现方法&lt;code&gt;__await__()&lt;/code&gt;。由&lt;code&gt;async def&lt;/code&gt;函数返回的&lt;code&gt;coroutine&lt;/code&gt;对象都是可等待的。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;注意：被`types.coroutine()`或者`asyncio.coroutine()`修饰的，由生成器创建的迭代器对象也是可等待的。但是它并没有实现`__await__()`
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;object.&lt;strong&gt;await&lt;/strong&gt;(self)&lt;br /&gt;
-必须返回一个迭代器。用来实现可等待对象。对于实例，&lt;code&gt;asyncio.Future&lt;/code&gt;实现了这个方法，来兼容等待表达式。&lt;br /&gt;
-&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;在Python 3.5版中中新增。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;```
-See also PEP 492 for additional information about awaitable objects.
-```
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h6 id=&#34;4-2-协程对象&#34;&gt;4.2. 协程对象&lt;/h6&gt;
-
-&lt;p&gt;协程对象都是可等待对象。一个协程的执行是可以通过&lt;code&gt;__await__()&lt;/code&gt;和遍历结果集来控制的。当协程结束并返回时，迭代器抛出&lt;code&gt;StopIteration&lt;/code&gt;异常，异常的值属性就是这个返回值。如果协程抛出异常，它会通过迭代器传播。协程不应该直接抛出未经捕获的&lt;code&gt;StopIteration&lt;/code&gt;异常。&lt;/p&gt;
-
-&lt;p&gt;就像生成器一样，协程还有下边这些方法（详情查看，生成器-迭代器方法）。但是和生成器不一样，协程不能直接支持迭代操作。&lt;/p&gt;
-
-&lt;p&gt;在Python 3.5.2中的修改：&lt;code&gt;RuntimeError&lt;/code&gt;会多次等待协程。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;coroutine.send(value)&lt;br /&gt;
-开始或者恢复协程的运行。如果&lt;code&gt;value&lt;/code&gt;为&lt;code&gt;None&lt;/code&gt;。如果&lt;code&gt;value&lt;/code&gt;不是&lt;code&gt;None&lt;/code&gt;，这个方法会调用导致这个协程挂起的迭代器的&lt;code&gt;send()&lt;/code&gt;方法。结果（返回值、&lt;code&gt;StopIteration&lt;/code&gt;、或其它异常）与迭代时&lt;code&gt;__await__()&lt;/code&gt;的返回值时一样的。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;coroutine.throw(type[, value[, traceback]])&lt;br /&gt;
-在协程中抛出指定异常。这个方法会调用造成协程挂起的迭代器的&lt;code&gt;throw&lt;/code&gt;方法，如果这个迭代器有这个方法。否则就在挂起位置抛出异常。结果（返回值、&lt;code&gt;StopIteration&lt;/code&gt;、或其它异常）与迭代时&lt;code&gt;__await__()&lt;/code&gt;的返回值时一样的。如果协程中没有捕获异常，它会传递给调用者。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;coroutine.close()&lt;br /&gt;
-调用这个方法将导致协程被清理并退出。如果协程已被挂起，要先执行造成协程挂起的迭代器的&lt;code&gt;close&lt;/code&gt;函数，如果迭代器有这个函数的话。然后它会在挂起位置抛出&lt;code&gt;GeneratorExit&lt;/code&gt;异常，这会造成协程立刻清理自己。最后，这个协程被标记为已完成，哪怕它从来没有执行过。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h6 id=&#34;4-3-异步迭代器&#34;&gt;4.3. 异步迭代器&lt;/h6&gt;
-
-&lt;p&gt;一个异步迭代器可以调用在实现它的&lt;code&gt;__aiter__&lt;/code&gt;时，调用异步代码，一个异步迭代器可以在它的&lt;code&gt;__anext__&lt;/code&gt;方法里调用异步代码。&lt;/p&gt;
-
-&lt;p&gt;异步迭代器可以在&lt;code&gt;async for&lt;/code&gt;语句中使用。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;object.&lt;strong&gt;aiter&lt;/strong&gt;(self)&lt;br /&gt;
-必须返回一个异步迭代器对象。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.&lt;strong&gt;anext&lt;/strong&gt;(self)&lt;br /&gt;
-迭代器返回的下一个值必须是一个可等待的，当迭代操作结束时会抛出一个&lt;code&gt;StopAsyncIteration&lt;/code&gt;错误。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;异步迭代器的例子&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;class Reader:
-    async def readline(self):
-        ...
-
-    def __aiter__(self):
-        return self
-
-    async def __anext__(self):
-        val = await self.readline()
-        if val == b&#39;&#39;:
-            raise StopAsyncIteration
-        return val
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在Python 3.5版中中新增。&lt;/p&gt;
-
-&lt;h6 id=&#34;4-4-异步上下文管理器&#34;&gt;4.4. 异步上下文管理器&lt;/h6&gt;
-
-&lt;p&gt;异步上下文管理器可以在它的&lt;code&gt;__aenter__&lt;/code&gt;和&lt;code&gt;__aexit__&lt;/code&gt;方法中延迟执行。&lt;/p&gt;
-
-&lt;p&gt;异步上下文管理器可以在&lt;code&gt;async with&lt;/code&gt;语句中使用。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;object.&lt;strong&gt;aenter&lt;/strong&gt;(self)&lt;br /&gt;
-这个方法在语义上与&lt;code&gt;__enter__()&lt;/code&gt;类似，唯一的区别就是它必须返回一个可等待对象。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;object.&lt;strong&gt;aexit&lt;/strong&gt;(self, exc_type, exc_value, traceback)&lt;br /&gt;
-这个方法在语义上与&lt;code&gt;__exit__()&lt;/code&gt;类似，唯一的区别就是它必须返回一个可等待对象。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;异步上下文管理器的例子&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;class AsyncContextManager:
-    async def __aenter__(self):
-        await log(&#39;entering context&#39;)
-
-    async def __aexit__(self, exc_type, exc, tb):
-        await log(&#39;exiting context&#39;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在Python 3.5版中中新增。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;注意：
-在Python 3.5.2版中的修改: 从CPython 3.5.2开始，__aiter__ 可以返回异步迭代器。返回一个可等待对象会导致 PendingDeprecationWarning 。
-
-在CPython 3.5.x中为了保证向后兼容，推荐继续返回可等待对象在 __aiter__ 中。如果你想避免 PendingDeprecationWarning 同时也想保持向后兼容，可以用下边的装饰器：
-
-import functools
-import sys
-
-if sys.version_info &amp;lt; (3, 5, 2):
-    def aiter_compat(func):
-        @functools.wraps(func)
-        async def wrapper(self):
-            return func(self)
-        return wrapper
-else:
-    def aiter_compat(func):
-        return func
-
-例子：
-
-class AsyncIterator:
-
-    @aiter_compat
-    def __aiter__(self):
-        return self
-
-    async def __anext__(self):
-        ...
-	
-从CPython 3.6开始，PendingDeprecationWarning 将被 DeprecationWarning 替换。在CPython 3.7中，从 __aiter__ 返回一个可等待对象将会导致 RuntimeError。
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;半抄袭，半翻译，一点点完善把。&lt;br /&gt;
-其实新版文档已经更新了很多内容，抄袭过来的东西反而有可能有问题。&lt;br /&gt;
-而自己翻译的内容～～～反正metaclass那部分，有几段我自己都看晕了。&lt;br /&gt;
-不管怎么说，至少是帮助自己深入的了解了一下Python。&lt;br /&gt;
-自己凑合着看吧。&lt;br /&gt;
-&lt;a href=&#34;https://docs.python.org/3/reference/datamodel.html&#34;&gt;https://docs.python.org/3/reference/datamodel.html&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&#34;http://docspy3zh.readthedocs.io/en/latest/reference/datamodel.html&#34;&gt;http://docspy3zh.readthedocs.io/en/latest/reference/datamodel.html&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
