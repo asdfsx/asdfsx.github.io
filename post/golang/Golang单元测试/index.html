@@ -4,10 +4,10 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="hugo的使用">
+  <meta name="description" content="Golang单元测试">
   <meta name="generator" content="Hugo 0.19-DEV" />
 
-  <title>使用hugo在github上搭建blog &middot; asdfsx</title>
+  <title>Golang单元测试 &middot; asdfsx</title>
 
   
   
@@ -216,8 +216,8 @@
 
 
 <div class="header">
-  <h1>使用hugo在github上搭建blog</h1>
-  <h2>hugo的使用</h2>
+  <h1>Golang单元测试</h1>
+  <h2>Golang单元测试</h2>
 </div>
 <div class="content">
 
@@ -225,7 +225,7 @@
 
   <div>
     <i class="fa fa-calendar fa-fw"></i>
-    <time>06 Dec 2016, 19:29</time>
+    <time>12 May 2018, 00:01</time>
   </div>
 
   
@@ -248,9 +248,7 @@
   <div>
     <i class="fa fa-tags fa-fw"></i>
     
-      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/hugo">hugo</a>&nbsp;&#47;
-    
-      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/github">github</a>
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/golang">golang</a>
     
   </div>
   
@@ -258,215 +256,155 @@
 
 </div>
 
-  <p>安装golang的开发环境</p>
+  
 
-<blockquote>
-<p>brew install golang<br />
-cat &ldquo;export GOPATH=/root/gocode&rdquo; &gt;&gt; ~/.bash_profile<br />
-cat &ldquo;export PATH=${GOPATH}/bin:$PATH&rdquo; &gt;&gt; ~/.bash_profile</p>
-</blockquote>
+<p>参考几篇文章后，简单的进行了实践。感觉可以作为以后使用 golang 开发时，单元测试的固定套路。<br />
+首先介绍下这几个库</p>
 
-<p>安装hugo</p>
+<ul>
+<li>goconvey<br />
+可以作为单元测试框架。提供web界面管理测试，不仅可以看到单元测试的成功失败，还可以看到测试的覆盖率。而且启动goconvey以后，可以在文件修改后，自动进行测试。
+<img src="http://ohrdj7osp.bkt.clouddn.com/21AB18E1-5AC0-43E8-8722-A8F98871AC3E-crop1.png" alt="" /></li>
+<li>gostub
+在测试过程中，根据需求动态修改全局变量的值（比如，使用测试专用的配置文件），根据需求指定某个函数的返回值。（专业术语叫打桩？？？）</li>
+<li>gomock
+专门用来测试接口的工具。可以根据接口定义来生成一个实现了接口的mock结构体。不过这个mock结构体上接口的每个函数返回值都需要根据测试来指定，这个mock结构体，可以在测试中使用。</li>
+</ul>
 
-<blockquote>
-<p>go get -v github.com/spf13/hugo</p>
-</blockquote>
+<h3 id="goconvey">goconvey</h3>
 
-<pre><code>源码会下载到$GOPATH/src下
-可执行文件在$GOPATH/bin下
-如果没有生成可执行文件，就使用go install手动安装一下hugo
+<p>安装</p>
+
+<pre><code>go get github.com/smartystreets/goconvey
 </code></pre>
 
-<p>创建一个站点</p>
+<p>启动测试框架</p>
 
-<blockquote>
-<p>hugo new site localhost</p>
-</blockquote>
-
-<pre><code>执行命令的目录下会生成一个新目录localhost
-该站点的所有文件都保存在该目录下
-目录结构如下
-.
-├── archetypes
-├── config.toml
-├── content
-├── data
-├── layouts
-├── static
-└── themes
+<pre><code>cd $GOPATH/src/github.com/asdfsx/codility
+goconvey
 </code></pre>
 
-<p>给localhost下载一个theme</p>
+<p>通过浏览器访问 <code>http://127.0.0.1:8080/</code> 可以看到测试结果。更改上面的地址可以对不同目录下的代码进行测试。</p>
 
-<blockquote>
-<p>cd localhost/themes<br />
-git clone <a href="https://github.com/enten/hyde-y.git'">https://github.com/enten/hyde-y.git'</a></p>
-</blockquote>
+<p>goconvey 可以直接支持 golang 的 testing 模块。但是为了获得更好的输出，可以使用goconvey的api对测试进行包装</p>
 
-<p>修改localhost站点的配置, 用下边的值覆盖config.toml</p>
+<pre><code>import(
+  . &quot;github.com/smartystreets/goconvey/convey&quot;
+  &quot;testing&quot;
+)
 
-<blockquote>
-<p>vi config.toml</p>
-</blockquote>
+func TestDB2(t *testing.T){
+    ...
+    Convey(&quot;CreateConnection&quot;, t, func(){
+        dbConn, err = CreateConnection()
+        So(err, ShouldEqual, nil)
+    })
+    ...
+)
 
-<pre><code># hostname (and path) to the root eg. http://spf13.com/
-baseurl = &quot;http://asdfsx.github.io&quot;
-
-# Site title
-title = &quot;asdfsx&quot;
-
-# Copyright
-copyright = &quot;(c) 2016 asdfsx.&quot;
-
-# Language
-languageCode = &quot;en-EN&quot;
-
-# Metadata format
-# &quot;yaml&quot;, &quot;toml&quot;, &quot;json&quot;
-metaDataFormat = &quot;toml&quot;
-
-# Theme to use (located in /themes/THEMENAME/)
-theme = &quot;hyde-y&quot;
-
-# Pagination
-paginate = 10
-paginatePath = &quot;page&quot;
-
-# Enable Disqus integration
-#disqusShortname = &quot;your_disqus_shortname&quot;
-
-#[permalinks]
-#    post = &quot;/:year/:month/:day/:slug/&quot;
-#    code = &quot;/:slug/&quot;
-
-[taxonomies]
-    tag = &quot;tags&quot;
-    topic = &quot;topics&quot;
-
-[author]
-    name = &quot;yourname&quot;
-    email = &quot;yourname@example.com&quot;
-
-#
-# All parameters below here are optional and can be mixed and matched.
-#
-[params]
-    # You can use markdown here.
-    brand = &quot;asdfsx&quot;
-    topline = &quot;sam's bodega&quot;
-    footline = &quot;code with &lt;i class='fa fa-heart'&gt;&lt;/i&gt;&quot;
-
-    # Sidebar position
-    # false, true, &quot;left&quot;, &quot;right&quot;
-    sidebar = &quot;left&quot;
-
-    # Text for the top menu link, which goes the root URL for the site.
-    # Default (if omitted) is &quot;Home&quot;.
-    home = &quot;home&quot;
-
-    # Select a syntax highight.
-    # Check the static/css/highlight directory for options.
-    highlight = &quot;default&quot;
-
-    # Google Analytics.
-    googleAnalytics = &quot;Your Google Analytics tracking code&quot;
-
-    # Sidebar social links.
-    github = &quot;enten/hugo-boilerplate&quot; # Your Github profile ID
-    bitbucket = &quot;&quot; # Your Bitbucket profile ID
-    linkedin = &quot;&quot; # Your LinkedIn profile ID (from public URL)
-    googleplus = &quot;&quot; # Your Google+ profile ID
-    facebook = &quot;&quot; # Your Facebook profile ID
-    twitter = &quot;&quot; # Your Twitter profile ID
-    youtube = &quot;&quot;  # Your Youtube channel ID
-    flattr = &quot;&quot;  # populate with your flattr uid
-    flickr = &quot;&quot; # Your Flickr profile ID
-    vimeo = &quot;&quot; # Your Vimeo profile ID
-
-    # Sidebar RSS link: will only show up if there is a RSS feed
-    # associated with the current page
-    rss = true
-
-[blackfriday]
-    angledQuotes = true
-    fractions = false
-    hrefTargetBlank = false
-    latexDashes = true
-    plainIdAnchors = true
-    extensions = []
-    extensionmask = []
 </code></pre>
 
-<p>修改侧边栏的菜单, 用下边的覆盖data/Menu.toml</p>
+<h3 id="gostub">gostub</h3>
 
-<blockquote>
-<p>vi data/Menu.toml</p>
-</blockquote>
+<p>安装</p>
 
-<pre><code>[about]
-    Name = &quot;About&quot;
-    URL = &quot;/about/&quot;
-[tags]
-    Name = &quot;Tags&quot;
-    URL = &quot;/tags&quot;
+<pre><code>go get github.com/prashantv/gostub
 </code></pre>
 
-<p>给localhost站点创建一个文章</p>
+<p>在测试的过程中，需要根据情况调整配置和一些全局变量，gostub 就是用来做这个的（打桩？）。</p>
 
-<blockquote>
-<p>cd localhost<br />
-hugo new post/first.md</p>
-</blockquote>
+<pre><code>import (
+	&quot;testing&quot;
+	. &quot;github.com/prashantv/gostub&quot;
+)
 
-<pre><code>在localhost目录下执行该命令。文章会在content目录里生成
+var (
+	MYSQLUSER string
+	MYSQLPASSWORD string
+	MYSQLADDR string
+	MYSQLPORT int
+	DATABASENAME string
+)
+
+func Test1(t *testing.T){
+	stubs := New()
+	stubs.Stub(&amp;MYSQLUSER, &quot;root&quot;)
+	stubs.Stub(&amp;MYSQLPASSWORD, &quot;root&quot;)
+	stubs.Stub(&amp;MYSQLADDR, &quot;127.0.0.1&quot;)
+	stubs.Stub(&amp;MYSQLPORT, 3306)
+	stubs.Stub(&amp;DATABASENAME, &quot;mysql&quot;)
+	defer stubs.Reset()
+	connstr := fmt.Sprintf(&quot;%s:%s@tcp(%s:%d)/%s&quot;, MYSQLUSER, MYSQLPASSWORD, MYSQLADDR, MYSQLPORT, DATABASENAME)
+	...
+)
 </code></pre>
 
-<p>启动hugo server</p>
+<h3 id="gomock">gomock</h3>
 
-<blockquote>
-<p>hugo server &ndash;theme=blackburn &ndash;buildDrafts &ndash;watch</p>
-</blockquote>
+<p>gomock 主要用来进行接口的测试。通过它提供的 mockgen 工具，会根据接口定义来生成接口测试用的文件。配合 gostub 对mock程序的行为进行打桩，然后就可以用来测试了。</p>
 
-<p>生成静态资源</p>
+<p>安装</p>
 
-<blockquote>
-<p>hugo &ndash;theme=blackburn &ndash;baseUrl=<a href="https://asdfsx.github.io/">https://asdfsx.github.io/</a></p>
-</blockquote>
-
-<pre><code>注意 baseurl里用了https。因为github现在全站使用https。
-如果不指定https，会用http来生成内部资源的链接。
-当加载css、js时可能会发生 “Blocked loading mixed active content” 的问题。
-导致页面显示异常
+<pre><code>go get github.com/golang/mock/gomock
+go install github.com/golang/mock/mockgen
 </code></pre>
 
-<p>经过上边一步，静态资源生成，并保存在public目录下，接下来把public下的内容都上传到github上就好了</p>
+<p>使用 mockgen</p>
 
-<p>首先在GitHub 上创建一个repository,名字为: username.github.io<br />
-然后将public下的内容都传到该项目里</p>
+<pre><code>mockgen -source db.go &gt; mock_db.go 
+</code></pre>
 
-<blockquote>
-<p>cd public<br />
-git init<br />
-git add .<br />
-git commit -m &ldquo;first commit&rdquo;<br />
-git remote add origin <a href="https://github.com/asdfsx/asdfsx.github.io">https://github.com/asdfsx/asdfsx.github.io</a><br />
-git push -u origin master</p>
-</blockquote>
+<p>mock_db.go 就是未来接口测试用到的mock类</p>
 
-<p>完成以上步骤以后就可以访问<a href="https://asdfsx.github.io">https://asdfsx.github.io</a></p>
+<pre><code>import (
+	&quot;testing&quot;
+	. &quot;github.com/smartystreets/goconvey/convey&quot;
+	. &quot;github.com/prashantv/gostub&quot;
+	. &quot;github.com/golang/mock/gomock&quot;
+)
+
+func TestMock(t *testing.T){
+	var newRedisRepo2 = newRedisRepo
+	Convey(&quot;test obj demo&quot;, t, func() {
+		Convey(&quot;create obj&quot;, func() {
+			ctrl := NewController(t)
+			defer ctrl.Finish()
+			mockRepo := NewMockRepository(ctrl)
+			mockRepo.EXPECT().Retrieve(Any()).Return(nil, nil)
+			mockRepo.EXPECT().Create(Any(), Any()).Return(nil)
+			mockRepo.EXPECT().Retrieve(Any()).Return(nil, nil)
+			stubs := StubFunc(&amp;newRedisRepo2, mockRepo)
+			defer stubs.Reset()
+			So(repo.Create(&quot;&quot;, nil), ShouldBeNil)
+		})
+	})
+}
+
+
+</code></pre>
+
+<h3 id="总结">总结</h3>
+
+<p>灵活使用以上3个工具应该能满足绝大多数的测试场景。接下来就是多用多看相关文档了。</p>
+
+<h1 id="参考文章">参考文章</h1>
+
+<p><a href="https://www.jianshu.com/p/e3b2b1194830">GoConvey框架使用指南</a><br />
+<a href="https://www.jianshu.com/p/70a93a9ed186">GoStub框架使用指南</a><br />
+<a href="https://www.jianshu.com/p/f4e773a1b11f">GoMock框架使用指南</a></p>
 
 
   
 <div class="prev-next-post pure-g">
   <div class="pure-u-1-24" style="text-align: left;">
     
-    <a href="https://asdfsx.github.io/post/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa fa-chevron-left"></i></a>
+    <a href="https://asdfsx.github.io/post/golang/Golang%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/"><i class="fa fa-chevron-left"></i></a>
     
   </div>
   <div class="pure-u-10-24">
     
     <nav class="prev">
-      <a href="https://asdfsx.github.io/post/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">git常用命令</a>
+      <a href="https://asdfsx.github.io/post/golang/Golang%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">Golang的类型</a>
     </nav>
     
   </div>
@@ -475,14 +413,8 @@ git push -u origin master</p>
   </div>
   <div class="pure-u-10-24">
     
-    <nav class="next">
-      <a href="https://asdfsx.github.io/post/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/git%E5%AD%A6%E4%B9%A0/">git学习</a>
-    </nav>
-    
   </div>
   <div class="pure-u-1-24" style="text-align: right;">
-    
-    <a href="https://asdfsx.github.io/post/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/git%E5%AD%A6%E4%B9%A0/"><i class="fa fa-chevron-right"></i></a>
     
   </div>
 </div>

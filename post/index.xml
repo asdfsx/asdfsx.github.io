@@ -6,8 +6,153 @@
     <description>Recent content in Posts on asdfsx</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&amp;copy; 2016. All rights reserved.</copyright>
-    <lastBuildDate>Sat, 25 Feb 2017 20:15:52 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 12 May 2018 00:01:07 +0800</lastBuildDate>
     <atom:link href="https://asdfsx.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Golang单元测试</title>
+      <link>https://asdfsx.github.io/post/golang/Golang%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/</link>
+      <pubDate>Sat, 12 May 2018 00:01:07 +0800</pubDate>
+      
+      <guid>https://asdfsx.github.io/post/golang/Golang%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/</guid>
+      <description>
+
+&lt;p&gt;参考几篇文章后，简单的进行了实践。感觉可以作为以后使用 golang 开发时，单元测试的固定套路。&lt;br /&gt;
+首先介绍下这几个库&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;goconvey&lt;br /&gt;
+可以作为单元测试框架。提供web界面管理测试，不仅可以看到单元测试的成功失败，还可以看到测试的覆盖率。而且启动goconvey以后，可以在文件修改后，自动进行测试。
+&lt;img src=&#34;http://ohrdj7osp.bkt.clouddn.com/21AB18E1-5AC0-43E8-8722-A8F98871AC3E-crop1.png&#34; alt=&#34;&#34; /&gt;&lt;/li&gt;
+&lt;li&gt;gostub
+在测试过程中，根据需求动态修改全局变量的值（比如，使用测试专用的配置文件），根据需求指定某个函数的返回值。（专业术语叫打桩？？？）&lt;/li&gt;
+&lt;li&gt;gomock
+专门用来测试接口的工具。可以根据接口定义来生成一个实现了接口的mock结构体。不过这个mock结构体上接口的每个函数返回值都需要根据测试来指定，这个mock结构体，可以在测试中使用。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;goconvey&#34;&gt;goconvey&lt;/h3&gt;
+
+&lt;p&gt;安装&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;go get github.com/smartystreets/goconvey
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;启动测试框架&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd $GOPATH/src/github.com/asdfsx/codility
+goconvey
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过浏览器访问 &lt;code&gt;http://127.0.0.1:8080/&lt;/code&gt; 可以看到测试结果。更改上面的地址可以对不同目录下的代码进行测试。&lt;/p&gt;
+
+&lt;p&gt;goconvey 可以直接支持 golang 的 testing 模块。但是为了获得更好的输出，可以使用goconvey的api对测试进行包装&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;import(
+  . &amp;quot;github.com/smartystreets/goconvey/convey&amp;quot;
+  &amp;quot;testing&amp;quot;
+)
+
+func TestDB2(t *testing.T){
+    ...
+    Convey(&amp;quot;CreateConnection&amp;quot;, t, func(){
+        dbConn, err = CreateConnection()
+        So(err, ShouldEqual, nil)
+    })
+    ...
+)
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;gostub&#34;&gt;gostub&lt;/h3&gt;
+
+&lt;p&gt;安装&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;go get github.com/prashantv/gostub
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在测试的过程中，需要根据情况调整配置和一些全局变量，gostub 就是用来做这个的（打桩？）。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;import (
+	&amp;quot;testing&amp;quot;
+	. &amp;quot;github.com/prashantv/gostub&amp;quot;
+)
+
+var (
+	MYSQLUSER string
+	MYSQLPASSWORD string
+	MYSQLADDR string
+	MYSQLPORT int
+	DATABASENAME string
+)
+
+func Test1(t *testing.T){
+	stubs := New()
+	stubs.Stub(&amp;amp;MYSQLUSER, &amp;quot;root&amp;quot;)
+	stubs.Stub(&amp;amp;MYSQLPASSWORD, &amp;quot;root&amp;quot;)
+	stubs.Stub(&amp;amp;MYSQLADDR, &amp;quot;127.0.0.1&amp;quot;)
+	stubs.Stub(&amp;amp;MYSQLPORT, 3306)
+	stubs.Stub(&amp;amp;DATABASENAME, &amp;quot;mysql&amp;quot;)
+	defer stubs.Reset()
+	connstr := fmt.Sprintf(&amp;quot;%s:%s@tcp(%s:%d)/%s&amp;quot;, MYSQLUSER, MYSQLPASSWORD, MYSQLADDR, MYSQLPORT, DATABASENAME)
+	...
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;gomock&#34;&gt;gomock&lt;/h3&gt;
+
+&lt;p&gt;gomock 主要用来进行接口的测试。通过它提供的 mockgen 工具，会根据接口定义来生成接口测试用的文件。配合 gostub 对mock程序的行为进行打桩，然后就可以用来测试了。&lt;/p&gt;
+
+&lt;p&gt;安装&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;go get github.com/golang/mock/gomock
+go install github.com/golang/mock/mockgen
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用 mockgen&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mockgen -source db.go &amp;gt; mock_db.go 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;mock_db.go 就是未来接口测试用到的mock类&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;import (
+	&amp;quot;testing&amp;quot;
+	. &amp;quot;github.com/smartystreets/goconvey/convey&amp;quot;
+	. &amp;quot;github.com/prashantv/gostub&amp;quot;
+	. &amp;quot;github.com/golang/mock/gomock&amp;quot;
+)
+
+func TestMock(t *testing.T){
+	var newRedisRepo2 = newRedisRepo
+	Convey(&amp;quot;test obj demo&amp;quot;, t, func() {
+		Convey(&amp;quot;create obj&amp;quot;, func() {
+			ctrl := NewController(t)
+			defer ctrl.Finish()
+			mockRepo := NewMockRepository(ctrl)
+			mockRepo.EXPECT().Retrieve(Any()).Return(nil, nil)
+			mockRepo.EXPECT().Create(Any(), Any()).Return(nil)
+			mockRepo.EXPECT().Retrieve(Any()).Return(nil, nil)
+			stubs := StubFunc(&amp;amp;newRedisRepo2, mockRepo)
+			defer stubs.Reset()
+			So(repo.Create(&amp;quot;&amp;quot;, nil), ShouldBeNil)
+		})
+	})
+}
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;总结&#34;&gt;总结&lt;/h3&gt;
+
+&lt;p&gt;灵活使用以上3个工具应该能满足绝大多数的测试场景。接下来就是多用多看相关文档了。&lt;/p&gt;
+
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.jianshu.com/p/e3b2b1194830&#34;&gt;GoConvey框架使用指南&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://www.jianshu.com/p/70a93a9ed186&#34;&gt;GoStub框架使用指南&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://www.jianshu.com/p/f4e773a1b11f&#34;&gt;GoMock框架使用指南&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Golang的类型</title>
@@ -5206,50 +5351,6 @@ class CommandType(type):
 &lt;h4 id=&#34;odoo-cli-server-server&#34;&gt;odoo.cli.server.Server&lt;/h4&gt;
 
 &lt;p&gt;最重要的命令，启动odoo服务器。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>入新坑  开源python ERP odoo</title>
-      <link>https://asdfsx.github.io/post/odoo/%E5%85%A5%E6%96%B0%E5%9D%91--%E5%BC%80%E6%BA%90python%20ERP%20odoo/</link>
-      <pubDate>Thu, 22 Dec 2016 19:37:57 +0800</pubDate>
-      
-      <guid>https://asdfsx.github.io/post/odoo/%E5%85%A5%E6%96%B0%E5%9D%91--%E5%BC%80%E6%BA%90python%20ERP%20odoo/</guid>
-      <description>&lt;p&gt;这篇纯粹吹水&lt;/p&gt;
-
-&lt;p&gt;odoo是一套开源的，由python实现的ERP系统。说是系统，更像是一个平台，甚至可以说是生态系统（就像 appstore）。&lt;/p&gt;
-
-&lt;p&gt;首先，它的功能是通过自由组合的各种插件来实现的。其自带的插件就由已经实现了以下功能：客户管理、财务管理、进销存管理、员工管理、审批流程定制，等等。基本上已经覆盖了大部分的企业需求（可能不一定符合特定用户的特定需求，但是它有）。&lt;/p&gt;
-
-&lt;p&gt;其次，它为开源社区提供了插件交易的一个市场。各种收费的免费的插件通过这个市场共享。大幅度的扩展了它的应用范围。受益于此，获得了大量的插件：有免费的、方便汇率更新的小型功能插件，也有收费的提供酒店管理的定制化插件。&lt;/p&gt;
-
-&lt;p&gt;最后，它还不定时的组织线上线下的活动，来进行进行客户培训、产品推广、技术交流（虽然都在国外）。&lt;/p&gt;
-
-&lt;p&gt;最后的最后，完全开源，方便定制化。&lt;/p&gt;
-
-&lt;p&gt;总之，个人感觉它可以算是中小企业的福音了。&lt;/p&gt;
-
-&lt;p&gt;然后最近准备开始深入研究下这个系统，就像之前研究openstack一样，从源码开始，这个总不会比openstack还复杂吧！！！&lt;/p&gt;
-
-&lt;p&gt;以下就直接抄它官网的文字介绍了。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;我们认为商业软件应以简单的结构解决复杂的需求。我们的任务是提供直观、功能全面、紧密集成、升级无忧、面向每种业务、每一用户均可平稳运行的软件。
-
-我们的目标是提供一系列易用业务应用程序，形成完整的一套工具，以满足任何业务需求。我们让数百万公司可轻松访问其运营和括大业务所需的软件。
-
-在 Odoo，我们已开发了 30 种主要应用，均会定期更新。此外，我们的社区包括 1,500 多名活跃成员，已另外贡献了 4,500 多款应用，可涵盖大量业务需求。
-
-Odoo 具有“预置型”产品，是全球安装最多的商业软件。从初创公司（1 名用户）到大型企业（300,000 多位用户），全球有 2,000,000 多名用户在使用这款软件。
-
-Odoo 的开源模式让我们可利用无数开发人员和业务专家，在短短数年内，打造数百款应用。
-
-具有强大的技术基础，Odoo 的结构非常独特。其具有 一流的可用性，堪比所有 app。
-
-Odoo 所做的可用性改善会自动应用于我们充分集成的所有应用上。
-
-采用这种方式，Odoo 比其他解决方案发展更快。
-
-&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

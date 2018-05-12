@@ -230,6 +230,68 @@
   
     <article>
   <header>
+    <h2><a href="https://asdfsx.github.io/post/golang/Golang%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">Golang单元测试</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>12 May 2018, 00:01</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/golang">golang</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  参考几篇文章后，简单的进行了实践。感觉可以作为以后使用 golang 开发时，单元测试的固定套路。
+首先介绍下这几个库
+ goconvey
+可以作为单元测试框架。提供web界面管理测试，不仅可以看到单元测试的成功失败，还可以看到测试的覆盖率。而且启动goconvey以后，可以在文件修改后，自动进行测试。  gostub 在测试过程中，根据需求动态修改全局变量的值（比如，使用测试专用的配置文件），根据需求指定某个函数的返回值。（专业术语叫打桩？？？） gomock 专门用来测试接口的工具。可以根据接口定义来生成一个实现了接口的mock结构体。不过这个mock结构体上接口的每个函数返回值都需要根据测试来指定，这个mock结构体，可以在测试中使用。  goconvey 安装
+go get github.com/smartystreets/goconvey  启动测试框架
+cd $GOPATH/src/github.com/asdfsx/codility goconvey  通过浏览器访问 http://127.0.0.1:8080/ 可以看到测试结果。更改上面的地址可以对不同目录下的代码进行测试。
+goconvey 可以直接支持 golang 的 testing 模块。但是为了获得更好的输出，可以使用goconvey的api对测试进行包装
+import( . &quot;github.com/smartystreets/goconvey/convey&quot; &quot;testing&quot; ) func TestDB2(t *testing.T){ ... Convey(&quot;CreateConnection&quot;, t, func(){ dbConn, err = CreateConnection() So(err, ShouldEqual, nil) }) ... )  gostub 安装
+go get github.com/prashantv/gostub  在测试的过程中，需要根据情况调整配置和一些全局变量，gostub 就是用来做这个的（打桩？）。
+import ( &quot;testing&quot; . &quot;github.com/prashantv/gostub&quot; ) var ( MYSQLUSER string MYSQLPASSWORD string MYSQLADDR string MYSQLPORT int DATABASENAME string ) func Test1(t *testing.
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/golang/Golang%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
     <h2><a href="https://asdfsx.github.io/post/golang/Golang%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">Golang的类型</a></h2>
 
     <div class="post-meta">
@@ -762,65 +824,6 @@ class Meta(type): &quot;&quot;&quot; Metaclass that automatically decorates trad
   
   <footer>
     <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84model/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-  </footer>
-  
-</article>
-
-  
-    <article>
-  <header>
-    <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E4%B8%AD%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86/">odoo中的请求处理</a></h2>
-
-    <div class="post-meta">
-
-  <div>
-    <i class="fa fa-calendar fa-fw"></i>
-    <time>29 Dec 2016, 15:57</time>
-  </div>
-
-  
-
-  
-  
-  
-  <div>
-    <i class="fa fa-folder fa-fw"></i>
-    
-      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
-    
-  </div>
-  
-  
-
-  
-  
-  
-  <div>
-    <i class="fa fa-tags fa-fw"></i>
-    
-      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
-    
-      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
-    
-  </div>
-  
-  
-
-</div>
-
-  </header>
-
-  <p>
-  Web请求 web请求的包装是在接收请求时，在odoo.http.Root中处理的。请求主要分为
- json请求：主要用来处理json请求、rpc请求。 http请求：主要用来处理页面访问请求。  请求的基类：odoo.http.WebRequest 所有请求的基类，定义了请求处理过程中都可能会用到的一些属性：如csrf、db、registry、session等等。
-同时WebQuest还使用了__enter__、__exit__。这样当使用with request：这样当表达式时，会将当前request放到werkzeug.local.LocalStack中。方便从任何地方使用odoo.http.request获取当前请求。
-具体处理请求的endpoint是通过set_handler传入的。_call_function会调用endpoint来获得返回结果。但是调用_call_function的dispath是由子类来实现的，基类中没有。
-_request_stack = werkzeug.local.LocalStack() request = _request_stack() class WebRequest(object): ... @property def registry(self): return odoo.registry(self.db) if self.db else None @property def db(self): return self.session.db if not self.disable_db else None def csrf_token(self, time_limit=3600): ... ... def _call_function(self, *args, **kwargs): &quot;&quot;&quot; Generates and returns a CSRF token for the current session ... def validate_csrf(self, csrf): ... def __enter__(self): _request_stack.push(self) return self def __exit__(self, exc_type, exc_value, traceback): _request_stack.
-  </p>
-
-  
-  <footer>
-    <a href="https://asdfsx.github.io/post/odoo/odoo%E4%B8%AD%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
   </footer>
   
 </article>

@@ -230,6 +230,65 @@
   
     <article>
   <header>
+    <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E4%B8%AD%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86/">odoo中的请求处理</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>29 Dec 2016, 15:57</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Web请求 web请求的包装是在接收请求时，在odoo.http.Root中处理的。请求主要分为
+ json请求：主要用来处理json请求、rpc请求。 http请求：主要用来处理页面访问请求。  请求的基类：odoo.http.WebRequest 所有请求的基类，定义了请求处理过程中都可能会用到的一些属性：如csrf、db、registry、session等等。
+同时WebQuest还使用了__enter__、__exit__。这样当使用with request：这样当表达式时，会将当前request放到werkzeug.local.LocalStack中。方便从任何地方使用odoo.http.request获取当前请求。
+具体处理请求的endpoint是通过set_handler传入的。_call_function会调用endpoint来获得返回结果。但是调用_call_function的dispath是由子类来实现的，基类中没有。
+_request_stack = werkzeug.local.LocalStack() request = _request_stack() class WebRequest(object): ... @property def registry(self): return odoo.registry(self.db) if self.db else None @property def db(self): return self.session.db if not self.disable_db else None def csrf_token(self, time_limit=3600): ... ... def _call_function(self, *args, **kwargs): &quot;&quot;&quot; Generates and returns a CSRF token for the current session ... def validate_csrf(self, csrf): ... def __enter__(self): _request_stack.push(self) return self def __exit__(self, exc_type, exc_value, traceback): _request_stack.
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E4%B8%AD%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
     <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E6%A8%A1%E5%9D%97/">odoo的模块</a></h2>
 
     <div class="post-meta">
@@ -771,66 +830,6 @@ $GOROOT 表示 Go 在你的电脑上的安装位置，它的值一般都是 $HOM
 最近开始看rust，想着把golang也重新拿来把玩一番，于是有了这堆牢骚。多余的不说，只是希望能把golang重新熟悉一下。顺便熟悉熟悉用hugo搭blog，熟悉熟悉markdown，熟悉熟悉whatever。
   </p>
 
-  
-</article>
-
-  
-    <article>
-  <header>
-    <h2><a href="https://asdfsx.github.io/post/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/git%E5%AD%A6%E4%B9%A0/">git学习</a></h2>
-
-    <div class="post-meta">
-
-  <div>
-    <i class="fa fa-calendar fa-fw"></i>
-    <time>08 Dec 2016, 17:05</time>
-  </div>
-
-  
-
-  
-  
-  
-  <div>
-    <i class="fa fa-folder fa-fw"></i>
-    
-      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
-    
-  </div>
-  
-  
-
-  
-  
-  
-  <div>
-    <i class="fa fa-tags fa-fw"></i>
-    
-      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/git">git</a>
-    
-  </div>
-  
-  
-
-</div>
-
-  </header>
-
-  <p>
-  参考资料：
-https://git-scm.com/book/zh/v2
-http://igit.linuxtoy.org/contents.html
-git最基础操作 配置用户
-git config --global user.email &quot;user@gmail.com&quot; git config --global user.name &quot;user&quot;  本地创建git管理的项目
-mkdir git_study git init git status git log  创建文件并提交
-echo &quot;hello Git&quot; &gt; readme.txt git add readme.txt git status git commit -m &quot;project init&quot; git log  更改文件并提交
-echo &quot;Git is Cool&quot; &gt;&gt; readme.txt git status git diff git add readme.txt git status git commit -m &quot;Git is Cool&quot;  在上边的操作我们可以发现，在一个Git项目中文件的状态大概分成下面的两大类，而第二大类又分为三小类：
-  </p>
-
-  
-  <footer>
-    <a href="https://asdfsx.github.io/post/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/git%E5%AD%A6%E4%B9%A0/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-  </footer>
   
 </article>
 
