@@ -155,6 +155,174 @@ func TestMock(t *testing.T){
     </item>
     
     <item>
+      <title>Kafka</title>
+      <link>https://asdfsx.github.io/post/messagequeue/Kafka/</link>
+      <pubDate>Sat, 25 Mar 2017 21:37:50 +0800</pubDate>
+      
+      <guid>https://asdfsx.github.io/post/messagequeue/Kafka/</guid>
+      <description>
+
+&lt;p&gt;随便写写Kafka，并且大俗特俗的从安装操作开始写起。&lt;/p&gt;
+
+&lt;h1 id=&#34;kafka-的安装&#34;&gt;Kafka 的安装&lt;/h1&gt;
+
+&lt;p&gt;首先要有 jdk！
+其次要有 zookeeper！不过kafka的发行版压缩包中，已经集成了zookeeper。
+从官网下载最新版的Kafka，解压后就可以直接使用了。&lt;/p&gt;
+
+&lt;p&gt;启动zookeeper：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;启动Kafka&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bin/kafka-server-start.sh -daemon config/server.properties 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样一个单节点的Kafka就启动了。早期的版本启动的时候还需要使用 nohup 来放到后台。现在只需要带 -daemon 参数了。&lt;/p&gt;
+
+&lt;h1 id=&#34;kafka-的操作&#34;&gt;Kafka 的操作&lt;/h1&gt;
+
+&lt;p&gt;只列几个常用的命令，更多的命令可以到官网上去翻文档。&lt;/p&gt;
+
+&lt;h3 id=&#34;创建topic&#34;&gt;创建topic&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;bin/kafka-topics.sh --zookeeper localhost:2181 --create --topic etl-kafka --partitions 24 --replication-factor 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;列出所有的topic&#34;&gt;列出所有的topic&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;bin/kafka-topics.sh --zookeeper localhost:2181 --list 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;查看topic信息&#34;&gt;查看topic信息&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;bin/kafka-topics.sh --zookeeper localhost:2181 --describe --topic etl-kafka
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;测试发送消息&#34;&gt;测试发送消息&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;bin/kafka-console-producer.sh --broker-list localhost:9092 --topic etl-kafka
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;测试接受消息&#34;&gt;测试接受消息&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic etl-kafka --from-beginning
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上是最常用的命令，此外还有些管理 topic 的命令，如&lt;/p&gt;
+
+&lt;h3 id=&#34;修改-topic&#34;&gt;修改 topic&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;bin/kafka-topics.sh --zookeeper zk_host:port/chroot --alter --topic my_topic_name --partitions 40
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;删除-topic&#34;&gt;删除 topic&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic my_topic_name
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;还有关于集群管理、consumer管理、数据平衡等的命令。&lt;/p&gt;
+
+&lt;h1 id=&#34;kafka-的设计&#34;&gt;Kafka 的设计&lt;/h1&gt;
+
+&lt;h3 id=&#34;topic&#34;&gt;Topic&lt;/h3&gt;
+
+&lt;p&gt;kakfa 启动后，首先要创建Topic，才能接收数据。Topic 可以看作是一个个目录，用来存放消息。每个Topic都可以有多个 producer，consumer。&lt;/p&gt;
+
+&lt;h3 id=&#34;partition&#34;&gt;Partition&lt;/h3&gt;
+
+&lt;p&gt;Topic 中的消息是分区存放的，具体有多少个区，可以在创建的时候指定。当 producer 在向 Kafka 中写入数据的时候，通过指定的分区ID、或者计算出来的分区ID，将消息放入各个分区中。分区是有序的，当 producer 向分区写入消息时，每条记录都会有获得一个唯一的编号 offset。&lt;/p&gt;
+
+&lt;p&gt;如下图所示&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kafka.apache.org/11/images/log_anatomy.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;当 consumer 获取消息时，就可以根据分区ID，offset 去请求数据，如下图&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kafka.apache.org/11/images/log_consumer.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;集群&#34;&gt;集群&lt;/h3&gt;
+
+&lt;p&gt;集群的信息由 zookeeper 来维护。节点信息、topic信息 等都会保存在zookeeper上。&lt;/p&gt;
+
+&lt;p&gt;分区是散布在集群中的多个节点上的，并且在创建Topic时，通过设置 replication 来提高可用性。&lt;/p&gt;
+
+&lt;p&gt;如果replication 设为1，表示没有复制集，数据只有一份。这种情况下，一个分区只会存在在一个节点上，换句话说，就是分区在整个集群中是唯一的。如果节点不可用，这个节点上所有的分区就都不可用了。&lt;/p&gt;
+
+&lt;p&gt;如果replication 设为2，表示有一个复制集。这种情况下，分区会存在在两个节点上（设置replication的前提是，集群有多个节点，单节点集群无法设置复制集）。其中一个作为 leader ，另一个作为 flower 。leader 负责所有的读写请求，flower负责同步数据。当 leader 不可用的时候，flower 会取代旧 leader 作为新 leader。（非常像raft）&lt;/p&gt;
+
+&lt;h3 id=&#34;producer&#34;&gt;Producer&lt;/h3&gt;
+
+&lt;p&gt;负责将数据写入 kafka。Kafka 集群不关心消息会被放入哪个分片，这个逻辑由producer来实现。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;可以根据需要使用round-robin来将消息逐个放入不同的分区；&lt;/li&gt;
+&lt;li&gt;可以根据业务需求将消息放入指定的分区&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;consumer&#34;&gt;Consumer&lt;/h3&gt;
+
+&lt;p&gt;从根本上讲 Kafka 集群不关心消费者如何消费数据。只要 Consumer 知道 Topic、分区ID、offset 就可以发起请求获取数据。这样就带来一个问题 offset 的管理&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;过去 Kafka 是不管 offset 的，一切都由用户来管理。&lt;/li&gt;
+&lt;li&gt;后来为了方便用户，将 offset 保存在zookeeper里，并引入了 consumer group 的概念：一个 group 内的consumer共享一组offset。&lt;/li&gt;
+&lt;li&gt;现在又提供了新的 offset 管理方式：创建一个内部队列用来维护偏移量。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;从用户使用角度来讲，由kafka管理 offset 可能是个发展趋势。不过 offset 仍然可以考虑自己管理一份，这样遇到一些异常情况，可以用自己管理的 offset 来消费过去的旧数据。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kafka.apache.org/11/images/consumer-groups.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>消息队列</title>
+      <link>https://asdfsx.github.io/post/messagequeue/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</link>
+      <pubDate>Sat, 25 Feb 2017 21:02:43 +0800</pubDate>
+      
+      <guid>https://asdfsx.github.io/post/messagequeue/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</guid>
+      <description>&lt;p&gt;关于消息队列其实已经有很多文章了，简单摘抄一些。
+以下内容来自&lt;a href=&#34;http://tech.meituan.com/mq-design.html&#34;&gt;美团技术点评：消息队列设计精要&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;消息队列已经逐渐成为企业IT系统内部通信的核心手段。它具有低耦合、可靠投递、广播、流量控制、最终一致性等一系列功能，成为异步RPC的主要手段之一。
+
+常见的使用场景：
+解耦
+最终一致性
+广播
+错峰与流控
+
+消息队列基本功能：
+RPC通信协议
+高可用
+服务端承载消息堆积的能力
+存储子系统的选择
+消费关系解析
+
+队列高级特性设计：
+可靠投递（最终一致性）
+消费确认
+事务
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;正式接触过的消息队列有Kafka、RabbitMQ，其余还稍微了解过ZeroMQ、nsq。它们都有其独特之处，都有各自的使用场景。而使用场景决定了消息队列产品的选择。&lt;/p&gt;
+
+&lt;p&gt;Kafka 是在搞 ETL 项目时用到的。其设计初衷是高吞吐，所以放弃了传统消息队列的设计思路（维护消息状态，保证消息一次发送&amp;hellip;等等特性），取而代之的消息的持久化、分片、偏移量等设计思路。&lt;/p&gt;
+
+&lt;p&gt;RabbitMQ 是在研究 OpenStack时接触到的。主要作用是进行 python 的进程间通讯：所有的进程都会连接 RabbitMQ；控制节点会通过RabbitMQ下发命令；计算节点会通过RabbitMQ回传命令执行情况、或者是本机的信息。选择RabbitMQ，应该是看中了其可以保证消息的到达的能力。&lt;/p&gt;
+
+&lt;p&gt;而随着Golang社区的发展，也开始有人不断的制造新轮子，前面提到的NSQ就是其中之一，此外还有一个NATS。&lt;/p&gt;
+
+&lt;p&gt;另外Rust社区也在不断的发展中，估计也会诞生出一些新的轮子，之后会持续关注这些新轮子。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Golang的类型</title>
       <link>https://asdfsx.github.io/post/golang/Golang%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</link>
       <pubDate>Sat, 25 Feb 2017 20:15:52 +0800</pubDate>
@@ -4848,509 +5016,6 @@ class IrModelData(models.Model):
 &lt;h3 id=&#34;不算总结的总结&#34;&gt;不算总结的总结&lt;/h3&gt;
 
 &lt;p&gt;通过学习这部分的代码，可以发现模块的加载、更新、删除等操作，都有数据库的深度参与。模块的物理信息会存放在&lt;code&gt;ir_module_module&lt;/code&gt;等表中。从模块中抽取出来的逻辑信息则会存放在&lt;code&gt;ir_model&lt;/code&gt;等表中。对模块的操作需要反复的遍历、修改这些表。&lt;strong&gt;所以在使用过程中，数据库的安全、稳定是头等大事&lt;/strong&gt;。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>odoo的web server</title>
-      <link>https://asdfsx.github.io/post/odoo/odoo%E7%9A%84web%20server/</link>
-      <pubDate>Sat, 24 Dec 2016 20:47:02 +0800</pubDate>
-      
-      <guid>https://asdfsx.github.io/post/odoo/odoo%E7%9A%84web%20server/</guid>
-      <description>
-
-&lt;p&gt;odoo的web服务器实现都在一个包里odoo.service.server。为了提升服务器的性能，提供了3种不同的web服务器，分别使用了thread、gevent、process。而在web服务器里，odoo使用werkzeug这套wsgi库，实现端口监听、请求处理等。&lt;/p&gt;
-
-&lt;h3 id=&#34;服务器的启动&#34;&gt;服务器的启动&lt;/h3&gt;
-
-&lt;p&gt;在&lt;code&gt;odoo.service.server&lt;/code&gt;包中，入口函数是位于文件末尾的&lt;code&gt;start&lt;/code&gt;函数，它的行为如下：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;定义全局变量server&lt;/li&gt;
-&lt;li&gt;加载所谓的&lt;code&gt;server wide module&lt;/code&gt;（默认的全局模块只有&lt;code&gt;web&lt;/code&gt;，&lt;code&gt;web_kanban&lt;/code&gt;）&lt;/li&gt;
-&lt;li&gt;根据配置创建不同的server&lt;/li&gt;
-&lt;li&gt;创建文件监视（为了实现模块的动态加载）&lt;/li&gt;
-&lt;li&gt;启动server&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;从中可以看到具体处理请求的程序是&lt;code&gt;odoo.service.wsgi_server.application&lt;/code&gt;，而默认的&lt;code&gt;server&lt;/code&gt;是基于线程的。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;def start(preload=None, stop=False):
-    &amp;quot;&amp;quot;&amp;quot; Start the odoo http server and cron processor.
-    &amp;quot;&amp;quot;&amp;quot;
-    global server
-    load_server_wide_modules()
-    if odoo.evented:
-        server = GeventServer(odoo.service.wsgi_server.application)
-    elif config[&#39;workers&#39;]:
-        server = PreforkServer(odoo.service.wsgi_server.application)
-    else:
-        server = ThreadedServer(odoo.service.wsgi_server.application)
-
-    watcher = None
-    if &#39;reload&#39; in config[&#39;dev_mode&#39;]:
-        if watchdog:
-            watcher = FSWatcher()
-            watcher.start()
-        else:
-            _logger.warning(&amp;quot;&#39;watchdog&#39; module not installed. Code autoreload feature is disabled&amp;quot;)
-    if &#39;werkzeug&#39; in config[&#39;dev_mode&#39;]:
-        server.app = DebuggedApplication(server.app, evalex=True)
-
-    rc = server.run(preload, stop)
-
-    # like the legend of the phoenix, all ends with beginnings
-    if getattr(odoo, &#39;phoenix&#39;, False):
-        if watcher:
-            watcher.stop()
-        _reexec()
-
-    return rc if rc else 0
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;基类-odoo-service-server-commonserver&#34;&gt;基类 odoo.service.server.CommonServer&lt;/h3&gt;
-
-&lt;p&gt;作为鸡肋，啥也没有，只有一个关闭socket的函数&lt;/p&gt;
-
-&lt;h3 id=&#34;基于线程的实现-odoo-service-server-threadedserver&#34;&gt;基于线程的实现 odoo.service.server.ThreadedServer&lt;/h3&gt;
-
-&lt;p&gt;实现了父类的&lt;code&gt;run&lt;/code&gt;函数，作为程序的入口吧。&lt;/p&gt;
-
-&lt;p&gt;启动过程中会创建两种线程&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;处理http请求的线程&lt;br /&gt;
-用&lt;code&gt;odoo.service.server.ThreadedWSGIServerReloadable&lt;/code&gt;来实现线程。这个类继承了&lt;code&gt;werkzeug.serving.ThreadedWSGIServer&lt;/code&gt;，所以具体如何使用线程来完成请求的处理，都被隐藏在&lt;code&gt;werkzeug&lt;/code&gt;中了。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;处理定时任务的线程&lt;br /&gt;
-在&lt;code&gt;cron_spawn&lt;/code&gt;函数中创建的，按照配置中的&lt;code&gt;max_cron_threads&lt;/code&gt;来创建&lt;code&gt;daemon&lt;/code&gt;线程。线程中通过遍历&lt;code&gt;odoo.modules.registry.Registry.registries&lt;/code&gt;来获得数据库信息，然后通过&lt;code&gt;odoo.addons.base.ir.ir_cron.ir_cron._acquire_job&lt;/code&gt;来获取定时任务。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;基于gevent的实现-odoo-service-server-geventserver&#34;&gt;基于gevent的实现 odoo.service.server.GeventServer&lt;/h3&gt;
-
-&lt;p&gt;gevent是一个基于协程的网络库。底层使用greenlet作为轻量级的异步并法方式，使用libev实现基于事件循环的网络请求处理。&lt;/p&gt;
-
-&lt;p&gt;GeventServer实现非常简单，感觉和Thread、Process的方案比，感觉缺了些东西。（比如进程、线程版里都会有cron_xxx，目测应该是执行定时任务的程序。）&lt;/p&gt;
-
-&lt;h3 id=&#34;基于进程的实现-odoo-service-server-preforkserver&#34;&gt;基于进程的实现 odoo.service.server.PreforkServer&lt;/h3&gt;
-
-&lt;p&gt;让人又爱又恨的进程。与上边的两个实现相比，进程要靠自己一点点实现&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;PreforkServer&lt;br /&gt;
-启动函数为&lt;code&gt;run&lt;/code&gt;，这个函数中也定义了主进程的行为：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;建立管道、处理信号；建立socket&lt;/li&gt;
-&lt;li&gt;处理信号&lt;/li&gt;
-&lt;li&gt;处理僵尸进程&lt;/li&gt;
-&lt;li&gt;处理超时连接&lt;/li&gt;
-&lt;li&gt;创建子进程&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;其余的函数都是为了上述功能&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Worker&lt;br /&gt;
-子进程的父类，定义了子进程的大部分行为。包括信号的处理、进程状态的处理。具体的业务放在&lt;code&gt;process_work&lt;/code&gt;函数中，当然父类不需要实现这个函数，具体业务逻辑放在子类中实现。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;WorkerHTTP&lt;br /&gt;
-处理http请求的子进程。启动子进程的时候，会定义一个处理http请求的&lt;code&gt;self.server&lt;/code&gt;，类型是&lt;code&gt;BaseWSGIServerNoBind&lt;/code&gt;。从类的定义上可以看出来它继承了&lt;code&gt;werkzeug.serving.BaseWSGIServer&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;WorkerCron&lt;br /&gt;
-处理定时任务的子进程。执行完任务后退出。（这里和线程的实现不一样。线程里是死循环；进程则是执行完就退出，然后由主进程再次拉起？？？待确认啊～～）&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;预加载模型-preload-registries&#34;&gt;预加载模型 preload_registries&lt;/h3&gt;
-
-&lt;p&gt;在之后的文章中，我们可以看到&lt;code&gt;registry&lt;/code&gt;的重要性。在这里我们只需要明确，不管是进程、还是线程的实现，都会在启动服务器时调用这个函数创建&lt;code&gt;registry&lt;/code&gt;。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;def preload_registries(dbnames):
-    &amp;quot;&amp;quot;&amp;quot; Preload a registries, possibly run a test file.&amp;quot;&amp;quot;&amp;quot;
-    # TODO: move all config checks to args dont check tools.config here
-    config = odoo.tools.config
-    test_file = config[&#39;test_file&#39;]
-    dbnames = dbnames or []
-    rc = 0
-    for dbname in dbnames:
-        try:
-            update_module = config[&#39;init&#39;] or config[&#39;update&#39;]
-            registry = Registry.new(dbname, update_module=update_module)
-            # run test_file if provided
-            if test_file:
-                _logger.info(&#39;loading test file %s&#39;, test_file)
-                with odoo.api.Environment.manage():
-                    if test_file.endswith(&#39;yml&#39;):
-                        load_test_file_yml(registry, test_file)
-                    elif test_file.endswith(&#39;py&#39;):
-                        load_test_file_py(registry, test_file)
-
-            if registry._assertion_report.failures:
-                rc += 1
-        except Exception:
-            _logger.critical(&#39;Failed to initialize database `%s`.&#39;, dbname, exc_info=True)
-            return -1
-    return rc
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;文件系统监视器-fswatcher&#34;&gt;文件系统监视器 FSWatcher&lt;/h3&gt;
-
-&lt;p&gt;使用&lt;code&gt;watchdog&lt;/code&gt;监视指定目录中发生的文件创建、删除、修改事件。主要是为了模块的动态更新。&lt;/p&gt;
-
-&lt;h3 id=&#34;处理请求的-wsgi-server&#34;&gt;处理请求的 wsgi_server&lt;/h3&gt;
-
-&lt;p&gt;之前说的3种server，都使用了&lt;code&gt;odoo.service.wsgi_server.application&lt;/code&gt;来处理请求。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;def wsgi_xmlrpc(environ, start_response):
-    ...
-    if environ[&#39;REQUEST_METHOD&#39;] == &#39;POST&#39; and environ[&#39;PATH_INFO&#39;].startswith(&#39;/xmlrpc/&#39;):
-    ...
-    
-    
-def application_unproxied(environ, start_response):
-    ...
-    with odoo.api.Environment.manage():
-        # Try all handlers until one returns some result (i.e. not None).
-        for handler in [wsgi_xmlrpc, odoo.http.root]:
-            result = handler(environ, start_response)
-            if result is None:
-                continue
-            return result
-    ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;所有的请求都会尝试用2个handler来处理一下。&lt;code&gt;wsgi_xmlrpc&lt;/code&gt;用来处理xmlrpc，只有&lt;code&gt;POST&lt;/code&gt;类型的、url以&lt;code&gt;/xmlrpc/&lt;/code&gt;开头的会被这个handler处理。其余的都由&lt;code&gt;odoo.http.root&lt;/code&gt;来处理。看来&lt;code&gt;odoo.http.root&lt;/code&gt;应该超级复杂。&lt;/p&gt;
-
-&lt;h3 id=&#34;超级长的-odoo-http&#34;&gt;超级长的 odoo.http&lt;/h3&gt;
-
-&lt;p&gt;这是一个1651行的，历史悠久的python文件。第一行&lt;code&gt;# -*- coding: utf-8 -*-&lt;/code&gt;是2013年2月1日写下的。里边集中了请求的封装、模块加载、session管理等东西。这里我们重点先看&lt;code&gt;root&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;首先，在文件的末尾找到&lt;code&gt;root = Root()&lt;/code&gt;。&lt;code&gt;root&lt;/code&gt;是一个&lt;code&gt;Root&lt;/code&gt;的对象。哪一个对象怎么作为&lt;code&gt;handler&lt;/code&gt;作为函数调用的呢？&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;class Root(object):
-    ...
-    def __call__(self, environ, start_response):
-        if not self._loaded:
-            self._loaded = True
-            self.load_addons()
-        return self.dispatch(environ, start_response)
-    ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;原来是特殊的的&lt;code&gt;__call__&lt;/code&gt;函数。而且可以看到模块是延迟加载的：只有在第一次被调用的时候才会&lt;code&gt;load_addons&lt;/code&gt;。然后才会调用&lt;code&gt;dispatch&lt;/code&gt;去处理请求。&lt;/p&gt;
-
-&lt;h5 id=&#34;加载模块-load-addons&#34;&gt;加载模块 load_addons&lt;/h5&gt;
-
-&lt;p&gt;加载模块的步骤&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;从&lt;code&gt;odoo.modules.module.ad_paths&lt;/code&gt;下的所有目录里，获取所有的模块目录。&lt;/li&gt;
-&lt;li&gt;从各个目录里，查找模块的&lt;code&gt;__manifest__.py&lt;/code&gt;文件（模块的描述文件）。&lt;/li&gt;
-&lt;li&gt;读取模块信息，然后&lt;code&gt;__import__&lt;/code&gt;模块。&lt;/li&gt;
-&lt;li&gt;将模块、模块信息存到全局变量&lt;code&gt;addons_module, addons_manifest&lt;/code&gt;中，同时将模块的静态文件地址也保存起来。&lt;/li&gt;
-&lt;li&gt;创建用来处理请求的dispatch&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;特别注意在最后，&lt;code&gt;dispatch&lt;/code&gt;函数被特殊处理了一下&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;app = werkzeug.wsgi.SharedDataMiddleware(self.dispatch, statics, cache_timeout=STATIC_CACHE)
-        self.dispatch = DisableCacheMiddleware(app)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里先用类中的&lt;code&gt;dispatch&lt;/code&gt;函数，生成&lt;code&gt;werkzeug.wsgi.SharedDataMiddleware&lt;/code&gt;的对象&lt;code&gt;app&lt;/code&gt;；然后再用&lt;code&gt;app&lt;/code&gt;生成一个&lt;code&gt;DisableCacheMiddleware&lt;/code&gt;对象，替换掉原来的&lt;code&gt;dispatch&lt;/code&gt;&amp;hellip;&amp;hellip;&lt;/p&gt;
-
-&lt;h5 id=&#34;抽丝剥茧-dispatch&#34;&gt;抽丝剥茧 dispatch&lt;/h5&gt;
-
-&lt;p&gt;在&lt;code&gt;load_addons&lt;/code&gt;的最后，原先的&lt;code&gt;dispatch&lt;/code&gt;函数被层层包裹（真的是两层）。
-最外边一层是&lt;code&gt;DisableCacheMiddleware&lt;/code&gt;：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;class DisableCacheMiddleware(object):
-    def __init__(self, app):
-        self.app = app
-    def __call__(self, environ, start_response):
-        def start_wrapped(status, headers):
-            referer = environ.get(&#39;HTTP_REFERER&#39;, &#39;&#39;)
-            parsed = urlparse.urlparse(referer)
-            debug = parsed.query.count(&#39;debug&#39;) &amp;gt;= 1
-
-            new_headers = []
-            unwanted_keys = [&#39;Last-Modified&#39;]
-            if debug:
-                new_headers = [(&#39;Cache-Control&#39;, &#39;no-cache&#39;)]
-                unwanted_keys += [&#39;Expires&#39;, &#39;Etag&#39;, &#39;Cache-Control&#39;]
-
-            for k, v in headers:
-                if k not in unwanted_keys:
-                    new_headers.append((k, v))
-
-            start_response(status, new_headers)
-        return self.app(environ, start_wrapped)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;代码不多直接贴。不出意外的使用了&lt;code&gt;__call__&lt;/code&gt;，然后可以看到它主要是对返回的&lt;code&gt;http头&lt;/code&gt;做了特殊的处理。&lt;/p&gt;
-
-&lt;p&gt;接下来是一层&lt;code&gt;werkzeug.wsgi.SharedDataMiddleware&lt;/code&gt;，借用官方文档：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;A WSGI middleware that provides static content for development environments or simple server setups.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;它是用来安装模块对应的静态文件。&lt;/p&gt;
-
-&lt;p&gt;最后就是&lt;code&gt;dispatch&lt;/code&gt;函数了。先对请求进行处理：设置session、设置数据库、设置语言；然后交给&lt;code&gt;ir_http._dispatch&lt;/code&gt;来处理请求；&lt;code&gt;get_response&lt;/code&gt;将前一步的结果进行处理，生成最终返回的&lt;code&gt;response&lt;/code&gt;。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;def dispatch(self, environ, start_response):
-    ...
-    httprequest = werkzeug.wrappers.Request(environ)
-    ...
-    explicit_session = self.setup_session(httprequest)
-    self.setup_db(httprequest)
-    self.setup_lang(httprequest)
-    request = self.get_request(httprequest)
-    ...
-    with request:
-        ...
-        with odoo.tools.mute_logger(&#39;odoo.sql_db&#39;):
-            ir_http = request.registry[&#39;ir.http&#39;]
-        ...
-        result = ir_http._dispatch()
-        ...
-        response = self.get_response(httprequest, result, explicit_session)
-    return repsonse
-    ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;但是&lt;code&gt;registry&lt;/code&gt;从何而来，&lt;code&gt;ir_http&lt;/code&gt;又是什么。继续探索下去吧。&lt;/p&gt;
-
-&lt;h5 id=&#34;请求的包装&#34;&gt;请求的包装&lt;/h5&gt;
-
-&lt;p&gt;最初的请求时由&lt;code&gt;werkzeug.wrappers.Request&lt;/code&gt;生成的。然后经过一步步的设置，将它的session信息、可能访问的数据库连接、使用的语言，都配置存放到请求对象中。然后根据请求的类型，生成&lt;code&gt;JsonRequest&lt;/code&gt;或者&lt;code&gt;HttpRequest&lt;/code&gt;。这两个类分别对应&lt;code&gt;Json&lt;/code&gt;请求和一般的&lt;code&gt;Http&lt;/code&gt;请求，他们的父类都是&lt;code&gt;WebRequest&lt;/code&gt;。在他们的父类中，我们看到了神秘的&lt;code&gt;registry&lt;/code&gt;。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;@property
-def registry(self):
-    &amp;quot;&amp;quot;&amp;quot;
-    The registry to the database linked to this request. Can be ``None``
-    if the current request uses the ``none`` authentication.
-    .. deprecated:: 8.0
-        use :attr:`.env`
-    &amp;quot;&amp;quot;&amp;quot;
-    return odoo.registry(self.db) if self.db else None
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;使用了&lt;code&gt;@property&lt;/code&gt;使这个函数可以当作类的属性访问。&lt;code&gt;odoo.registry&lt;/code&gt;这个函数可以在&lt;code&gt;odoo/__init__.py&lt;/code&gt;中找到，返回一个Registry对象。初步判断这里时做了一个初始化工作：创建Registry对象，成功的话返回数据库名称，失败返回None。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;def registry(database_name=None):
-    &amp;quot;&amp;quot;&amp;quot;
-    Return the model registry for the given database, or the database mentioned
-    on the current thread. If the registry does not exist yet, it is created on
-    the fly.
-    &amp;quot;&amp;quot;&amp;quot;
-    if database_name is None:
-        import threading
-        database_name = threading.currentThread().dbname
-    return modules.registry.Registry(database_name)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5 id=&#34;模型的注册表-registry&#34;&gt;模型的注册表 Registry&lt;/h5&gt;
-
-&lt;pre&gt;&lt;code&gt;The registry is essentially a mapping between model names and model classes.
-There is one registry instance per database.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;官方文档对&lt;code&gt;Registry&lt;/code&gt;的说明。&lt;/p&gt;
-
-&lt;p&gt;在请求处理的过程中，如果&lt;code&gt;modules.registry.Registry&lt;/code&gt;还没有实例，那么就创建一个。这个是一个继承了&lt;code&gt;collections.Mapping&lt;/code&gt;，高度定制化的类。在这个类中，创建了一个类的属性&lt;code&gt;registries&lt;/code&gt;作为缓存来存放之后生成的&lt;code&gt;registry&lt;/code&gt;。每次想获取&lt;code&gt;registry&lt;/code&gt;对象的时候，都是先查询这个缓存。如果缓存中有现成的对象，直接返回，否则生成新的对象。&lt;/p&gt;
-
-&lt;p&gt;在创建registry的同时，还进行了模块的实例化：从模块中抽取模型、把模型保存到数据库、将模型的实例存到registry中。&lt;/p&gt;
-
-&lt;h5 id=&#34;请求的重定向&#34;&gt;请求的重定向&lt;/h5&gt;
-
-&lt;p&gt;通过对模块、以及&lt;code&gt;registry&lt;/code&gt;的了解，我们可以继续探究之前的&lt;code&gt;ir_http&lt;/code&gt;。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ir_http = request.registry[&#39;ir.http&#39;]
-result = ir_http._dispatch()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;从&lt;code&gt;registrty&lt;/code&gt;中查找名字为&lt;code&gt;ir.http&lt;/code&gt;的模型的对象。通过搜索我们找到这个名字对应的类是：&lt;code&gt;odoo.addons.base.ir.ir_http.IrHttp&lt;/code&gt;，在这个类中，我们找到了这个&lt;code&gt;_dispatch&lt;/code&gt;方法。可以看到它在初次执行时会将安装好的模块都加载到&lt;code&gt;odoo.http.routing_map&lt;/code&gt;中。之后当请求到达的时候，从&lt;code&gt;routing_map&lt;/code&gt;中获得&lt;code&gt;controller&lt;/code&gt;，然后由controller来处理请求。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;    @classmethod
-    def routing_map(cls):
-        if not hasattr(cls, &#39;_routing_map&#39;):
-            installed = request.registry._init_modules - {&#39;web&#39;}
-            mods = [&#39;&#39;] + odoo.conf.server_wide_modules + sorted(installed)
-            cls._routing_map = http.routing_map(mods, False, converters=cls._get_converters())
-        return cls._routing_map
-        
-    @classmethod
-    def _find_handler(cls, return_rule=False):
-        return cls.routing_map().bind_to_environ(request.httprequest.environ).match(return_rule=return_rule)
-
-    @classmethod
-    def _dispatch(cls):
-        # locate the controller method
-        try:
-            rule, arguments = cls._find_handler(return_rule=True)
-            func = rule.endpoint
-        except werkzeug.exceptions.NotFound, e:
-            return cls._handle_exception(e)
-            
-        ......
-        
-        try:
-            request.set_handler(func, arguments, auth_method)
-            result = request.dispatch()
-        except Exception, e:
-            return cls._handle_exception(e)
-        return result
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5 id=&#34;创建请求的路由器-odoo-http-routing-map&#34;&gt;创建请求的路由器 odoo.http.routing_map&lt;/h5&gt;
-
-&lt;p&gt;请求的路由信息是保存在&lt;code&gt;werkzeug.routing.Map&lt;/code&gt;中的。而&lt;code&gt;routing_map&lt;/code&gt;函数负责创建这个对象，然后通过遍历所有已安装的模块中的&lt;code&gt;controller&lt;/code&gt;，将所有的路径信息都存放到这个对象中去。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;def routing_map(modules, nodb_only, converters=None):
-    routing_map = werkzeug.routing.Map(strict_slashes=False, converters=converters)
-    ......
-    for module in modules:
-        for _, cls in controllers_per_module[module]:
-            o = cls()
-            members = inspect.getmembers(o, inspect.ismethod)
-            for _, mv in members:
-                ...
-                endpoint = EndPoint(mv, routing)
-                ...
-                routing_map.add(werkzeug.routing.Rule(url, endpoint=endpoint, methods=routing[&#39;methods&#39;], **kw))
-    return routing_map
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;附一个&lt;code&gt;werkzeug.routing.Map&lt;/code&gt;的例子：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;from werkzeug.routing import Map, Rule, NotFound, RequestRedirect
-
-url_map = Map([
-    Rule(&#39;/&#39;, endpoint=&#39;blog/index&#39;),
-    Rule(&#39;/&amp;lt;int:year&amp;gt;/&#39;, endpoint=&#39;blog/archive&#39;),
-    Rule(&#39;/&amp;lt;int:year&amp;gt;/&amp;lt;int:month&amp;gt;/&#39;, endpoint=&#39;blog/archive&#39;),
-    Rule(&#39;/&amp;lt;int:year&amp;gt;/&amp;lt;int:month&amp;gt;/&amp;lt;int:day&amp;gt;/&#39;, endpoint=&#39;blog/archive&#39;),
-    Rule(&#39;/&amp;lt;int:year&amp;gt;/&amp;lt;int:month&amp;gt;/&amp;lt;int:day&amp;gt;/&amp;lt;slug&amp;gt;&#39;,
-         endpoint=&#39;blog/show_post&#39;),
-    Rule(&#39;/about&#39;, endpoint=&#39;blog/about_me&#39;),
-    Rule(&#39;/feeds/&#39;, endpoint=&#39;blog/feeds&#39;),
-    Rule(&#39;/feeds/&amp;lt;feed_name&amp;gt;.rss&#39;, endpoint=&#39;blog/show_feed&#39;)
-])
-
-def application(environ, start_response):
-    urls = url_map.bind_to_environ(environ)
-    try:
-        endpoint, args = urls.match()
-    except HTTPException, e:
-        return e(environ, start_response)
-    start_response(&#39;200 OK&#39;, [(&#39;Content-Type&#39;, &#39;text/plain&#39;)])
-    return [&#39;Rule points to %r with arguments %r&#39; % (endpoint, args)]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;至此我们终于可以将收到的请求，转发到对应的&lt;code&gt;controller&lt;/code&gt;中了。&lt;/p&gt;
-
-&lt;h5 id=&#34;session-管理&#34;&gt;Session 管理&lt;/h5&gt;
-
-&lt;p&gt;在http访问的过程中，session的管理是很重要的。目前在&lt;code&gt;odoo&lt;/code&gt;中，使用了基于&lt;code&gt;werkzeug&lt;/code&gt;的session实现。其中&lt;code&gt;session&lt;/code&gt;的存储使用的是文件存储。不得不说这个对&lt;code&gt;odoo&lt;/code&gt;的高可用是一个小小的障碍。不过现在已经有现成的模块可以将这个基于文件的&lt;code&gt;sessionstore&lt;/code&gt;替换成&lt;code&gt;redisstore&lt;/code&gt;。基本思路就是继承&lt;code&gt;odoo.http.Root&lt;/code&gt;，用一个支持&lt;code&gt;redis&lt;/code&gt;的&lt;code&gt;session_store&lt;/code&gt;函数将原有的函数覆盖掉。&lt;/p&gt;
-
-&lt;p&gt;项目地址：&lt;a href=&#34;https://github.com/keerati/odoo-redis&#34;&gt;https://github.com/keerati/odoo-redis&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;class OpenERPSession(werkzeug.contrib.sessions.Session):
-    def __init__(self, *args, **kwargs):
-    ......
-    
-class Root(object):
-    ......
-    @lazy_property
-    def session_store(self):
-        # Setup http sessions
-        path = odoo.tools.config.session_dir
-        _logger.debug(&#39;HTTP sessions stored in: %s&#39;, path)
-        return werkzeug.contrib.sessions.FilesystemSessionStore(path, session_class=OpenERPSession)
-        
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;不算总结的总结&#34;&gt;不算总结的总结&lt;/h3&gt;
-
-&lt;p&gt;经过不断的补充，终于将web server弄完了。现在算是基本弄清了&lt;code&gt;odoo&lt;/code&gt;的启动流程，模块是如何加载安装的，请求是如何被处理的。关于&lt;code&gt;registry&lt;/code&gt;、&lt;code&gt;module&lt;/code&gt;、&lt;code&gt;model&lt;/code&gt;、&lt;code&gt;controller&lt;/code&gt;等会单独开篇去详细研究。&lt;/p&gt;
-
-&lt;p&gt;注意：&lt;br /&gt;
-文中大部分的&lt;code&gt;模块加载&lt;/code&gt;仅指&lt;code&gt;import&lt;/code&gt;。&lt;br /&gt;
-真正将其实例化，或者说从模块类 -&amp;gt; 模型／模块类实例，是在&lt;code&gt;registry&lt;/code&gt;中创建的。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>odoo的命令</title>
-      <link>https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E5%91%BD%E4%BB%A4/</link>
-      <pubDate>Sat, 24 Dec 2016 20:37:57 +0800</pubDate>
-      
-      <guid>https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E5%91%BD%E4%BB%A4/</guid>
-      <description>
-
-&lt;p&gt;Odoo命令都在odoo.cli包中&lt;/p&gt;
-
-&lt;h3 id=&#34;元类-commandtype&#34;&gt;元类：CommandType&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;commands = {}
-
-class CommandType(type):
-    def __init__(cls, name, bases, attrs):
-        super(CommandType, cls).__init__(name, bases, attrs)
-        name = getattr(cls, name, cls.__name__.lower())
-        cls.name = name
-        if name != &#39;command&#39;:
-            commands[name] = cls
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;所有使用了这个元类的类，都会注册到包内的全局字典&lt;code&gt;commands&lt;/code&gt;中：类名为key，类为value&lt;/p&gt;
-
-&lt;h3 id=&#34;所有命令的基类-command&#34;&gt;所有命令的基类：Command&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;class Command(object):
-    &amp;quot;&amp;quot;&amp;quot;Subclass this class to define new odoo subcommands &amp;quot;&amp;quot;&amp;quot;
-    __metaclass__ = CommandType
-
-    def run(self, args):
-        pass
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以看到基类使用&lt;code&gt;CommandType&lt;/code&gt;作为元类。这意味着所有的子类都会注册到全局字典中。&lt;br /&gt;
-同时还定义了个函数&lt;code&gt;run&lt;/code&gt;。这算是预定义了要实现功能的函数。&lt;/p&gt;
-
-&lt;h3 id=&#34;命令的实现&#34;&gt;命令的实现&lt;/h3&gt;
-
-&lt;p&gt;以下命令全部都是&lt;code&gt;Command&lt;/code&gt;的子类，所以都使用了原类&lt;code&gt;CommandType&lt;/code&gt;，并实现了父类的&lt;code&gt;run&lt;/code&gt;函数。&lt;/p&gt;
-
-&lt;h4 id=&#34;odoo-cli-command-help&#34;&gt;odoo.cli.command.Help&lt;/h4&gt;
-
-&lt;p&gt;根据其它命令中的内容，生成帮助信息，并输出。&lt;/p&gt;
-
-&lt;h4 id=&#34;odoo-cli-deploy-deploy&#34;&gt;odoo.cli.deploy.Deploy&lt;/h4&gt;
-
-&lt;p&gt;将本地的一个模块部署到指定的服务器上
-需要给定本地模块的地址，和远程服务器地址
-会将本地模块压缩成zip，然后通过http登录服务器并上传&lt;/p&gt;
-
-&lt;h4 id=&#34;odoo-cli-scaffold-scaffold&#34;&gt;odoo.cli.scaffold.Scaffold&lt;/h4&gt;
-
-&lt;p&gt;用来生成一个模块的骨架。主要为了方便做二次开发。&lt;/p&gt;
-
-&lt;p&gt;默认使用的模版文件就在odoo.cli包内的template目录里&lt;/p&gt;
-
-&lt;h4 id=&#34;odoo-cli-shell-shell&#34;&gt;odoo.cli.shell.Shell&lt;/h4&gt;
-
-&lt;p&gt;启动odoo，然后使用ipython、ptpython、bpython等创建一个交互环境。可以查询运行中的odoo的一些信息。&lt;/p&gt;
-
-&lt;p&gt;个人认为，这个也是方便开发调试的一个工具&lt;/p&gt;
-
-&lt;h4 id=&#34;odoo-cli-start-start&#34;&gt;odoo.cli.start.Start&lt;/h4&gt;
-
-&lt;p&gt;也是一个方便开发调试的工具，官方文档的说明是&lt;code&gt;为你的项目快速启动odoo&lt;/code&gt;。在启动参数中需要指定项目地址；如果不指定会从当前目录查找。&lt;/p&gt;
-
-&lt;h4 id=&#34;odoo-cli-server-server&#34;&gt;odoo.cli.server.Server&lt;/h4&gt;
-
-&lt;p&gt;最重要的命令，启动odoo服务器。&lt;/p&gt;
 </description>
     </item>
     

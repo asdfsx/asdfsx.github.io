@@ -229,6 +229,67 @@
   
     <article>
   <header>
+    <h2><a href="https://asdfsx.github.io/post/messagequeue/Kafka/">Kafka</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>25 Mar 2017, 21:37</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/kafka">Kafka</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97">消息队列</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  随便写写Kafka，并且大俗特俗的从安装操作开始写起。
+Kafka 的安装 首先要有 jdk！ 其次要有 zookeeper！不过kafka的发行版压缩包中，已经集成了zookeeper。 从官网下载最新版的Kafka，解压后就可以直接使用了。
+启动zookeeper：
+bin/zookeeper-server-start.sh -daemon config/zookeeper.properties  启动Kafka
+bin/kafka-server-start.sh -daemon config/server.properties  这样一个单节点的Kafka就启动了。早期的版本启动的时候还需要使用 nohup 来放到后台。现在只需要带 -daemon 参数了。
+Kafka 的操作 只列几个常用的命令，更多的命令可以到官网上去翻文档。
+创建topic bin/kafka-topics.sh --zookeeper localhost:2181 --create --topic etl-kafka --partitions 24 --replication-factor 1  列出所有的topic bin/kafka-topics.sh --zookeeper localhost:2181 --list  查看topic信息 bin/kafka-topics.sh --zookeeper localhost:2181 --describe --topic etl-kafka  测试发送消息 bin/kafka-console-producer.sh --broker-list localhost:9092 --topic etl-kafka  测试接受消息 bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic etl-kafka --from-beginning  以上是最常用的命令，此外还有些管理 topic 的命令，如
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/messagequeue/Kafka/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
     <h2><a href="https://asdfsx.github.io/post/docker/%E4%BD%BF%E7%94%A8swarm%E5%9C%A8mac%E4%B8%8A%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">使用swarm在mac上搭建开发环境</a></h2>
 
     <div class="post-meta">

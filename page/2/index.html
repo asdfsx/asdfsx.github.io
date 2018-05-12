@@ -230,6 +230,121 @@
   
     <article>
   <header>
+    <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84Field/">odoo模型中的Field</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>05 Jan 2017, 12:39</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Odoo的定义了自己的一套ORM系统。其中的一个重要组成部分就是字段的处理。这部分的内容都在odoo.field中。和其他模块一样，也大量使用了python的特殊语法，如：元类、__slots__、特殊函数，等。
+元类：odoo.fields.MetaField 所有的字段类型的元类。如果一个字段类型使用了这个类，那么在创建这个类型时元类会扫描类中是否有_slots属性。如果有的话，会将_slots中的东西放到__slots__中。然后在初始化这个类型的时候，会把这个新创建的类型放在MetaField的by_type字典中。
+注：__slots__的作用是用来存放类实例中的属性。默认，python中的实例是存放在__dict__中的；如果声明了__slots__就不会创建__dict__；__slots__应该比 __dict__节省空间。
+class MetaField(type): &quot;&quot;&quot; Metaclass for field classes. &quot;&quot;&quot; by_type = {} def __new__(meta, name, bases, attrs): &quot;&quot;&quot; Combine the ``_slots`` dict from parent classes, and determine ``__slots__`` for them on the new class. &quot;&quot;&quot; base_slots = {} for base in reversed(bases): base_slots.update(getattr(base, '_slots', ())) slots = dict(base_slots) slots.update(attrs.get('_slots', ())) attrs['__slots__'] = set(slots) - set(base_slots) attrs['_slots'] = slots return type.__new__(meta, name, bases, attrs) def __init__(cls, name, bases, attrs): super(MetaField, cls).
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84Field/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84model/">odoo的模型 Model</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>30 Dec 2016, 14:31</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/python">python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/odoo">odoo</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  model是odoo中最重要的部分之一。主要负责各种功能的实现，crm之类的业务模块中的功能姑且不论，页面渲染、工作流引擎、定时任务等核心的功能，也都是基于模型来实现。
+元类的基础：odoo.api.Meta 检查要创建的类中的所有函数，然后根据各函数_api属性进行特殊处理。处理完成后再创建该类型。
+class Meta(type): &quot;&quot;&quot; Metaclass that automatically decorates traditional-style methods by guessing their API. It also implements the inheritance of the :func:`returns` decorators. &quot;&quot;&quot; def __new__(meta, name, bases, attrs): # dummy parent class to catch overridden methods decorated with 'returns' parent = type.__new__(meta, name, bases, {}) for key, value in attrs.items(): if not key.startswith('__') and callable(value): # make the method inherit from decorators value = propagate(getattr(parent, key, None), value) # guess calling convention if none is given if not hasattr(value, '_api'): try: value = guess(value) except TypeError: pass if (getattr(value, '_api', None) or '').
+  </p>
+
+  
+  <footer>
+    <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84model/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
     <h2><a href="https://asdfsx.github.io/post/odoo/odoo%E4%B8%AD%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86/">odoo中的请求处理</a></h2>
 
     <div class="post-meta">
@@ -721,115 +836,6 @@ Go programs are constructed by linking together packages. A package in turn is c
   <footer>
     <a href="https://asdfsx.github.io/post/golang/Golang%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
   </footer>
-  
-</article>
-
-  
-    <article>
-  <header>
-    <h2><a href="https://asdfsx.github.io/post/golang/Golang%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE/">Golang开发环境设置</a></h2>
-
-    <div class="post-meta">
-
-  <div>
-    <i class="fa fa-calendar fa-fw"></i>
-    <time>10 Dec 2016, 16:45</time>
-  </div>
-
-  
-
-  
-  
-  
-  <div>
-    <i class="fa fa-folder fa-fw"></i>
-    
-      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
-    
-  </div>
-  
-  
-
-  
-  
-  
-  <div>
-    <i class="fa fa-tags fa-fw"></i>
-    
-      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/golang">golang</a>
-    
-  </div>
-  
-  
-
-</div>
-
-  </header>
-
-  <p>
-  开发环境的设置 老调重提，先搞定使用环境再说怎么用
-关于安装，下载最新版的golang安装包，安装就好。这里重点说说环境变量的配置，摘抄一段《The way to go》里的一段
-$GOROOT 表示 Go 在你的电脑上的安装位置，它的值一般都是 $HOME/go ， 当然，你也可以安装在别的地方。 $GOARCH 表示目标机器的处理器架构，它的值可以是 386、amd64 或 arm。 $GOOS 表示目标机器的操作系统，它的值可以是 darwin、freebsd、linux 或 windows。 $GOBIN 表示编译器和链接器的安装位置，默认是 $GOROOT/bin ，如果你使用的是 Go 1.0.3 及以后的版本，一般情况下你可以将它的值设置为空，Go 将会使用前面提到的默 认值。 目标机器是指你打算运行你的 Go 应用程序的机器。 Go 编译器支持交叉编译，也就是说你可以在一台机器上构建运行在具有不同操作系统和处理 器架构上运行的应用程序，也就是说编写源代码的机器可以和目标机器有完全不同的特性 (操作系统与处理器架构)。 为了区分本地机器和目标机器，你可以使用 $GOHOSTOS 和 $GOHOSTARCH 设置目标机器的参 数，这两个变量只有在进行交叉编译的时候才会用到，如果你不进行显示设置，他们的值会 和本地机器( $GOOS 和 $GOARCH )一样。 $GOPATH 默认采用和 $GOROOT 一样的值，但从 Go 1.1 版本开始，你必须修改为其它 路径。它可以包含多个包含 Go 语言源码文件、包文件和可执行文件的路径，而这些路径 下又必须分别包含三个规定的目录: src 、 pkg 和 bin ，这三个目录分别用于存放源 码文件、包文件和可执行文件。 $GOARM 专门针对基于 arm 架构的处理器，它的值可以是 5 或 6，默认为 6。 $GOMAXPROCS 用于设置应用程序可使用的处理器个数与核数  其中最常用的就是GOPATH。你可以只设置一个GOPATH，然后把所有的项目都放在这个目录下。
-  </p>
-
-  
-  <footer>
-    <a href="https://asdfsx.github.io/post/golang/Golang%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-  </footer>
-  
-</article>
-
-  
-    <article>
-  <header>
-    <h2><a href="https://asdfsx.github.io/post/golang/Golang%E9%87%8D%E6%96%B0%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E4%B9%8B%E6%97%85/">Golang重新从零开始之旅</a></h2>
-
-    <div class="post-meta">
-
-  <div>
-    <i class="fa fa-calendar fa-fw"></i>
-    <time>09 Dec 2016, 19:20</time>
-  </div>
-
-  
-
-  
-  
-  
-  <div>
-    <i class="fa fa-folder fa-fw"></i>
-    
-      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
-    
-  </div>
-  
-  
-
-  
-  
-  
-  <div>
-    <i class="fa fa-tags fa-fw"></i>
-    
-      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/golang">golang</a>
-    
-  </div>
-  
-  
-
-</div>
-
-  </header>
-
-  <p>
-  第一次接触golang还是在4年前？当时的版本大概是0.9？
-当时刚用python完成了一个ETL的项目。为了压榨机器的性能，python多进程是必不可少的。于是再一次被多进程搞得痛不欲生，内存的浪费（每个进程都要加载相同的数据），多进程之间的协同（硬是塞了多个队列到各个进程里），还有时不时出现的僵尸进程。虽然我仍然十分喜欢python，但是这些始终解决不了的问题，让我生出了寻找一个替代品的想法。
-最初是打算使用erlang的。其实当时接触erlang有一阵子了，对于erlang的语法什么的也算比较熟。但是最后还是放弃了，原因就是对于语言的偏好吧：对于一个习惯了python中简单方便的使用list、map进行各种组合的人来说，erlang的数据结构用起来太麻烦了；另外就是感觉erlang的社区有一种很封闭的感觉？提到erlang，多说一句，这确实是个很好的语言，有很多非常好的特性，但是始终非常小众，原因我不认为是什么函数式语法的问题，更多的问题我觉得是社区吧。
-在使用erlang重新实现了一部分python的功能模块之后，我终于放弃了蛋疼的一个个把python的map改成erlang的proplists，放弃了一个个把python中的for循环改成erlang中的尾递归。这个时候我遇到了golang。
-最初如何发现golang的已经记不清了。随着了解的加深，对这门语法简单、性能不错，并发容易实现的语言，产生了很强的好感。随着golang社区的重磅项目陆续诞生，甚至认为可以在分布式计算领域诞生一个可以替代hadoop的项目。不过目前来看社区的主要发展方向好像还是基础设施的建设上，重磅的项目还是主要集中在容器、集群管理、监控这个方向。虽然对这个语言很有好感，但是可惜的是还是没有用起来。只是还持续的关注着golang和golang的社区。
-最近开始看rust，想着把golang也重新拿来把玩一番，于是有了这堆牢骚。多余的不说，只是希望能把golang重新熟悉一下。顺便熟悉熟悉用hugo搭blog，熟悉熟悉markdown，熟悉熟悉whatever。
-  </p>
-
   
 </article>
 

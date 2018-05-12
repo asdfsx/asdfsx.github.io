@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="generator" content="Hugo 0.19-DEV" />
 
-  <title>Posts &middot; asdfsx</title>
+  <title>消息队列 &middot; asdfsx</title>
 
   
   
@@ -37,7 +37,7 @@
 
   
   
-  <link rel="alternate" type="application/rss+xml" title="asdfsx" href="https://asdfsx.github.io/post/index.xml" />
+  <link rel="alternate" type="application/rss+xml" title="asdfsx" href="https://asdfsx.github.io/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/index.xml" />
   
 
   
@@ -113,7 +113,7 @@
 
     
     <li class="pure-menu-item">
-      <a class="pure-menu-link" href="https://asdfsx.github.io/post/index.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      <a class="pure-menu-link" href="https://asdfsx.github.io/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/index.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
     </li>
     
 
@@ -222,99 +222,125 @@
 
 
 <div class="header">
-  <h1>Posts</h1>
+  <h1>消息队列</h1>
 </div>
+
 <div class="content">
   
-  <h2>2018</h2>
-  <ul>
-  
-    <li><time>12 May 2018, 00:01</time> - <a href="https://asdfsx.github.io/post/golang/Golang%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">Golang单元测试</a></li>
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/messagequeue/Kafka/">Kafka</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>25 Mar 2017, 21:37</time>
+  </div>
 
   
-  </ul>
-  
-  <h2>2017</h2>
-  <ul>
-  
-    <li><time>25 Mar 2017, 21:37</time> - <a href="https://asdfsx.github.io/post/messagequeue/Kafka/">Kafka</a></li>
 
   
-    <li><time>25 Feb 2017, 21:02</time> - <a href="https://asdfsx.github.io/post/messagequeue/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li>
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
 
   
-    <li><time>25 Feb 2017, 20:15</time> - <a href="https://asdfsx.github.io/post/golang/Golang%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">Golang的类型</a></li>
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/kafka">Kafka</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97">消息队列</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  随便写写Kafka，并且大俗特俗的从安装操作开始写起。
+Kafka 的安装 首先要有 jdk！ 其次要有 zookeeper！不过kafka的发行版压缩包中，已经集成了zookeeper。 从官网下载最新版的Kafka，解压后就可以直接使用了。
+启动zookeeper：
+bin/zookeeper-server-start.sh -daemon config/zookeeper.properties  启动Kafka
+bin/kafka-server-start.sh -daemon config/server.properties  这样一个单节点的Kafka就启动了。早期的版本启动的时候还需要使用 nohup 来放到后台。现在只需要带 -daemon 参数了。
+Kafka 的操作 只列几个常用的命令，更多的命令可以到官网上去翻文档。
+创建topic bin/kafka-topics.sh --zookeeper localhost:2181 --create --topic etl-kafka --partitions 24 --replication-factor 1  列出所有的topic bin/kafka-topics.sh --zookeeper localhost:2181 --list  查看topic信息 bin/kafka-topics.sh --zookeeper localhost:2181 --describe --topic etl-kafka  测试发送消息 bin/kafka-console-producer.sh --broker-list localhost:9092 --topic etl-kafka  测试接受消息 bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic etl-kafka --from-beginning  以上是最常用的命令，此外还有些管理 topic 的命令，如
+  </p>
 
   
-    <li><time>18 Feb 2017, 10:12</time> - <a href="https://asdfsx.github.io/post/docker/%E4%BD%BF%E7%94%A8swarm%E5%9C%A8mac%E4%B8%8A%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">使用swarm在mac上搭建开发环境</a></li>
+  <footer>
+    <a href="https://asdfsx.github.io/post/messagequeue/Kafka/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
 
   
-    <li><time>05 Feb 2017, 12:17</time> - <a href="https://asdfsx.github.io/post/odoo/odoo%E7%AE%80%E5%8C%96%E7%89%88refrence/">odoo简化版refrence</a></li>
+    <article>
+  <header>
+    <h2><a href="https://asdfsx.github.io/post/messagequeue/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>25 Feb 2017, 21:02</time>
+  </div>
 
   
-    <li><time>13 Jan 2017, 11:46</time> - <a href="https://asdfsx.github.io/post/odoo/odoo%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9D%97/">odoo自定义模块</a></li>
 
   
-    <li><time>11 Jan 2017, 12:01</time> - <a href="https://asdfsx.github.io/post/python/python%E7%9A%84%E5%AF%BC%E5%85%A5%E7%B3%BB%E7%BB%9F/">python的导入系统</a></li>
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="https://asdfsx.github.io/topics/topic-1">topic 1</a>
+    
+  </div>
+  
+  
 
   
-    <li><time>09 Jan 2017, 17:40</time> - <a href="https://asdfsx.github.io/post/odoo/odoo%E4%B8%AD%E9%A1%B5%E9%9D%A2%E7%9A%84%E7%94%9F%E6%88%90/">odoo中页面的生成</a></li>
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://asdfsx.github.io/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97">消息队列</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  关于消息队列其实已经有很多文章了，简单摘抄一些。 以下内容来自美团技术点评：消息队列设计精要
+消息队列已经逐渐成为企业IT系统内部通信的核心手段。它具有低耦合、可靠投递、广播、流量控制、最终一致性等一系列功能，成为异步RPC的主要手段之一。 常见的使用场景： 解耦 最终一致性 广播 错峰与流控 消息队列基本功能： RPC通信协议 高可用 服务端承载消息堆积的能力 存储子系统的选择 消费关系解析 队列高级特性设计： 可靠投递（最终一致性） 消费确认 事务  正式接触过的消息队列有Kafka、RabbitMQ，其余还稍微了解过ZeroMQ、nsq。它们都有其独特之处，都有各自的使用场景。而使用场景决定了消息队列产品的选择。
+Kafka 是在搞 ETL 项目时用到的。其设计初衷是高吞吐，所以放弃了传统消息队列的设计思路（维护消息状态，保证消息一次发送&hellip;等等特性），取而代之的消息的持久化、分片、偏移量等设计思路。
+RabbitMQ 是在研究 OpenStack时接触到的。主要作用是进行 python 的进程间通讯：所有的进程都会连接 RabbitMQ；控制节点会通过RabbitMQ下发命令；计算节点会通过RabbitMQ回传命令执行情况、或者是本机的信息。选择RabbitMQ，应该是看中了其可以保证消息的到达的能力。
+而随着Golang社区的发展，也开始有人不断的制造新轮子，前面提到的NSQ就是其中之一，此外还有一个NATS。
+另外Rust社区也在不断的发展中，估计也会诞生出一些新的轮子，之后会持续关注这些新轮子。
+  </p>
 
   
-    <li><time>05 Jan 2017, 15:32</time> - <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E9%98%B6%E6%AE%B5%E6%80%A7%E6%80%BB%E7%BB%93/">odoo的阶段性总结：服务器的启动、模块的加载、请求处理、页面生成</a></li>
+</article>
 
-  
-    <li><time>05 Jan 2017, 12:39</time> - <a href="https://asdfsx.github.io/post/odoo/odoo%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84Field/">odoo模型中的Field</a></li>
-
-  
-  </ul>
-  
-  <h2>2016</h2>
-  <ul>
-  
-    <li><time>30 Dec 2016, 14:31</time> - <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84model/">odoo的模型 Model</a></li>
-
-  
-    <li><time>29 Dec 2016, 15:57</time> - <a href="https://asdfsx.github.io/post/odoo/odoo%E4%B8%AD%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86/">odoo中的请求处理</a></li>
-
-  
-    <li><time>28 Dec 2016, 16:49</time> - <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E6%A8%A1%E5%9D%97/">odoo的模块</a></li>
-
-  
-    <li><time>27 Dec 2016, 18:05</time> - <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E6%A8%A1%E5%9D%97%E7%AE%A1%E7%90%86/">odoo的模块管理</a></li>
-
-  
-    <li><time>24 Dec 2016, 20:47</time> - <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84web%20server/">odoo的web server</a></li>
-
-  
-    <li><time>24 Dec 2016, 20:37</time> - <a href="https://asdfsx.github.io/post/odoo/odoo%E7%9A%84%E5%91%BD%E4%BB%A4/">odoo的命令</a></li>
-
-  
-    <li><time>22 Dec 2016, 19:37</time> - <a href="https://asdfsx.github.io/post/odoo/%E5%85%A5%E6%96%B0%E5%9D%91--%E5%BC%80%E6%BA%90python%20ERP%20odoo/">入新坑  开源python ERP odoo</a></li>
-
-  
-    <li><time>13 Dec 2016, 15:12</time> - <a href="https://asdfsx.github.io/post/python/Python%E7%9A%84%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/">Python的数据模型</a></li>
-
-  
-    <li><time>11 Dec 2016, 00:03</time> - <a href="https://asdfsx.github.io/post/golang/Golang%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84/">Golang代码组织结构</a></li>
-
-  
-    <li><time>10 Dec 2016, 16:45</time> - <a href="https://asdfsx.github.io/post/golang/Golang%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE/">Golang开发环境设置</a></li>
-
-  
-    <li><time>09 Dec 2016, 19:20</time> - <a href="https://asdfsx.github.io/post/golang/Golang%E9%87%8D%E6%96%B0%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E4%B9%8B%E6%97%85/">Golang重新从零开始之旅</a></li>
-
-  
-    <li><time>08 Dec 2016, 17:05</time> - <a href="https://asdfsx.github.io/post/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/git%E5%AD%A6%E4%B9%A0/">git学习</a></li>
-
-  
-    <li><time>06 Dec 2016, 19:29</time> - <a href="https://asdfsx.github.io/post/hugo/%E4%BD%BF%E7%94%A8hugo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BAblog/">使用hugo在github上搭建blog</a></li>
-
-  
-    <li><time>06 Dec 2016, 17:34</time> - <a href="https://asdfsx.github.io/post/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">git常用命令</a></li>
-
-  
-  </ul>
   
 </div>
 
@@ -338,4 +364,3 @@
 
 </body>
 </html>
-
